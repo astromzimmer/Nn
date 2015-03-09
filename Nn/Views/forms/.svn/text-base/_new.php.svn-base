@@ -1,0 +1,20 @@
+<div id="form_form" class="edit_bg">
+	<form name="form1" method="post" action="<?php echo DOMAIN.DS.'admin'.DS.'contactforms'.DS.'create' ?>">
+	  <input name="node_id" type="hidden" value="<?php echo $node_id ?>" />
+	  <input name="atype_id" type="hidden" value="<?php echo $atype_id ?>" />
+	  <p>
+	  	<label>title:</label><br/>
+	  	<input type="text" name="title" class="formField" id="titleField" value="" />
+	  </p>
+	  <p>
+	  	<label>mailto:</label><br/>
+	  	<input type="text" name="mailto" class="formField" id="mailtoField" value="" />
+	  </p>
+	  <p>
+	    <textarea name="content" class="formfield" id="contentField"></textarea>
+	  </p>
+	  <p>
+	    <button type="submit" name="submit" id="submit">submit</button>  
+	  </p>
+	</form>
+</div>

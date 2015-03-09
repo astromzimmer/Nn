@@ -1,0 +1,18 @@
+<div id="form_form" class="edit_bg">
+	<form name="form1" method="post" action="<?php echo DOMAIN.DS.'admin'.DS.'contactforms'.DS.'update'.DS.$contactform->id ?>">
+	  <p>
+	  	<label>title:</label><br/>
+	  	<input type="text" name="title" class="formField" id="titleField" value="<?php echo $contactform->title ?>" />
+	  </p>
+	  <p>
+	  	<label>mailto:</label><br/>
+	  	<input type="text" name="mailto" class="formField" id="mailtoField" value="<?php echo $contactform->mailto() ?>" />
+	  </p>
+	  <p>
+	    <textarea name="content" class="formfield" id="contentField"><?php echo htmlspecialchars($contactform->content()) ?></textarea>
+	  </p>
+	  <p>
+	    <button type="submit" name="submit" id="submit">submit</button>  
+	  </p>
+	</form>
+</div>

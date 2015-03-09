@@ -1,0 +1,1 @@
+<audio id="beat_<?php echo $audio->id ?>" src="<?php echo DOMAIN,DS,'assets',DS,'Document',DS,$audio->id,DS,$audio->filename; ?>"></audio>

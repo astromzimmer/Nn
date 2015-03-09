@@ -1,0 +1,9 @@
+<div id="text<?php echo htmlentities($contactform->id); ?>-content" class="form">
+	<h6>
+		<?php echo $contactform->title; ?>
+	</h6>
+	<br/>
+	<ul>
+		<?php echo htmlspecialchars_decode($contactform->content()); ?>
+	</ul>
+</div>

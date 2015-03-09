@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/aCMS/!svn/ver/81/app/views/contactforms
+END
+_view.php
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/aCMS/!svn/ver/84/app/views/contactforms/_view.php
+END
+_form.php
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/aCMS/!svn/ver/90/app/views/contactforms/_form.php
+END
+_edit.php
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/aCMS/!svn/ver/81/app/views/contactforms/_edit.php
+END
+_new.php
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/aCMS/!svn/ver/83/app/views/contactforms/_new.php
+END
