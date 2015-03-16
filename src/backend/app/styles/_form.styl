@@ -1,0 +1,105 @@
+$neutralButtonBG = #C0C9CF
+$manageButtonBG = #C0D9DF
+$editButtonBG = #C0DFD9
+$trashButtonBG = #DFC0C0
+
+$border_colour = #DDD
+
+$legend_width = 124px
+
+form
+	fieldset
+		position relative
+		width 50%
+		margin 24px auto
+		padding 0
+		border none
+		// border-left 1px solid $border_colour
+		legend
+			position absolute
+			top -1px
+			left - $legend_width
+			width $legend_width
+			padding 4px 24px 4px 0
+			text-align right
+			letter-spacing .06em
+			font-size 11px
+			text-transform uppercase
+			font-weight 700
+			font-size 9px
+
+		input
+		textarea
+		select
+			margin 0 8px 0 0
+
+		input[type=text],
+		input[type=password],
+		input[type=email],
+		textarea
+			width 100%
+			// border-bottom 1px solid $border_colour
+
+		textarea
+			height 124px
+			resize none
+
+	input
+	textarea
+	select
+		background #FFF
+		margin 12px
+		padding 6px
+		border 1px solid $border_colour
+		font-family Helvetica, Verdana, Arial, sans-serif
+		color #444444
+		line-height 16px
+		font-size 13px
+		&:focus
+			border-color darken($border_colour,42%)
+
+	input
+	textarea
+		border-bottom 1px solid $border_colour
+
+	textarea
+		// height 180px
+		resize none
+
+	.submit
+		width 100%
+		clear both
+		text-align center
+		button
+		.button
+			color #444
+			padding 6px
+			background-color #DDD
+			border-style none
+			font-size 11px
+			line-height 1.2em
+			cursor pointer
+			
+			&.whole
+			&.half
+			&.third
+				float left
+			
+			&.whole
+				width 100%
+			&.half
+				width 50%
+			&.third
+				width (100/3)%
+			
+			&.save
+				clickable($editButtonBG)
+			&.cancel
+			&.delete
+				clickable($trashButtonBG,darken($trashButtonBG,12%))
+
+			&:hover
+				background-color $neutralButtonBG
+
+			&:active
+				background-color $neutralButtonBG

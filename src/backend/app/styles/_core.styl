@@ -1,0 +1,297 @@
+// Colors - http://flatuicolors.com
+turquoise = #1abc9c
+emerald = #2ecc71
+peter_river = #3498db
+amethyst = #9b59b6
+wet_asphalt = #34495e
+green_sea = #16a085
+nephritis = #27ae60
+belize_hole = #2980b9
+wisteria = #8e44ad
+midnight_blue = #2c3e50
+sun_flower = #f1c40f
+carrot = #e67e22
+alizarin = #e74c3c
+clouds = #ecf0f1
+concrete = #95a5a6
+orange = #f39c12
+pumpkin = #d35400
+pomegranate = #c0392b
+silver = #bdc3c7
+asbestos = #7f8c8d
+black = #222
+grey = #999
+transparent = rgba(0,0,0,0)
+
+// Function aliases
+g = gutter
+gut = gutter
+col = column
+off = offset
+cf = clearfix
+
+// Signs
+mdash = '\2014'
+rarr = '\2192'
+
+/*  Syntax quick reference
+ *  ----------------------
+ *  gutter[gut, g] = 1[float between 0 and 1]
+ *  cf() - clearfix
+ *  center(max_width = 1410px)
+ *  column[col](numerator = 1, denominator = 1, number_of_nested_columns = 0)
+ *  span(numerator = 1, denominator = 1)
+ *  offset[off](numerator = 0, denominator = 0, col_or_span = column[col, c, span, s], left_or_right = left[right])
+ *  get(numerator = 1, denominator = 1, col_or_span = column[col, c, span, s])
+ *  bp(w = 705px, mobile_first = false[mf])
+ *  endbp()
+ *  stack(align = center[c, left, l, right, r])
+ *  edit()
+ *  pxfix()
+ */
+
+// Mixins
+
+vendor(prop,args)
+    -webkit-{prop} args
+    -moz-{prop} args
+    -ms-{prop} args
+    -o-{prop} args
+    {prop} args
+
+transition()
+    vendor('transform', translate3d(0,0,0))
+    vendor('transition',arguments)
+
+box-shadow()
+    vendor('box-shadow',arguments)
+
+transform()
+    vendor('transform',arguments)
+
+transform-origin()
+    vendor('transform-origin',arguments)
+
+text-shadow()
+    vendor('text-shadow',arguments)
+
+opacity($val)
+    zoom 1
+    -ms-filter unquote("progid:DXImageTransform.Microsoft.Alpha(Opacity="+round($val*100)+")");
+    filter unquote("alpha(opacity="+round($val*100)+")")
+    vendor('opacity',$val)
+
+background-linear-gradient(startPoint, startColor, startInterval, endColor, endInterval)
+    background-color startColor
+    background-image -webkit-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+    background-image -moz-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+    background-image -ms-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+    background-image -o-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+    background-image linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+
+
+// Functions
+
+gutter = 0
+
+center()
+    position absolute !important
+    top 0
+    left 0
+    bottom 0
+    right 0
+    margin auto
+    text-align center
+
+v_center()
+    position relative
+    top 50%
+    transform translateY(-50%)
+
+h_center(max_width = 1410px)
+    cf()
+    max-width max_width
+    float none !important
+    display block
+    margin-right auto !important
+    margin-left auto !important
+    *margin-right auto !important
+    *margin-left auto !important
+
+column(numerator = 1, denominator = 1, number_of_nested_columns = 0, g = gutter)
+    cf()
+    float left
+    min-height: 100%
+    if (number_of_nested_columns != 0)
+        width ( (100 - (g*2) * (number_of_nested_columns - 1)) / number_of_nested_columns )% // Thanks flebron from #math
+        margin-left (g)%
+        margin-right (g)%
+        &:first-child
+            margin-left 0
+        &:last-child
+            margin-right 0
+    else
+        width (((numerator/denominator)*100) - (g*2))%
+        padding-left (g)%
+        padding-right (g)%
+
+span(numerator = 1, denominator = 1)
+    cf()
+    float left
+    width ((numerator/denominator)*100)%
+    margin-left 0
+    margin-right 0
+
+offset(numerator = 0, denominator = 0, left_or_right = left, col_or_span = column)
+    if (col_or_span == column) or (col_or_span == col) or (col_or_span == c)
+        if (left_or_right == left) or (left_or_right == l)
+            margin-left (((numerator/denominator)*100) + (g))%
+        if (left_or_right == right) or (left_or_right == r)
+            margin-right (((numerator/denominator)*100) + (g))%
+    if (col_or_span == span) or (col_or_span == s)
+        if (left_or_right == left) or (left_or_right == l)
+            margin-left ((numerator/denominator)*100)%
+        if (left_or_right == right) or (left_or_right == r)
+            margin-right ((numerator/denominator)*100)%
+
+get(numerator = 1, denominator = 1, col_or_span = column)
+    if (col_or_span == span) or (col_or_span == s)
+        return ((numerator/denominator)*100)%
+    if (col_or_span == column) or (col_or_span == col) or (col_or_span == c)
+        return (((numerator/denominator)*100) - (g*2))%
+
+bp(w = 705px, mobile_first = false)
+    if (mobile_first == mf || mobile_first == true)
+        unquote("@media all and (min-width: " + w + ") {")
+    else
+        unquote("@media all and (max-width: " + w + ") {")
+endbp()
+    unquote("}")
+
+stack(align = center)
+    display block
+    width 100%
+    margin-left auto !important
+    margin-right auto !important
+    margin-bottom (g * 3)%
+    if (align == center) or (align == c)
+        text-align center
+    if (align == l) or (align == l)
+        text-align left
+    if (align == r) or (align == r)
+        text-align right
+
+edit()
+    body *
+        transition 200ms ease all
+        background rgba(#000, .15)
+
+pxfix() // http://stackoverflow.com/a/12371926/1242079
+    float none
+    overflow hidden
+    width auto
+
+clickable($bg,$bg2=0,$colour=0,$colour2=0)
+    cursor pointer
+    background-color $bg
+    if $colour != 0
+        color $colour
+        a
+            color $colour
+    &:hover
+        if $bg2 == 0
+            background-color $bg
+        else
+            background-color $bg2
+        if $colour2 != 0
+            color $colour2
+            a
+                color $colour2
+    &.active
+        if $bg2 == 0
+            background-color $bg
+        else
+            background-color $bg2
+        if $colour2 != 0
+            color $colour2
+            a
+                color $colour2
+
+ellipsis($font-size=0,$line-height=0,$numlines=0)
+    position relative
+    display block
+    display -webkit-box
+    -webkit-box-orient vertical
+    overflow hidden
+    if $font-size!=0 && $line-height!=0 && $numlines!=0
+        font-size $font-size
+        line-height $line-height
+        height $font-size*$line-height*$numlines
+        -webkit-line-clamp $numlines
+        // &:after
+        //     position absolute
+        //     bottom 0
+        //     left 0
+        //     content '\2026'
+    else
+        text-overflow ellipsis
+        white-space nowrap
+    
+
+// Init setup
+*
+    vendor(box-sizing, border-box)
+    margin 0
+    padding 0
+    outline none
+    // -webkit-touch-callout: none;
+    // -webkit-user-select: none;
+    // -khtml-user-select: none;
+    // -moz-user-select: none;
+    // -ms-user-select: none;
+    // user-select: none;
+
+html
+    font-size 62.5%
+
+html
+body
+    height 100%
+
+body
+    font-size 1.5rem
+
+ul
+    list-style-type none
+
+table
+    border none !important
+    border-collapse collapse
+    th
+    tr
+    td
+        border none
+        padding 0
+    tr
+        border-bottom 1px solid $silver
+
+h1
+h2
+h3
+h4
+    margin 0
+    line-height 1.2em
+    color $baseColour
+
+h1
+    font-size 4.7rem
+
+h2
+    font-size 2.8rem
+
+// Image whitespace fix
+img
+    display block
+
+.hidden
+    display none
