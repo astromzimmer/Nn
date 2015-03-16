@@ -87,6 +87,7 @@ bower_components
 *.sql
 *.sqlite
 *.sqlite3
+src/frontend/
 public/js
 public/css
 public/imgs

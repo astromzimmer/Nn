@@ -1,5 +1,16 @@
 {
+    "name": "az/nn",
+    "description": "A CMS.",
+    "license": "aLICENSE",
+    "authors": [
+        {
+            "name": "Anthon Astrom",
+            "email": "anthon@astromzimmer.com",
+            "homepage": "http://astromzimmer.com"
+        }
+    ],
     "require": {
+        "php": ">=5.4",
         "facebook/php-sdk-v4": "~4.0",
         "phpmailer/phpmailer": "~5.2",
         "ruudk/twitter-oauth": "~1.0",

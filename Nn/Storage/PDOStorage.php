@@ -7,7 +7,7 @@ use PDO;
 
 class PDOStorage implements StorageInterface {
 
-	private $BACKUP_PATH;
+	private $backup_path;
 	private $dbc;
 	private $schemify = array(
 			'short_text' => 'VARCHAR(128)',
@@ -19,11 +19,14 @@ class PDOStorage implements StorageInterface {
 		);
 
 	public function __construct() {
-		$this->BACKUP_PATH = ROOT.DS.'db';
+		$this->backup_path = ROOT.DS.'db';
+		if(!is_dir($this->backup_path)) {
+			mkdir($this->backup_path);
+		}
 		switch(strtolower(DB_TYPE)) {
 			case "sqlite" :
 				try {
-					$this->dbc = new PDO('sqlite:'.$this->BACKUP_PATH.DS.'database.sqlite3');
+					$this->dbc = new PDO('sqlite:'.$this->backup_path.DS.'database.sqlite3');
 					$this->dbc->setAttribute(
 							PDO::ATTR_ERRMODE,
 							PDO::ERRMODE_EXCEPTION
@@ -341,7 +344,7 @@ class PDOStorage implements StorageInterface {
 				break;
 
 			case 'sqlite':
-				return copy($this->BACKUP_PATH.DS.'database.sqlite3',$this->BACKUP_PATH.DS.$filename.'.sqlite3');
+				return copy($this->backup_path.DS.'database.sqlite3',$this->backup_path.DS.$filename.'.sqlite3');
 				break;
 			
 			default:
@@ -356,11 +359,11 @@ class PDOStorage implements StorageInterface {
 		$numtypes = array('tinyint','smallint','mediumint','int','bigint','float','double','decimal','real');
 
 		if($compression) {
-			$path = $this->BACKUP_PATH.DS.$filename.'.sql.gz';
+			$path = $this->backup_path.DS.$filename.'.sql.gz';
 			if(file_exists($path)) unlink($path);
 			$zp = gzopen($path,'a9');
 		} else {
-			$path = $this->BACKUP_PATH.DS.$filename.'.sql';
+			$path = $this->backup_path.DS.$filename.'.sql';
 			if(file_exists($path)) unlink($path);
 			$handle = fopen($path,'a+');
 		}

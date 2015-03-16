@@ -29,7 +29,6 @@ class User extends Nn\Core\DataModel {
 			$this->last_name = $last_name;
 			$this->email = $email;
 			$this->password = password_hash(static::$hashbrown.$password,PASSWORD_BCRYPT);
-			echo $this->password;
 			$this->role_id = $role_id;
 			return $this;
 		} else {

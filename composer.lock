@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "93c2c17b8dfb40a9492455fe1e3a906b",
+    "hash": "ed183e6ee0b6d00aa3f4ae20281e77f9",
     "packages": [
         {
             "name": "facebook/php-sdk-v4",
