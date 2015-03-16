@@ -18,7 +18,8 @@
     "jquery.cookie": "~1.4.1",
     "ace-builds": "~1.1.8",
     "jquery-ui": "~1.11.4",
-    "aMD": "https://github.com/anthon/aMD.git"
+    "aMD": "https://github.com/anthon/aMD.git",
+    "retinaFix": "https://github.com/anthon/retinaFix.git"
   },
   "overrides": {
     "ace-builds": {
