@@ -3,8 +3,6 @@
 namespace Nn\Core;
 use Nn;
 
-require_once ROOT.DS.'vendor'.DS.'PHPMailer'.DS.'PHPMailerAutoload.php';
-
 class Mailer extends \PHPMailer {
 	
 	private $priority = 3;

@@ -72,6 +72,15 @@ class Utils {
 		return $plural;
 	}
 
+	public static function singularise($plural) {
+		if(substr($plural, -3) == 'ies') {
+			$plural = rtrim($plural, 'ies') . 'y';
+		} elseif(substr($plural, -1) == 's') {
+			$plural = rtrim($plural, 's');
+		}
+		return $plural;
+	}
+
 	public static function formattedDate($ts=null) {
 		$timestamp = (isset($ts)) ? $ts : time();
 		return strftime(DATE_FORMAT,$timestamp);
@@ -108,6 +117,10 @@ class Utils {
 
 	public static function getSubclassesOf($class,$short=false) {
 		$result = array();
+		# Make sure all modules are loaded
+		foreach(glob(ROOT.DS.'Nn'.DS.'Modules'.DS.'*'.DS.'*.php') as $file) {
+			include_once $file;
+		}
 		foreach(get_declared_classes() as $subclass) {
 			if(is_subclass_of($subclass, $class)) {
 				if($short) $subclass = static::getShortClassName($subclass);

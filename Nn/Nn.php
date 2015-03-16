@@ -1,8 +1,8 @@
 <?php
 
-use Nn\Models\Setting as Setting;
-use Nn\Models\User as User;
-use Nn\Models\Role as Role;
+use Nn\Modules\Setting\Setting as Setting;
+use Nn\Modules\User\User as User;
+use Nn\Modules\User\Role as Role;
 
 class Nn extends Nn\Core\Singleton {
 
@@ -31,8 +31,9 @@ class Nn extends Nn\Core\Singleton {
 			ini_set('display_startup_errors','On');
 			ini_set('display_errors','On');
 			ini_set('html_errors','On');
-			ini_set('log_errors','On');
-			ini_set('error_log',ROOT.DS.'logs'.DS.'development.log');
+			# Disabling dev log for now.
+			ini_set('log_errors','Off');
+			// ini_set('error_log',ROOT.DS.'logs'.DS.'development.log');
 		} else {
 			ini_set('display_startup_errors','Off');
 			ini_set('display_errors','Off');
@@ -87,12 +88,16 @@ class Nn extends Nn\Core\Singleton {
 		if($lang = self::instance()->settings('LANGUAGE')) self::instance()->setLanguage($lang);
 
 		# Check for user, and if not, create admin/admin:super
-		$root = User::find();
-		if(!$root) {
-			$super = new Role('Super');
-			$super->save();
-			$root = new User('John', 'Doe', 'admin@'.str_replace('http://','',Nn::settings('DOMAIN')), 'admin', $super->attr('id'));
-			$root->save();
+		$admin = User::find();
+		if(!$admin) {
+			$super_role = new Role('Admins');
+			$super_role->save();
+			$admin = new User('Jane', 'Doe', 'admin@'.str_replace('http://','',Nn::settings('DOMAIN')), 'password', $super_role->attr('id'));
+			$admin->save();
+			$editor_role = new Role('Editors');
+			$editor_role->save();
+			$editor = new User('John', 'Doe', 'editor@'.str_replace('http://','',Nn::settings('DOMAIN')), 'password', $editor_role->attr('id'));
+			$editor->save();
 		}
 	}
 
@@ -200,8 +205,8 @@ class Nn extends Nn\Core\Singleton {
 		return self::instance()->minify;
 	}
 
-	public static function partial($template="", $vars=array()){
-		new Nn\Core\Partial($template, $vars);
+	public static function partial($module,$template="",$vars=array()){
+		new Nn\Core\Partial($module,$template,$vars);
 	}
 
 }

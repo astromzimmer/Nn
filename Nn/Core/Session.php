@@ -1,7 +1,7 @@
 <?php
 
 namespace Nn\Core;
-use Nn\Models\User as User;
+use Nn\Modules\User\User as User;
 use Nn;
 
 class Session {
@@ -12,7 +12,7 @@ class Session {
 	private $referer;
 	
 	function __construct(){
-		if(!@session_start()) {
+		if(!session_start()) {
 			session_regenerate_id(true);
 			session_start();
 		}
@@ -79,6 +79,7 @@ class Session {
 			$this->user_id = $_SESSION['user_id'];
 			$this->logged_in = true;
 		} else {
+			unset($_SESSION['user_id']);
 			unset($this->user_id);
 			$this->logged_in = false;
 		}

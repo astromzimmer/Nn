@@ -2,10 +2,11 @@
 
 namespace Nn\Core;
 use \Nn;
+use \Utils;
 
 class Controller extends Basic {
 
-	protected $_template_dir;
+	protected $_module;
 	protected $_action;
 	protected $_template;
 	protected $_cache_id;
@@ -19,15 +20,15 @@ class Controller extends Basic {
 		$this->_action = $action;
 		$class_name_array = explode('\\',get_called_class());
 		$controller_name = end($class_name_array);
-		$this->_template_dir = strtoLower(str_replace('Controller', '', $controller_name));
+		$this->_module = Utils::singularise(str_replace('Controller', '', $controller_name));
 		$this->render = 1;
 		# Here there should be some validation – take AJAX responses, for example
-		$this->_template = new Template($this->_template_dir,$this->_action);
-		$this->_cache_id = 'RENDER-'.$this->_template_dir.'_'.$this->_action;
+		$this->_template = new Template($this->_module,$this->_action);
+		$this->_cache_id = 'RENDER-'.$this->_module.'_'.$this->_action;
 	}
 	
-	function setTemplate($dir=null,$file=null) {
-		$this->_template->setFile($dir,$file);
+	function setTemplate($module=null,$file=null) {
+		$this->_template->setFile($module,$file);
 	}
 
 	function setTemplateVars($vars=array()) {
@@ -36,12 +37,16 @@ class Controller extends Basic {
 		}
 	}
 	
-	function renderMode($m,$ct=null) {
-		$mode = strtolower($m);
-		$content_type = $ct;
-		$this->render = 1;
-		$this->_template = new Template($this->_template_dir,$this->_action);
-		$this->_template->render_as($mode,$content_type);
+	function renderMode($m=null,$ct=null) {
+		if(isset($m) && $m) {
+			$mode = strtolower($m);
+			$content_type = $ct;
+			$this->render = 1;
+			$this->_template = new Template($this->_module,$this->_action);
+			$this->_template->render_as($mode,$content_type);
+		} else {
+			$this->render = 0;
+		}
 	}
 	
 	function cache($actions) {

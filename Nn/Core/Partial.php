@@ -7,22 +7,22 @@ class Partial extends Basic {
 
 	protected $vars = array();
 	
-	function __construct($path="", $vars=array()) {
+	function __construct($module="",$path="",$vars=array()) {
 		foreach($vars as $key=>$val) {
 			$this->set($key, $val);
 		}
-		$this->render($path);
+		$this->render($module,$path);
 	}
 	
 	private function set($name, $value) {
 		$this->vars[$name] = $value;
 	}
 	
-	private function render($path="") {
+	private function render($module,$path) {
 		extract($this->vars);
 		$template = Utils::fileExists([
-				ROOT.DS.'App'.DS.'Views'.DS.$path.'.php',
-				ROOT.DS.'Nn'.DS.'Views'.DS.$path.'.php'
+				ROOT.DS.'App'.DS.$module.DS.'views'.DS.$path.'.php',
+				ROOT.DS.'Nn'.DS.'Modules'.DS.$module.DS.'views'.DS.$path.'.php'
 			]);
 		if($template) {
 			include $template;

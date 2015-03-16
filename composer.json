@@ -1,0 +1,16 @@
+{
+    "require": {
+        "facebook/php-sdk-v4": "~4.0",
+        "phpmailer/phpmailer": "~5.2",
+        "ruudk/twitter-oauth": "~1.0",
+        "pagon/jade": "~1.0",
+        "ircmaxell/password-compat": "~1.0"
+    },
+
+    "autoload": {
+    	"psr-4": {
+    		"Nn\\": "Nn",
+            "App\\": "App"
+    	}
+    }
+}

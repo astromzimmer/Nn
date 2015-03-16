@@ -23,7 +23,7 @@ class PDOStorage implements StorageInterface {
 		switch(strtolower(DB_TYPE)) {
 			case "sqlite" :
 				try {
-					$this->dbc = new PDO('sqlite:'.$this->BACKUP_PATH.DS.'database.sqlite');
+					$this->dbc = new PDO('sqlite:'.$this->BACKUP_PATH.DS.'database.sqlite3');
 					$this->dbc->setAttribute(
 							PDO::ATTR_ERRMODE,
 							PDO::ERRMODE_EXCEPTION
@@ -341,7 +341,7 @@ class PDOStorage implements StorageInterface {
 				break;
 
 			case 'sqlite':
-				return copy($this->BACKUP_PATH.DS.'database.sqlite',$this->BACKUP_PATH.DS.$filename.'.sqlite');
+				return copy($this->BACKUP_PATH.DS.'database.sqlite3',$this->BACKUP_PATH.DS.$filename.'.sqlite3');
 				break;
 			
 			default:

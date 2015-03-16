@@ -20,6 +20,7 @@ class Router {
 
 	private $default_controller;
 	private $default_action;
+	private $module;
 	private $controller;
 	private $action;
 	private $routes;
@@ -88,26 +89,29 @@ class Router {
 	}
 
 	private function probeController($target_path=null) {
+		$this->module = Utils::singularise(ucwords($this->default_controller));
 		$this->controller = ucwords($this->default_controller).'Controller';
 		$this->action = $this->default_action;
 		$query = array();
 		if(isset($target_path)) {
 			$target_path_array = explode("/", $target_path);
-			$potential_controller_name = ucwords(array_shift($target_path_array)).'Controller';
+			$plural = ucwords(array_shift($target_path_array));
+			$this->module = Utils::singularise($plural);
+			$potential_controller_name = $plural.'Controller';
 			$this->controller = $potential_controller_name;
 			$potential_action = array_shift($target_path_array);
 			if(!empty($potential_action)) $this->action = $potential_action;
 			$query = $target_path_array;
 		}
-		if(file_exists(ROOT.DS.'App'.DS.'Controllers'.DS.$this->controller.'.php')) {
-			$controllerClass = 'App\\Controllers\\'.$this->controller;
-		} elseif(file_exists(ROOT.DS.'Nn'.DS.'Controllers'.DS.$this->controller.'.php')) {
-			$controllerClass = 'Nn\\Controllers\\'.$this->controller;
+		if(file_exists(ROOT.DS.'App'.DS.$this->module.DS.$this->controller.'.php')) {
+			$controllerClass = 'App\\'.$this->module.'\\'.$this->controller;
+		} elseif(file_exists(ROOT.DS.'Nn'.DS.'Modules'.DS.$this->module.DS.$this->controller.'.php')) {
+			$controllerClass = 'Nn\\Modules\\'.$this->module.'\\'.$this->controller;
 		} else {
-			$controllerClass = 'Nn\\Controllers\\DefaultController';
+			$controllerClass = 'Nn\\Modules\\'.$this->module.'\\DefController';
 			$this->action = 'notFound';
 		}
-		if($this->controller == 'PublicController' || $this->controller == 'APIController') {
+		if($this->controller == 'PublikController' || $this->controller == 'APIController') {
 			Nn::settings('HIDE_INVISIBLE',true);
 			# Best place for tracker?
 			Nn::track();
