@@ -158,10 +158,10 @@ $(document).ready ->
 				$("#optionsContainer").html response
 
 	$("textarea.md").aMD
-		imgPath: "/imgs/static/aMD"
+		imgPath: "/backnn/imgs/static/aMD"
 		extStyles: [
-			"/css/fonts.css"
-			"/css/editor.css"
+			"/backnn/css/fonts.css"
+			"/backnn/css/editor.css"
 		]
 		icons: true
 

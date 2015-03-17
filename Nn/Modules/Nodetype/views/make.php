@@ -27,7 +27,7 @@
 			  <?php endif; ?>
 			  <br/>
 			  <div class="submit">
-			    <button type="submit" name="submit" id="submit"><?php echo Nn::babel('save') ?></button>  
+			    <button type="submit" name="submit" id="submit" class="half"><?php echo Nn::babel('save') ?></button>  
 			  </div>
 			</form>
 		</div>

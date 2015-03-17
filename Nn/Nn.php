@@ -206,7 +206,7 @@ class Nn extends Nn\Core\Singleton {
 	}
 
 	public static function partial($module,$template="",$vars=array()){
-		new Nn\Core\Partial($module,$template,$vars);
+		Nn\Core\Template::partial($module,$template,$vars);
 	}
 
 }

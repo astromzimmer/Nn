@@ -3,7 +3,7 @@
 namespace Nn\Modules\Document;
 use Utils;
 
-class Document extends \Nn\Core\Datatype {
+class Document extends Nn\Modules\Datatype\Datatype {
 
 	protected $title;
 	protected $description;

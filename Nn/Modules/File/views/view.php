@@ -1,8 +1,5 @@
 <div id="left">
-	<div class="shifted">
-		<?php Nn::partial('files'.DS.'_menu') ?>
-	</div>
-	<?php Nn::partial('files'.DS.'_tree',array('files'=>$files)); ?>
+	<?php Nn::partial('file','_tree',array('files'=>$files)); ?>
 </div>
 <div id="right">
 	<div id="admin_file" class="manage admin_area">

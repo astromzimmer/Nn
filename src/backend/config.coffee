@@ -11,8 +11,8 @@ exports.config =
 	files:
 		javascripts:
 			joinTo:
-				'backnn/js/vendor.js': /^bower_components/
-				'backnn/js/main.js': /^app\/scripts/
+				'js/vendor.js': /^bower_components/
+				'js/main.js': /^app\/scripts/
 			order:
 				after: [
 					'app/scripts/main.coffee'
@@ -20,13 +20,13 @@ exports.config =
 
 		stylesheets:
 			joinTo:
-				'backnn/css/main.css': /^(bower_components|app\/styles)/
+				'css/main.css': /^(bower_components|app\/styles)/
 
 		templates:
 			joinTo: 'js/dontUseMe'
 
 	paths:
-		public: '../../public'
+		public: '../../public/backnn'
 
 	sourceMaps: false
 

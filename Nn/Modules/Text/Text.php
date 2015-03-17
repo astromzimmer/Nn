@@ -3,7 +3,7 @@
 namespace Nn\Modules\Text;
 use Nn;
 
-class Text extends Nn\Core\Datatype {
+class Text extends Nn\Modules\Datatype\Datatype {
 	
 	protected $content;
 	protected $markup;

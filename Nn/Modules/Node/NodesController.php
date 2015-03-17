@@ -96,6 +96,14 @@ class NodesController extends Nn\Core\Controller {
 		} else {
 			$node = new Node();
 		}
+		$parent_id = $node->attr('parent_id');
+		if(isset($parent_id) && $parent_id > 0) {
+			$parent = Node::find($parent_id);
+			$nodetypes = $parent->nodetype()->nodetypes();
+		} else {
+			$parent_id = 0;
+			$nodetypes = Nodetype::find_all();
+		}
 		$parents = Node::find(array('-id'=>$node->attr('id')));
 		$this->setTemplateVars([
 				'node'=> $node,

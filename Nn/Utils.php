@@ -377,8 +377,8 @@ class Utils {
 
 	public static function UIIcon($type=null) {
 		$basename = str_replace(" ","_",strtolower($type));
-		$base_path = ROOT.DS.'public'.DS.'imgs'.DS.'static'.DS.'ui'.DS.$basename;
-		$base_uri = DOMAIN.'/imgs/static/ui/'.$basename;
+		$base_path = ROOT.DS.'public'.DS.'backnn'.DS.'imgs'.DS.'static'.DS.'ui'.DS.$basename;
+		$base_uri = DOMAIN.'/backnn/imgs/static/ui/'.$basename;
 		if(file_exists($base_path.'.svg')) {
 			$src = $base_uri.'.svg';
 			return '<img src="'.$src.'" alt="'.$type.'" />';

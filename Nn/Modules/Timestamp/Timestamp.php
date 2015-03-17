@@ -3,7 +3,7 @@
 namespace Nn\Modules\Timestamp;
 use Nn;
 
-class Timestamp extends Nn\Core\Datatype {
+class Timestamp extends Nn\Modules\Datatype\Datatype {
 	
 	public $id;
 	public $timestamp;

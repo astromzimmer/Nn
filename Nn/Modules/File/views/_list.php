@@ -14,7 +14,7 @@
 	</div>
 	<ul id="<?php echo $key ?>_files" class="submenu sortable">
 		<?php foreach($file as $k => $f) : ?>
-			<?php Nn::partial('files'.DS.'_list',array('key'=>$k,'file'=>$f)); ?>
+			<?php Nn::partial('file','_list',array('key'=>$k,'file'=>$f)); ?>
 		<?php endforeach; ?>
 	</ul>
 </li>

@@ -22,20 +22,20 @@ class Template extends Basic {
 		$this->_action = $action;
 	}
 	
-	function set($name, $value) {
+	public function set($name, $value) {
 		$this->vars[$name] = $value;
 	}
 
-	function setFile($dir=null,$file=null) {
+	public function setFile($dir=null,$file=null) {
 		if(isset($dir)) $this->_dir = $dir;
 		if(isset($file)) $this->_action = $file;
 	}
 
-	function content_type($ct) {
+	public function content_type($ct) {
 		$this->content_type = $ct;
 	}
 	
-	function render_as($mode,$ct=null) {
+	public function render_as($mode,$ct=null) {
 		if(isset($ct)) {
 			$this->content_type = $ct;
 		} else {
@@ -111,7 +111,7 @@ class Template extends Basic {
 		}
 	}
 	
-	function render() {
+	public function render() {
 		header('Content-Type: '.$this->content_type);
 		switch($this->render_as) {
 			case 'partial':
@@ -127,6 +127,24 @@ class Template extends Basic {
 				$this->renderHeader();
 				$this->renderTemplate($this->_dir.DS.$this->_action);
 				$this->renderFooter();
+		}
+	}
+
+	public static function partial($module=null,$path=null,$vars=array()) {
+		if(is_array($path) || !isset($path)) {
+			if(is_array($path)) {
+				$vars = $path;
+			}
+			$path = $module;
+			$module = null;
+		}
+		$template = (!isset($module)) ? $path : Utils::fileExists([
+				ROOT.DS.'App'.DS.$module.DS.'views'.DS.$path.'.php',
+				ROOT.DS.'Nn'.DS.'Modules'.DS.$module.DS.'views'.DS.$path.'.php'
+			]);
+		if($template) {
+			extract($vars);
+			include $template;
 		}
 	}
 

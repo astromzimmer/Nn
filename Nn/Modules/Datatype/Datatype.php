@@ -1,10 +1,12 @@
 <?php
 
-namespace Nn\Core;
+namespace Nn\Modules\Datatype;
+use Nn\Modules\Attribute\Attribute as Attribute;
+use Nn\Modules\Attributetype\Attributetype as Attributetype;
 use Nn;
 use Utils;
 
-class Datatype extends DataModel {
+class Datatype extends Nn\Core\DataModel {
 
 	public function attributetype() {
 		if(!isset($this->attributetype)) {

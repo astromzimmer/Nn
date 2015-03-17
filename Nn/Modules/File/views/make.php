@@ -1,8 +1,5 @@
 <div id="left">
-	<div class="shifted">
-		<?php \Utils::partial('Admin'.DS.'views'.DS.'_menu') ?>
-	</div>
-	<?php \Utils::partial('Files'.DS.'views'.DS.'_tree',array('files'=>$files)); ?>
+	<?php Nn::partial('file','_tree',array('files'=>$files)); ?>
 </div>
 <div id="right">
 	<div class="manage">

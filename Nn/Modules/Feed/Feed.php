@@ -10,7 +10,7 @@ use Facebook\FacebookRequest as FacebookRequest;
 use Facebook\GraphUser as GraphUser;
 use Facebook\FacebookRequestException as FacebookRequestException;
 
-class Feed extends Nn\Core\Datatype {
+class Feed extends Nn\Modules\Datatype\Datatype {
 	
 	protected $handle;
 	protected $hashtag;

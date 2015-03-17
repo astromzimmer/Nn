@@ -1,6 +1,8 @@
 <?php
 
 namespace Nn\Modules\Attribute;
+use Nn\Modules\Node\Node as Node;
+use Nn\Modules\Attributetype\Attributetype as Attributetype;
 use Nn;
 use Utils;
 
@@ -41,11 +43,11 @@ class Attribute extends \Nn\Core\DataModel {
 	
 	public function public_view() {
 		$partial_suggestion = $this->datatype().DS.'views'.DS."_".str_replace(" ","_",strtolower($this->attributetype()->attr('name')));
-		$suggestion_exists = Utils::fileExists([
+		$partial = Utils::fileExists([
 				ROOT.DS.'App'.DS.$partial_suggestion.'.php',
-				ROOT.DS.'Nn'.DS.'Modules'.DS.$partial_suggestion.'.php'
+				ROOT.DS.'Nn'.DS.'Modules'.DS.$partial_suggestion.'.php',
+				ROOT.DS.'Nn'.DS.'Modules'.DS.$this->datatype().DS.'views'.DS.'_view'.'.php'
 			]);
-		$partial = $suggestion_exists ? $partial_suggestion : Utils::plurify(strtolower($this->datatype())).DS."_view";
 		return $partial;
 	}
 	
@@ -55,7 +57,7 @@ class Attribute extends \Nn\Core\DataModel {
 	
 	public function data() {
 		$datatype = $this->datatype();
-		$datatype_class = 'Nn\Models\\'.$datatype;
+		$datatype_class = 'Nn\\Modules\\'.$datatype.'\\'.$datatype;
 		$data_id = $this->data_id;
 		$data = $datatype_class::find($data_id);
 		return $data;

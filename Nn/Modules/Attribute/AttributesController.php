@@ -1,11 +1,10 @@
 <?php
 
-namespace Nn\Modules\Controllers;
-use Attribute;
+namespace Nn\Modules\Attribute;
 use Nn;
 use Utils;
 
-class AttributesController extends \Nn\Core\Controller {
+class AttributesController extends Nn\Core\Controller {
 	
 	function before() {
 		Nn::authenticate();

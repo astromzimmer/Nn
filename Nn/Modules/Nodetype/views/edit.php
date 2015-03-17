@@ -22,7 +22,7 @@
 				<?php endforeach; ?>
 			  </fieldset>
 			  <div class="submit">
-			    <button type="submit" name="submit" id="submit"><?php echo Nn::babel('Save') ?></button>  
+			    <button type="submit" name="submit" id="submit" class="half"><?php echo Nn::babel('Save') ?></button>  
 			  </div>
 			</form>
 			<div class="tools">

@@ -31,8 +31,8 @@
 					</select>
 				</fieldset>
 				<div class="submit">
-					<a href="<?php echo DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node->attr('id') ?>" class="cancel button"><?php echo Nn::babel('Cancel') ?></a>
-					<button type="submit" name="submit" id="submit" class="save"><?php echo Nn::babel('Save') ?></button>
+					<a href="<?php echo DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node->attr('id') ?>" class="cancel button half float"><?php echo Nn::babel('Cancel') ?></a>
+					<button type="submit" name="submit" id="submit" class="float half save"><?php echo Nn::babel('Save') ?></button>
 				</div>
 			</form>
 		</div>
