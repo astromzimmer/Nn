@@ -9,9 +9,9 @@
 
     <?php
       $style_files = [
-        'css/backnn.css'
+        'backnn/css/main.css'
       ];
-      echo Nn::minify()->cssTags($style_files,'concat_admin.css');
+      echo Nn::minify()->cssTags($style_files,'concat_backnn.css');
     ?>
 	
 	<base href="<?php echo DOMAIN; ?>"></base>

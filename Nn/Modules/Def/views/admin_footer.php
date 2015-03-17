@@ -5,8 +5,8 @@
 
 	<?php
 		$js_files = [
-			'js/backnn-vendor.js',
-			'js/backnn.js'
+			'backnn/js/vendor.js',
+			'backnn/js/main.js'
 		];
 		echo Nn::minify()->jsTags($js_files,'concat_admin.js');
 	?>

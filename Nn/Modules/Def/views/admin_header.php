@@ -16,7 +16,7 @@
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,700,900|Average|Muli:300,400' rel='stylesheet' type='text/css'>
     <?php
       $style_files = [
-        'css/backnn.css'
+        'backnn/css/backnn.css'
       ];
       echo Nn::minify()->cssTags($style_files,'concat_backnn.css');
     ?>
