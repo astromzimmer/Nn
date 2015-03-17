@@ -2,6 +2,7 @@
 
 namespace Nn\Modules\Document;
 use Utils;
+use Nn;
 
 class Document extends Nn\Modules\Datatype\Datatype {
 
