@@ -18,8 +18,8 @@
 			    </select>
 			  </fieldset>
 			  <div class="submit">
-			    <button type="submit" name="submit" id="submit" class="half"><?php echo Nn::babel('Save') ?></button>
-			    <a href="<?php echo DOMAIN,DS,'admin',DS,'attributetypes',DS,'delete',DS,$attributetype->attr('id') ?>" class="delete button half"><?php echo Nn::babel('Delete') ?></a>
+			  <a href="<?php echo DOMAIN,DS,'admin',DS,'attributetypes',DS,'delete',DS,$attributetype->attr('id') ?>" class="delete button half float"><?php echo Nn::babel('Delete') ?></a>
+			    <button type="submit" name="submit" id="submit" class="half float"><?php echo Nn::babel('Save') ?></button>
 			  </div>
 			</form>
 		</div>
