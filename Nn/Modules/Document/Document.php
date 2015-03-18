@@ -1,6 +1,7 @@
 <?php
 
 namespace Nn\Modules\Document;
+use Nn;
 use Utils;
 use Nn;
 

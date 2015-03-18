@@ -3,6 +3,7 @@
 namespace Nn\Modules\Node;
 use Nn\Modules\Nodetype\Nodetype as Nodetype;
 use Nn\Modules\Attribute\Attribute as Attribute;
+use Nn\Modules\Attributetype\Attributetype as Attributetype;
 use Nn;
 use Utils;
 
