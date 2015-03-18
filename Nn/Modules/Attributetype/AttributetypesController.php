@@ -54,7 +54,7 @@ class AttributetypesController extends Nn\Core\Controller {
 		}
 		$this->setTemplateVars([
 				'attributetypes'=> Attributetype::find_all(null,'position'),
-				'datatypes'=> Utils::getSubclassesOf('Nn\Datatype\Datatype',true)
+				'datatypes'=> Utils::getSubclassesOf('Nn\Modules\Datatype\Datatype',true)
 			]);
 	}
 	
