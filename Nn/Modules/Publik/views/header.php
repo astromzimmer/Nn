@@ -16,15 +16,9 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <?php
       $files = [
-        'css/public.css'
+        'css/main.css'
       ];
       echo Minify::cssTags($files,'concat_public.css');
-    ?>
-    <?php
-      $js_files = [
-        'js/public-head.js'
-      ];
-      echo Nn::minify()->jsTags($js_files,'concat_public_head.js');
     ?>
   </head>
 
