@@ -1,6 +1,7 @@
 <?php
 
 namespace Nn\Core;
+use Nn;
 use Utils;
 use Everzet\Jade\Jade,
 	Everzet\Jade\Dumper\PHPDumper,
@@ -15,7 +16,6 @@ class Template extends Basic {
 	protected $_action;
 	protected $render_as = "default";
 	protected $content_type = 'text/html';
-	protected $jade;
 	
 	function __construct($module,$action) {
 		$this->_dir = $module.DS.'views';
@@ -68,18 +68,16 @@ class Template extends Basic {
 		return Utils::fileExists($possibilities);
 	}
 
-	private function output($path) {
+	private static function output($path,$vars=array()) {
 		if($path){
-			extract($this->vars);
+			extract($vars);
 			$extension = pathinfo($path,PATHINFO_EXTENSION);
 			if($extension == 'jade') {
-				if(!isset($this->jade)) {
-					$dumper = new PHPDumper();
-					$dumper->registerFilter('php',new PHPFilter());
-					$parser = new Parser(new Lexer());
-					$this->jade = new Jade($parser,$dumper);
-				}
-				$php_content = $this->jade->render($path);
+				$dumper = new PHPDumper();
+				$dumper->registerFilter('php',new PHPFilter());
+				$parser = new Parser(new Lexer());
+				$jade = new Jade($parser,$dumper);
+				$php_content = $jade->render($path);
 				$path = str_replace('.jade', '.php', $path);
 				file_put_contents($path, $php_content);
 			}
@@ -89,7 +87,7 @@ class Template extends Basic {
 
 	private function renderTemplate($extensionless_path) {
 		if($template = $this->getTemplatePath($extensionless_path)) {
-			$this->output($template);
+			$this->output($template,$this->vars);
 		} else {
 			Utils::redirect_to('/404.php');
 		}
@@ -97,17 +95,17 @@ class Template extends Basic {
 
 	private function renderHeader() {
 		if($header = $this->getTemplatePath($this->_dir.DS.'header')) {
-			$this->output($header);
+			$this->output($header,$this->vars);
 		} else {
-			$this->output($this->getTemplatePath('Def'.DS.'views'.DS.SESSION_HEADER));
+			$this->output($this->getTemplatePath('Def'.DS.'views'.DS.Nn::settings('SESSION_HEADER')),$this->vars);
 		}
 	}
 
 	private function renderFooter() {
 		if($footer = $this->getTemplatePath($this->_dir.DS.'footer')) {
-			$this->output($footer);
+			$this->output($footer,$this->vars);
 		} else {
-			$this->output($this->getTemplatePath('Def'.DS.'views'.DS.SESSION_FOOTER));
+			$this->output($this->getTemplatePath('Def'.DS.'views'.DS.Nn::settings('SESSION_FOOTER')),$this->vars);
 		}
 	}
 	
@@ -139,12 +137,13 @@ class Template extends Basic {
 			$module = null;
 		}
 		$template = (!isset($module)) ? $path : Utils::fileExists([
+				ROOT.DS.'App'.DS.$module.DS.'views'.DS.$path.'.jade',
 				ROOT.DS.'App'.DS.$module.DS.'views'.DS.$path.'.php',
+				ROOT.DS.'Nn'.DS.'Modules'.DS.$module.DS.'views'.DS.$path.'.jade',
 				ROOT.DS.'Nn'.DS.'Modules'.DS.$module.DS.'views'.DS.$path.'.php'
 			]);
 		if($template) {
-			extract($vars);
-			include $template;
+			self::output($template,$vars);
 		}
 	}
 

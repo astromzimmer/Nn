@@ -25,13 +25,13 @@ class Session {
 		
 		if($this->logged_in){
 //			if logged in stuff
-			define('SESSION_HEADER', 'admin_header');
-			define('SESSION_FOOTER', 'admin_footer');
+			Nn::settings('SESSION_HEADER', 'admin_header');
+			Nn::settings('SESSION_FOOTER', 'admin_footer');
 			Nn::settings('ADMIN_AREA', true);
 		} else {
 //			if not logged in stuff
-			define('SESSION_HEADER', 'header');
-			define('SESSION_FOOTER', 'footer');
+			Nn::settings('SESSION_HEADER', 'header');
+			Nn::settings('SESSION_FOOTER', 'footer');
 		}
 	}
 	

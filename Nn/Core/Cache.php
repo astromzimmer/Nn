@@ -1,6 +1,7 @@
 <?php
 
 	namespace Nn\Core;
+	use Nn;
 	
 	class Cache {
 	
@@ -14,7 +15,7 @@
 		}
 
 		private static function unlinkWithPrefix($prefix) {
-			$mask = CACHE_DIR.DS.$prefix.'*';
+			$mask = Nn::settings('CACHE_DIR').DS.$prefix.'*';
 			foreach(glob($mask) as $path) {
 				unlink($path);
 			}
@@ -25,12 +26,12 @@
 		}
 
 		public function filePath($id) {
-			return CACHE_DIR.DS.$id.'.cache';
+			return Nn::settings('CACHE_DIR').DS.$id.'.cache';
 		}
 		
 		public function set($id,$data) {
 			$file_path = $this->filePath($id);
-			if(!DEVELOPMENT_ENV){
+			if(!Nn::settings('DEVELOPMENT_ENV')){
 				if(file_exists($file_path)) {
 					unlink($file_path);
 				}
@@ -49,13 +50,13 @@
 		}
 		
 		public function valid($id) {
-			if(DEVELOPMENT_ENV){
+			if(Nn::settings('DEVELOPMENT_ENV')){
 				$valid = false;
 			} else {
 				$file_path = $this->filePath($id);
 				$valid = file_exists($file_path);
-				if(CACHE_EXPIRE) {
-					$valid = (bool)(time() - filemtime($file_path) <= CACHE_EXPIRE);
+				if(Nn::settings('CACHE_EXPIRE')) {
+					$valid = (bool)(time() - filemtime($file_path) <= Nn::settings('CACHE_EXPIRE'));
 				}
 			}
 			return $valid;

@@ -25,6 +25,8 @@ Nn::get('/admin\/images/','images');
 Nn::post('/admin\/images/','images');
 Nn::get('/admin\/texts/','texts');
 Nn::post('/admin\/texts/','texts');
+Nn::get('/admin\/partials/','partials');
+Nn::post('/admin\/partials/','partials');
 Nn::get('/admin\/feeds/','feeds');
 Nn::post('/admin\/feeds/','feeds');
 Nn::get('/admin\/forms/','forms');

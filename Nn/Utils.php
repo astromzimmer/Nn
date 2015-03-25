@@ -22,11 +22,9 @@ class Utils {
 		return false;
 	}
 		
-	public static function redirect_to($location = NULL){
-		if($location != NULL){
-			header("Location: {$location}");
-			exit;
-		}
+	public static function redirect_to($location){
+		header("Location: {$location}");
+		exit;
 	}
 
 	public static function sendResponseCode($code) {

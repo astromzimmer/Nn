@@ -13,9 +13,10 @@
 				<legend><?php echo Nn::babel('Datatype') ?></legend>
 			    <select name="datatype" class="formfield" id="datatypeField" />
 			    	<?php foreach($datatypes as $datatype): ?>
-				    	<option value="<?php echo $datatype; ?>"><?php echo $datatype ?></option>
+				    	<option value="<?php echo $datatype; ?>" data-url_param="<?php echo strtolower(Utils::plurify($datatype)) ?>"><?php echo $datatype ?></option>
 			    	<?php endforeach; ?>
 			    </select>
+			    <span id="optionsContainer"></span>
 			  </fieldset>
 			  <div class="submit">
 			    <button type="submit" name="submit" id="submit" class="half"><?php echo Nn::babel('Save') ?></button>  

@@ -75,6 +75,8 @@
 		'slug'			=> 'Slug',
 		'value'			=> 'Value',
 		'description'	=> 'Beschreibung',
+		'module'		=> 'Modul',
+		'path'			=> 'Pfad',
 
 		# placeholders
 		'type some notes regarding this setting and its options...' => 'type some notes regarding this setting and its options...',

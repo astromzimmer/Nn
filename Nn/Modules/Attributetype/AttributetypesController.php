@@ -59,7 +59,7 @@ class AttributetypesController extends Nn\Core\Controller {
 	}
 	
 	function create() {
-		$params = array_diff_key($_POST,array('name'=>null,'datatype'=>null,'submit'=>null));
+		$params = (isset($_POST['params'])) ? $_POST['params'] : null;
 		$attributetype = new Attributetype($_POST['name'],$_POST['datatype'],$params);
 		if($attributetype->save()) {
 			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'attributetypes');
@@ -87,7 +87,7 @@ class AttributetypesController extends Nn\Core\Controller {
 	}
 	
 	function update($id=null) {
-		$params = array_diff_key($_POST,array('name'=>null,'datatype'=>null,'submit'=>null));
+		$params = (isset($_POST['params'])) ? $_POST['params'] : null;
 		$attributetype = Attributetype::find($id);
 		$attributetype->fill($_POST['name'],$_POST['datatype'],$params);
 		if($attributetype->save()) {

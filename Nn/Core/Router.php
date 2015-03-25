@@ -124,7 +124,8 @@ class Router {
 			call_user_func_array(array($controller, $this->action), $query);
 			call_user_func_array(array($controller, 'after'), $query);
 		} else {
-			die("The action {$this->action} could not be found in class {$this->controller}.");
+			Utils::sendResponseCode(404);
+			// die("The action {$this->action} could not be found in class {$this->controller}.");
 		}
 	}
 

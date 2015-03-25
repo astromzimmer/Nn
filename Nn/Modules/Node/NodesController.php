@@ -29,9 +29,8 @@ class NodesController extends Nn\Core\Controller {
 		$dtype = false;
 		$atype = false;
 		if(isset($atype_name)) {
-			$attributetype = Attributetype::find(array('name'=>$atype_name),1);
-			$dtype = $attributetype->attr('datatype');
-			$atype = $attributetype;
+			$atype = Attributetype::find(array('name'=>$atype_name),1);
+			$dtype = $atype->attr('datatype');
 			$edit_attribute_id = (isset($edit_attribute_id)) ? $edit_attribute_id : false;
 		}
 		$this->setTemplateVars([

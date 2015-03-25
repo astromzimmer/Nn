@@ -33,7 +33,7 @@ class Attributetype extends Nn\Core\DataModel {
 		if(isset($name) && isset($datatype)){
 			$this->name = $name;
 			$this->datatype = $datatype;
-			$this->params = json_encode($params);
+			if(isset($params)) $this->params = json_encode($params);
 			return $this;
 		} else {
 			return false;
@@ -62,7 +62,7 @@ class Attributetype extends Nn\Core\DataModel {
 		if(!empty($name) && !empty($datatype)){
 			$this->name = $name;
 			$this->datatype = $datatype;
-			$this->params = json_encode($params);
+			if(isset($params)) $this->params = json_encode($params);
 			return $this;
 		} else {
 			return false;
