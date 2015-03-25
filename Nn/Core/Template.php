@@ -81,7 +81,7 @@ class Template extends Basic {
 				$path = str_replace('.jade', '.php', $path);
 				file_put_contents($path, $php_content);
 			}
-			require_once $path;
+			include $path;
 		}
 	}
 
@@ -143,6 +143,7 @@ class Template extends Basic {
 				ROOT.DS.'Nn'.DS.'Modules'.DS.$module.DS.'views'.DS.$path.'.php'
 			]);
 		if($template) {
+			extract($vars);
 			self::output($template,$vars);
 		}
 	}

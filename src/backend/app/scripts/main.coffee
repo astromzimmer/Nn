@@ -1,5 +1,10 @@
 $(document).ready ->
 
+	if document.domain is "localhost"
+		window.domain = $("base").attr("href")
+	else
+	  	window.domain = "http://" + document.domain
+
 	$document = $(document)
 	$left = $('#left')
 	$flash = $('#flash')
