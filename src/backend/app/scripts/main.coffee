@@ -1,6 +1,6 @@
 $(document).ready ->
 
-	if document.domain is "localhost"
+	if $("base")
 		window.domain = $("base").attr("href")
 	else
 	  	window.domain = "http://" + document.domain
@@ -35,7 +35,7 @@ $(document).ready ->
 		$branches = $('.tree li')
 		tree_type = $tree.attr 'id'
 		expanded_branches_raw = $.cookie('expanded_'+tree_type)
-		expanded_branches = if expanded_branches_raw then JSON.parse($.cookie('expanded_'+tree_type)) else []
+		expanded_branches = if expanded_branches_raw then JSON.parse(expanded_branches_raw) else []
 		# console.log $.cookie('expanded_'+tree_type)
 		$branches.each ()->
 			$this = $(this)
@@ -57,11 +57,24 @@ $(document).ready ->
 				$this = $(this)
 				if $this.hasClass('expanded')
 					expanded_branches.push $this.data('id')
-			$.cookie 'domain','.'+domain
-			$.cookie 'path','/'
+			$.cookie 'domain',domain
+			$.cookie 'path',window.location.pathname
 			$.cookie 'expanded_'+tree_type,JSON.stringify(expanded_branches)
 			# console.log $.cookie()
 			false
+
+	# Retrieve #left scroll position
+	left_scroll = parseInt($.cookie('left_scroll'))
+	$left[0].scrollTop = left_scroll
+
+	$left.on 'scroll', ->
+		$this = $(this)
+		clearTimeout $this.data('scrollTimer')
+		$this.data 'scrollTimer', setTimeout ->
+			$.cookie 'domain',domain
+			$.cookie 'path',window.location.pathname
+			$.cookie 'left_scroll',$this[0].scrollTop
+		,250
 
 	$("#left ul.sortable").sortable
 		connectWith: '#left ul.sortable'
