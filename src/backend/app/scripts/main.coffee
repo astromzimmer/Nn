@@ -45,7 +45,7 @@ $(document).ready ->
 			id = $this.data('id')
 			if id in expanded_branches
 				expandBranch $this,0
-				$left[0].scrollTop = left_scroll
+				$left[0].scrollTop = _left_scroll
 
 		$("ul li .expander").click ->
 			$this = $(this)
