@@ -3,10 +3,10 @@
 defined('DEVELOPMENT_ENV') ? null : define('DEVELOPMENT_ENV', true);
 
 // here goes your domain URL
-defined('DOMAIN') ? null : define("DOMAIN", "http://nn");
+defined('DOMAIN') ? null : define("DOMAIN", "http://kleio");
 
 // name of your site, which will be displayed in the browser title field
-defined('PAGE_NAME') ? null : define("PAGE_NAME", "Nn");
+defined('PAGE_NAME') ? null : define("PAGE_NAME", "Kleio – Art | App");
 
 // time and date format definitions
 defined('DATE_FORMAT') ? null : define("DATE_FORMAT", "%Y.%m.%d");
@@ -31,14 +31,14 @@ defined('SAFE_PUBLISHING') ? null : define('SAFE_PUBLISHING', false);
 
 // MAIL CONFIG
 // defined('SMTP_MODE') ? null : define("SMTP_MODE", true);
-// defined('SMTP_HOST') ? null : define("SMTP_HOST", "");
+// defined('SMTP_HOST') ? null : define("SMTP_HOST", "mail.anthon.se");
 // defined('SMTP_PORT') ? null : define("SMTP_PORT", "25");
-// defined('SMTP_USERNAME') ? null : define("SMTP_USERNAME", "");
-// defined('SMTP_PASSWORD') ? null : define("SMTP_PASSWORD", "");
+// defined('SMTP_USERNAME') ? null : define("SMTP_USERNAME", "everything@anthon.se");
+// defined('SMTP_PASSWORD') ? null : define("SMTP_PASSWORD", "mamma@39");
 // // enter the name you want your contact emails to be sent from
 // defined('FROM_NAME') ? null : define("FROM_NAME", PAGE_NAME." Mailer");
 // // enter the email address you want your contact emails to be sent from
-// defined('FROM_EMAIL') ? null : define("FROM_EMAIL", "");
+// defined('FROM_EMAIL') ? null : define("FROM_EMAIL", "everything@anthon.se");
 
 // DATABASE SETUP
 // SQLite

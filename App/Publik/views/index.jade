@@ -1,4 +1,44 @@
-#view
-	p Hello
-		span= $target
-	h1 I'm the superman
+- if($art_children = $art->children())
+	#art.roll
+		- foreach($art_children as $art_child):
+			.page(id={{$art_child->attr('id')}})
+				- foreach($art_child->attributes() as $attribute):
+					:php
+						|Nn::partial($attribute->public_view(),array(strtolower($attribute->datatype())=>$attribute->data()))
+
+- if($app_children = $app->children())
+	#app.roll
+		- foreach($app_children as $app_child):
+			.page(id={{$app_child->attr('id')}})
+				- if($slideshows = $app_child->children_by_type('Slideshow')):
+					- foreach($slideshows as $slideshow):
+						:php
+							|Nn::partial('Publik','_slideshow',array('slideshow'=>$slideshow))
+				- elseif($attributes = $app_child->attributes()):
+					- foreach($attributes as $attribute):
+						:php
+							|Nn::partial($attribute->public_view(),array(strtolower($attribute->datatype())=>$attribute->data()))
+
+#top
+	a.root.art(href="/art",data-state="art")
+		.word Art
+	a.root.app(href="/app",data-state="app")
+		.word App
+
+- if($art_children)
+	.left.menu
+		- foreach($art_children as $art_child):
+			.item
+				.btn(data-art-target="{{$art_child->attr('id')}}")= $art_child->title()
+
+- if($app_children)
+	.right.menu
+		- foreach($app_children as $app_child):
+			.item
+				.btn(data-app-target="{{$app_child->attr('id')}}")= $app_child->title()
+
+- if($logo)
+	#logo
+		a(href="{{DOMAIN}}",data-state="index")
+			:php
+				|echo $logo->data()->tag(124)

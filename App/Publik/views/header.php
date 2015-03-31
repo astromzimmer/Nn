@@ -9,15 +9,15 @@
   	
   	<!-- g.wm.tools verifier -->
 
-    <base target="_blank" />
+    <base href="<?php echo DOMAIN ?>" target="_self" />
 
     <title> <?php echo PAGE_NAME ?> </title>
 
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,700,900' rel='stylesheet' type='text/css'>
+    <link type="text/css" rel="stylesheet" href="http://fast.fonts.net/cssapi/64090cdd-7ac0-42e7-ab46-76a838c0dc87.css"/>
     <?php
       $platform = (Utils::is_mobile()) ? 'mobile' : 'desktop';
       $files = [
-        'css/public.css',
+        'css/main.css',
       ];
       echo Nn::minify()->cssTags($files,'concat_'.$platform.'.css');
     ?>
@@ -35,4 +35,4 @@
 
   </head>
 
-  <body id="body" class="">
+  <body id="body" class="<?php echo $root ?>">

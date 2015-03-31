@@ -15,12 +15,21 @@ class PublikController extends Nn\Core\Controller {
 		Nn::settings('HIDE_INVISIBLE',1);
 	}
 
-	function index($section=null) {
+	function index($root=null,$section=null) {
+		$assets = Node::find(['title'=>'Assets'],1);
+		$logo = $assets->attribute('Logo');
 		if(Utils::is_mobile()){
 			Utils::redirect_to('/mobile');
 		} else {
+			$art = Node::find(['title'=>'ART'],1);
+			$app = Node::find(['title'=>'APP'],1);
+			$root = (isset($root)) ? $root : '';
 			$this->setTemplateVars([
-				'target'=> 'World'
+				'logo' => $logo,
+				'art' => $art,
+				'app' => $app,
+				'root'=> $root,
+				'section'=> $section
 			]);
 		}
 	}
