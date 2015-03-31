@@ -14,6 +14,9 @@ $(document).ready ->
 		$this.hide()
 	.delay(2400).fadeOut()
 
+	# Retrieve #left scroll position
+	_left_scroll = parseInt($.cookie('left_scroll'))
+
 	# Init code editor
 	$code_editor = $('#code-editor')
 	if $code_editor.length > 0
@@ -42,10 +45,7 @@ $(document).ready ->
 			id = $this.data('id')
 			if id in expanded_branches
 				expandBranch $this,0
-
-		# Retrieve #left scroll position
-		left_scroll = parseInt($.cookie('left_scroll'))
-		$left[0].scrollTop = left_scroll
+				$left[0].scrollTop = left_scroll
 
 		$("ul li .expander").click ->
 			$this = $(this)
