@@ -4,5 +4,5 @@
 </fieldset>
 <fieldset>
 	<legend><?php echo Nn::babel('Description') ?></legend>
-	<textarea name="description" class="formfield" id="descriptionArea" rows="6" placeholder="<?php echo Nn::babel('Description') ?>"><?php echo $image->attr('description') ?></textarea>
+	<textarea name="description" class="formfield md" id="descriptionArea" rows="6" placeholder="<?php echo Nn::babel('Description') ?>"><?php echo $image->attr('description') ?></textarea>
 </fieldset>
