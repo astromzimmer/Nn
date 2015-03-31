@@ -1,6 +1,7 @@
 <?php
 
 namespace Nn\Modules\Form;
+use Nn\Modules\Form\Form as Form;
 use Nn\Modules\Attribute\Attribute as Attribute;
 use Nn;
 use Utils;
