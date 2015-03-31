@@ -28,13 +28,12 @@ class Attribute extends \Nn\Core\DataModel {
 		);
 
 	public function __construct($node_id=null, $attributetype_id=null, $data_id=null, $visible=1){
-		$v = (defined('SAFE_PUBLISHING')) ? !SAFE_PUBLISHING : $visible;
 		if(!empty($node_id) && !empty($attributetype_id) && !empty($data_id)) {
 			$this->node_id = (int)$node_id;
 			$this->position = 99999999999;
 			$this->attributetype_id = (int)$attributetype_id;
 			$this->data_id = (int)$data_id;
-			$this->visible = $v;
+			$this->visible = !Nn::settings('SAFE_PUBLISHING');
 			return $this;
 		} else {
 			return false;
