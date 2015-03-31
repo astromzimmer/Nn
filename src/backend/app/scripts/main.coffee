@@ -43,6 +43,10 @@ $(document).ready ->
 			if id in expanded_branches
 				expandBranch $this,0
 
+		# Retrieve #left scroll position
+		left_scroll = parseInt($.cookie('left_scroll'))
+		$left[0].scrollTop = left_scroll
+
 		$("ul li .expander").click ->
 			$this = $(this)
 			$li = $this.closest('li')
@@ -62,10 +66,6 @@ $(document).ready ->
 			$.cookie 'expanded_'+tree_type,JSON.stringify(expanded_branches)
 			# console.log $.cookie()
 			false
-
-	# Retrieve #left scroll position
-	left_scroll = parseInt($.cookie('left_scroll'))
-	$left[0].scrollTop = left_scroll
 
 	$left.on 'scroll', ->
 		$this = $(this)
