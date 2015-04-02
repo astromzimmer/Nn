@@ -1,5 +1,5 @@
 <div id="left">
-	<?php Nn::partial('node','_tree',array('nodes'=>$nodes,'node'=>$node)); ?>
+	<?php Nn::partial('Node','_tree',array('nodes'=>$nodes,'node'=>$node)); ?>
 </div>
 <div id="right">
 	<div class="header maximised">
@@ -40,6 +40,6 @@
 		</div>
 	</div>
 	<div id="admin_node" class="manage admin_area">
-		<?php Nn::partial('attribute','_admin_list',array('node'=>$node,'dtype'=>$dtype,'atype'=>$atype,'edit_attribute_id'=>$edit_attribute_id)); ?>
+		<?php Nn::partial('Attribute','_admin_list',array('node'=>$node,'dtype'=>$dtype,'atype'=>$atype,'edit_attribute_id'=>$edit_attribute_id)); ?>
 	</div>
 </div>

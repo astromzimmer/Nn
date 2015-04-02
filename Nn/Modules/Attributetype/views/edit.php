@@ -1,5 +1,5 @@
 <div id="left">
-	<?php Nn::partial('attributetype','_list',array('attributetypes'=>$attributetypes,'attributetype'=>$attributetype)) ?>
+	<?php Nn::partial('Attributetype','_list',array('attributetypes'=>$attributetypes,'attributetype'=>$attributetype)) ?>
 </div>
 <div id="right">
 	<div class="manage">
