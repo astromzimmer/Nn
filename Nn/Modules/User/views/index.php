@@ -1,7 +1,7 @@
 <div id="left">
-	<?php Nn::partial('user','_tree',array('roles'=>$roles)) ?>
+	<?php Nn::partial('User','_tree',array('roles'=>$roles)) ?>
 </div>
 <div id="right">
-	<?php Nn::partial('admin','_logo') ?>
-	<?php Nn::partial('admin','_stats') ?>
+	<?php Nn::partial('Admin','_logo') ?>
+	<?php Nn::partial('Admin','_stats') ?>
 </div>

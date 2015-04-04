@@ -1,5 +1,5 @@
 <div id="left">
-	<?php Nn::partial('user','_tree',array('roles'=>$roles,'focus'=>$user,'role'=>$role)) ?>
+	<?php Nn::partial('User','_tree',array('roles'=>$roles,'focus'=>$user,'role'=>$role)) ?>
 </div>
 <div id="right">
 	<div class="manage">

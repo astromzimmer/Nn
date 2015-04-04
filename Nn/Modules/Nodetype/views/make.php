@@ -1,5 +1,5 @@
 <div id="left">
-	<?php Nn::partial('nodetype','_list',array('nodetypes'=>$nodetypes)) ?>
+	<?php Nn::partial('Nodetype','_list',array('nodetypes'=>$nodetypes)) ?>
 </div>
 <div id="right">
 	<div class="manage">

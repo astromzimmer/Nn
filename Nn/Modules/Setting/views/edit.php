@@ -1,5 +1,5 @@
 <div id="left">
-	<?php Nn::partial('setting','_list',array('settings'=>$settings,'setting'=>$setting)) ?>
+	<?php Nn::partial('Setting','_list',array('settings'=>$settings,'setting'=>$setting)) ?>
 </div>
 <div id="right">
 	<div class="manage">
