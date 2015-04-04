@@ -59,7 +59,11 @@ class Document extends Nn\Modules\Datatype\Datatype {
 	}
 
 	protected function base() {
-		$base = ROOT.DS.'public'.DS.'assets'.DS.Utils::getShortClassName(get_class($this));
+		$assets_dir = ROOT.DS.'public'.DS.'assets';
+		if(!file_exists($assets_dir)) {
+			mkdir($assets_dir);
+		}
+		$base = $assets_dir.DS.Utils::getShortClassName(get_class($this));
 		if(!file_exists($base)) {
 			mkdir($base);
 		}
