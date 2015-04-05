@@ -100,7 +100,9 @@ class Minify {
 		foreach($files as $file) {
 			$file_path = ROOT.DS.'public'.DS.$file;
 			if(file_exists($file_path)) {
-				$concat_data .= file_get_contents($file_path);
+				$content = file_get_contents($file_path);
+				$minified_content = preg_replace('/\r|\n/', '', $content);
+				$concat_data .= $minified_content;
 			}
 		}
 		// $compiled_data = $this->compress($concat_data);
