@@ -1,0 +1,4 @@
+#view
+	p Hello
+		span= $target
+	h1 I'm the superman
