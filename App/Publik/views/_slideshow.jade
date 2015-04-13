@@ -1,0 +1,10 @@
+.slideshow
+	- if($slides = $slideshow->children_by_type('Slide')):
+		.slides
+			- foreach($slides as $slide):
+				:php
+					|Nn::partial('Publik','_slide',array('slide'=>$slide))
+		.controller
+			- foreach($slides as $index=>$slide):
+				.ctrl(data-index="{{$index}}",style="width:{{100/count($slides)}}%;")
+					.label= $slide->title()

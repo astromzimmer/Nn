@@ -1,0 +1,18 @@
+.foldout
+	- if($sub_foldouts = $foldout->children_by_type('Foldout')):
+		.head
+			.expander >
+			.title= $foldout->title()
+		.content
+			- foreach($sub_foldouts as $sub_foldout):
+				:php
+					|Nn::partial('Publik','_foldout',array('foldout'=>$sub_foldout))
+	- elseif($attributes = $foldout->attributes()):
+		.head
+			.expander >
+			.title= $foldout->title()
+		.content
+			- foreach($attributes as $attribute):
+				:php
+					|Nn::partial($attribute->public_view(),array(strtolower($attribute->datatype())=>$attribute->data()))
+	- endif;
