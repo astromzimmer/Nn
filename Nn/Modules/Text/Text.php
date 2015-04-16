@@ -15,6 +15,10 @@ class Text extends Nn\Modules\Datatype\Datatype {
 			'updated_at' => 'integer'
 		);
 
+	public static $PARAMS = array(
+			'size' => array('short','long')
+		);
+
 	public function exportProperties($excludes=array()) {
 		return array(
 			'id'			=>	$this->id,
@@ -37,6 +41,15 @@ class Text extends Nn\Modules\Datatype\Datatype {
 	public function isRTE() {
 		if($this->id) {
 			$result = (array_key_exists('rte',$this->attributetype()->params())) ? true : false;
+		} else {
+			$result = false;
+		}
+		return $result;
+	}
+
+	public function isLong() {
+		if($this->id) {
+			$result = (array_key_exists('long',$this->attributetype()->params())) ? true : false;
 		} else {
 			$result = false;
 		}

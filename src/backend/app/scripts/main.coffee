@@ -169,15 +169,15 @@ $(document).ready ->
 
 	$("select#datatypeField").change (e) ->
 		$this = $(this)
-		$("#optionsContainer").html ''
+		$("#paramsContainer").html ''
 		$option = $('option:selected',$this)
 		url_param = $option.data 'url_param'
 		if url_param
 			$.ajax
-				url: '/admin/'+url_param+'/_options'
+				url: '/admin/attributetypes/_params/'+url_param
 				success: (response)->
 					console.log response
-					$("#optionsContainer").html response
+					$("#paramsContainer").html response
 
 	$("textarea.md").aMD
 		imgPath: "/backnn/imgs/static/aMD"

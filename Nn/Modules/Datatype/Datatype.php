@@ -8,6 +8,8 @@ use Utils;
 
 class Datatype extends Nn\Core\DataModel {
 
+	public static $PARAMS = false;
+
 	public function attributetype() {
 		if(!isset($this->attributetype)) {
 			$this->getAttributeAndType();

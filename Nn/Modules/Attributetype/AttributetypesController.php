@@ -12,6 +12,15 @@ class AttributetypesController extends Nn\Core\Controller {
 	function before() {
 		Nn::authenticate();
 	}
+
+	function _params($datatype) {
+		$this->renderMode('partial');
+		$datatype_class = 'Nn\\Modules\\'.$datatype.'\\'.$datatype;
+		$params = $datatype_class::$PARAMS;
+		$this->setTemplateVars([
+				'params'=> $params
+			]);
+	}
 	
 	function index() {
 		$this->setTemplateVars([
@@ -79,10 +88,15 @@ class AttributetypesController extends Nn\Core\Controller {
 				include_once $model_file;
 			}
 		}
+		$attributetype = Attributetype::find($id);
+		$datatype = $attributetype->attr('datatype');
+		$datatype_class = 'Nn\\Modules\\'.$datatype.'\\'.$datatype;
+		$datatype_params = $datatype_class::$PARAMS;
 		$this->setTemplateVars([
 				'attributetypes'=> Attributetype::find_all(null,'position'),
-				'attributetype'=> Attributetype::find($id),
-				'datatypes'=> Utils::getSubclassesOf('Nn\Modules\Datatype\Datatype',true)
+				'attributetype'=> $attributetype,
+				'datatypes'=> Utils::getSubclassesOf('Nn\Modules\Datatype\Datatype',true),
+				'datatype_params'=> $datatype_params
 			]);
 	}
 	

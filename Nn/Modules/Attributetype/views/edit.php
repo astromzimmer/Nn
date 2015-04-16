@@ -13,10 +13,12 @@
 				<legend><?php echo Nn::babel('Datatype') ?></legend>
 			    <select name="datatype" class="formfield" id="datatypeField" />
 			    	<?php foreach($datatypes as $datatype): ?>
-				    	<option value="<?php echo $datatype; ?>" data-url_param="<?php echo strtolower(Utils::plurify($datatype)) ?>" <?php if($datatype == $attributetype->attr('datatype')) { echo "selected=\"selected\""; } ?>><?php echo $datatype ?></option>
+				    	<option value="<?php echo $datatype; ?>" data-url_param="<?php echo $datatype ?>" <?php if($datatype == $attributetype->attr('datatype')) { echo "selected=\"selected\""; } ?>><?php echo $datatype ?></option>
 			    	<?php endforeach; ?>
 			    </select>
-			    <span id="optionsContainer"></span>
+			    <span id="paramsContainer">
+			    	<?php Nn::partial('Attributetype','_params',array('params'=>$datatype_params)); ?>
+			    </span>
 			  </fieldset>
 			  <div class="submit">
 			  <a href="<?php echo DOMAIN,DS,'admin',DS,'attributetypes',DS,'delete',DS,$attributetype->attr('id') ?>" class="delete button half float"><?php echo Nn::babel('Delete') ?></a>
