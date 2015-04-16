@@ -12,11 +12,15 @@
 				</fieldset>
 				<fieldset>
 					<legend><?php echo Nn::babel('Type') ?>:</legend>
-					<select name="nodetype_id" class="formfield" id="nodetypeField" />
+					<?php if(count($nodetypes) > 0): ?>
+						<select name="nodetype_id" class="formfield" id="nodetypeField" />
 						<?php foreach($nodetypes as $nodetype): ?>
-						<option value="<?php echo $nodetype->attr('id'); ?>" ><?php echo $nodetype->attr('name') ?></option>
+							<option value="<?php echo $nodetype->attr('id'); ?>" ><?php echo $nodetype->attr('name') ?></option>
 						<?php endforeach; ?>
-					</select>
+						</select>
+					<?php else: ?>
+						<div class="error"><?php echo Nn::babel('Please enable at least one Nodetype as ROOT') ?></div>
+					<?php endif; ?>
 				</fieldset>
 				<div class="submit">
 					<a href="<?php echo DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node->attr('parent_id') ?>" class="cancel button half float"><?php echo Nn::babel('Cancel') ?></a>

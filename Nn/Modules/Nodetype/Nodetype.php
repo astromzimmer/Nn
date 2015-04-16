@@ -18,18 +18,18 @@ class Nodetype extends Nn\Core\DataModel {
 			'name' => 'short_text',
 			'attributetypes' => 'text',
 			'nodetypes' => 'text',
-			'can_be_root' => 'integer'
+			'can_be_root' => 'integer',
 			'position' => 'integer',
 			'created_at' => 'integer',
 			'updated_at' => 'integer'
 		);
 	
-	public function __construct($name=null, $can_be_root=false, $attributetypes=null, $nodetypes=null){
+	public function __construct($name=null, $can_be_root=null, $attributetypes=null, $nodetypes=null){
 		if(isset($name)){
 			$this->name = $name;
 			$this->attributetypes = (!empty($attributetypes)) ? implode(",",$attributetypes) : "";
 			$this->nodetypes = (!empty($nodetypes)) ? implode(",",$nodetypes) : "";
-			$this->can_be_root = $can_be_root;
+			$this->can_be_root = isset($can_be_root) ? true : false;
 			return $this;
 		} else {
 			return false;

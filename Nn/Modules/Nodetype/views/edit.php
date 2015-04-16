@@ -10,6 +10,10 @@
 			    <input type="text" name="name" class="formfield" id="nameField" value="<?php echo $nodetype->attr('name'); ?>" />
 			  </fieldset>
 			  <fieldset>
+				<legend><?php echo Nn::babel('Can be used as ROOT') ?></legend>
+			    <input type="checkbox" name="can_be_root" value="1" class="formfield" id="canBeRootBox" <?php if($nodetype->canBeRoot()) { echo "checked=\"yes\""; } ?> /><br/>
+			  </fieldset>
+			  <fieldset>
 				<legend><?php echo Nn::babel('Supported Attributetypes') ?></legend>
 			    <?php foreach($attributetypes as $attributetype): ?>
 				  <input type="checkbox" name="attributetypes[]" value="<?php echo $attributetype->attr('id') ?>" class="formfield" id="peopleBox" <?php if($nodetype->has_attributetype($attributetype->attr('id'))) { echo "checked=\"yes\""; } ?> /><?php echo $attributetype->attr('name'); ?><br/>

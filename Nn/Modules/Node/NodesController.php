@@ -75,7 +75,7 @@ class NodesController extends Nn\Core\Controller {
 			$nodetypes = $parent->nodetype()->nodetypes();
 		} else {
 			$parent_id = 0;
-			$nodetypes = Nodetype::find_all();
+			$nodetypes = Nodetype::find(array('can_be_root'=>1),null,'position');
 		}
 		$node = new Node();
 		$node->attr('parent_id',$parent_id);
