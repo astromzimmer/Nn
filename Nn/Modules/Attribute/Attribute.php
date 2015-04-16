@@ -47,6 +47,8 @@ class Attribute extends \Nn\Core\DataModel {
 				ROOT.DS.'App'.DS.$partial_suggestion.'.php',
 				ROOT.DS.'Nn'.DS.'Modules'.DS.$partial_suggestion.'.jade',
 				ROOT.DS.'Nn'.DS.'Modules'.DS.$partial_suggestion.'.php',
+				ROOT.DS.'App'.DS.$this->datatype().DS.'views'.DS.'_view.jade',
+				ROOT.DS.'App'.DS.$this->datatype().DS.'views'.DS.'_view.php',
 				ROOT.DS.'Nn'.DS.'Modules'.DS.$this->datatype().DS.'views'.DS.'_view.jade',
 				ROOT.DS.'Nn'.DS.'Modules'.DS.$this->datatype().DS.'views'.DS.'_view.php'
 			]);
