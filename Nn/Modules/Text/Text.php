@@ -48,12 +48,7 @@ class Text extends Nn\Modules\Datatype\Datatype {
 	}
 
 	public function isLong() {
-		if($this->id) {
-			$result = (array_key_exists('long',$this->attributetype()->params())) ? true : false;
-		} else {
-			$result = false;
-		}
-		return $result;
+		return $this->attributetype()->params()['size'] == 'long';
 	}
 	
 	public function __construct($content=null,$markup=null){
