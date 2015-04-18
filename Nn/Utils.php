@@ -79,6 +79,14 @@ class Utils {
 		return $plural;
 	}
 
+	public static function strToTime($str) {
+		$dateTime = new \DateTime();
+		$ts = strtotime($str);
+		$dateTime->setTimestamp($ts);
+		$ts += date_offset_get($dateTime);
+		return $ts;
+	}
+
 	public static function formattedDate($ts=null) {
 		$timestamp = (isset($ts)) ? $ts : time();
 		return strftime(DATE_FORMAT,$timestamp);

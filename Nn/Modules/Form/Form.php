@@ -18,6 +18,9 @@ class Form extends Nn\Modules\Text\Text {
 			'created_at' => 'integer',
 			'updated_at' => 'integer'
 		);
+
+	public static $PARAMS = array();
+
 	
 	public function mailto() {
 		return $this->mailto;
