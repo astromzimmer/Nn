@@ -622,8 +622,8 @@ body
 				&.new
 				&.editing
 					border 1px solid $shadowColour
-					label
-						border-bottom 1px solid $shadowColour
+					// label
+					// 	border-bottom 1px solid $shadowColour
 					.tools
 						display block
 				&:hover
@@ -632,14 +632,16 @@ body
 						border-color $spacerBG
 				&.new
 				&.editing
-					padding 29px 0 0
+					padding 0
 					border-color $shadowColour
 					.handle
 						select
 							margin 0
 					label
+						padding 0 3px
 						border-color $shadowColour
 					form
+						margin 3px 0 0
 						.aMD_container
 							border none
 						.submit
