@@ -82,8 +82,7 @@ class Image extends \Nn\Modules\Document\Document {
 				break;
 		}
 		
-		$bounds = $this->getBounds($bound,$is_height);
-		if($this->writeImg($bounds,$is_height,$is_bw)) {
+		if($this->writeImg($bound,$is_height,$is_bw)) {
 			// success!
 			return true;
 		} else {
@@ -94,32 +93,54 @@ class Image extends \Nn\Modules\Document\Document {
 	}
 	
 	private function getBounds($bound,$is_height) {
-		if(!empty($this->_img)){
-			$width = imagesx($this->_img);
-			$height = imagesy($this->_img);
-			if(isset($bound)) {
-				if($is_height) {
-					$h = $bound;
-					$w = $width * ($h/$height);
-				} else {
-					$w = $bound;
-					$h = $height * ($w/$width);
-				}
+		$this->rotate();
+		$width = imagesx($this->_img);
+		$height = imagesy($this->_img);
+		if(isset($bound)) {
+			if($is_height) {
+				$h = $bound;
+				$w = $width * ($h/$height);
 			} else {
-				$w = $width;
-				$h = $height;
+				$w = $bound;
+				$h = $height * ($w/$width);
 			}
-			
-			return array(
-					'original_width' => $width,
-					'scaled_width'=> $w,
-					'original_height' => $height,
-					'scaled_height' => $h
-				);
+		} else {
+			$w = $width;
+			$h = $height;
+		}
+		
+		return array(
+				'original_width' => $width,
+				'scaled_width'=> $w,
+				'original_height' => $height,
+				'scaled_height' => $h
+			);
+	}
+
+	private function rotate() {
+		# Here we adjust orientation
+		$path = $this->path();
+		$exif = exif_read_data($path);
+		if(isset($exif['Orientation'])){
+			$deg = 0;
+			switch($exif['Orientation']) {
+				case 3:
+					# Rotate 180deg
+					$deg = 180;
+				case 6:
+					# Rotate 90deg clockwise
+					$deg = 90;
+				case 8:
+					# Rotate 90deg counter clockwise
+					$deg = -90;
+			}
+			$this->_img = imagerotate($this->_img,$deg,0);
 		}
 	}
 	
-	private function writeImg($bounds,$is_height,$is_bw) {
+	private function writeImg($bound,$is_height,$is_bw) {
+		if(empty($this->_img)) return false;
+		$bounds = $this->getBounds($bound,$is_height);
 		$new_img = imagecreatetruecolor($bounds['scaled_width'], $bounds['scaled_height']);
 		imagealphablending($new_img, false);
 		imagesavealpha($new_img, true);
