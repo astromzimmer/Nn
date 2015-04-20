@@ -2,5 +2,5 @@
 <?php if($attributetype->params()['size'] == 'long'): ?>
 	<textarea name="content" rows="12" class="md formfield<?php echo (array_key_exists('rte',$attributetype->params())) ? " rte" : "" ?>" id="contentField"></textarea>
 <?php else: ?>
-	<input name="content" type="text" class="md formfield<?php echo (array_key_exists('rte',$attributetype->params())) ? " rte" : "" ?>" id="contentField" />
+	<input name="content" type="text" class="formfield<?php echo (array_key_exists('rte',$attributetype->params())) ? " rte" : "" ?>" id="contentField" />
 <?php endif ?>
