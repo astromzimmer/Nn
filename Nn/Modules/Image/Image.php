@@ -51,6 +51,10 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 		return $this->_size;
 	}
 	
+	public function hasHref() {
+		return ($this->href && $this->href != '');
+	}
+
 	public function src($bound=null,$is_height=false,$is_bw=false) {
 		$filename = $this->filename;
 		if($is_bw) $filename = 'bw-'.$filename;
