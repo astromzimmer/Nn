@@ -26,6 +26,9 @@
 		}
 
 		public function filePath($id) {
+			if(!file_exists(Nn::settings('CACHE_DIR'))) {
+				mkdir(Nn::settings('CACHE_DIR'),755,true);
+			}
 			return Nn::settings('CACHE_DIR').DS.$id.'.cache';
 		}
 		
