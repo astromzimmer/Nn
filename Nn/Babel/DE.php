@@ -77,8 +77,8 @@
 		'description'				=> 'Beschreibung',
 		'module'					=> 'Modul',
 		'path'						=> 'Pfad',
-		'can be used as root'		=> 'Kann als ROOT verwendet werden'
-		'supported child nodetypes'	=> 'Erlaubte Kinderelementtypen'
+		'can be used as root'		=> 'Kann als ROOT verwendet werden',
+		'supported child nodetypes'	=> 'Erlaubte Kinderelementtypen',
 
 		# placeholders
 		'type some notes regarding this setting and its options...' => 'type some notes regarding this setting and its options...',
