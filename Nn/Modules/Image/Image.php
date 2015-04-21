@@ -2,8 +2,22 @@
 
 namespace Nn\Modules\Image;
 
-class Image extends \Nn\Modules\Document\Document {
+class Image extends \Nn\Modules\Attachment\Attachment {
 	
+	protected $href;
+	
+	public static $SCHEMA = array(
+			'attribute_id' => 'integer',
+			'title' => 'short_text',
+			'description' => 'text',
+			'filename' => 'short_text',
+			'href' => 'text',
+			'type' => 'short_text',
+			'size' => 'float',
+			'created_at' => 'integer',
+			'updated_at' => 'integer'
+		);
+
 	public function exportProperties($excludes=array()) {
 		return array(
 			'id'			=>	$this->id,
@@ -18,10 +32,11 @@ class Image extends \Nn\Modules\Document\Document {
 		);
 	}
 
-	public function make($title, $description, $file){
+	public function make($title, $description, $href, $file){
 		if($this->attach_file($file)){
 			$this->title = $title;
 			$this->description = $description;
+			$this->href = $href;
 			return $this;
 		} else {
 			return false;

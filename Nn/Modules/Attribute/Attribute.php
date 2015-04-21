@@ -63,8 +63,13 @@ class Attribute extends \Nn\Core\DataModel {
 		$datatype = $this->datatype();
 		$datatype_class = 'Nn\\Modules\\'.$datatype.'\\'.$datatype;
 		$data_id = $this->data_id;
-		$data = $datatype_class::find($data_id);
-		return $data;
+		try {
+			# Needs better error handling for module updates
+			$data = $datatype_class::find($data_id);
+			return $data;
+		} catch(Exception $e) {
+			return false;
+		}
 	}
 	
 	public function datatype() {

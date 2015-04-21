@@ -42,7 +42,7 @@ class ImagesController extends Nn\Core\Controller {
 	function create() {
 		$node_id = $_POST['node_id'];
 		$image = new Image();
-		if($image->make($_POST['title'], $_POST['description'], $_FILES['file_upload'])) {
+		if($image->make($_POST['title'], $_POST['description'], $_POST['href'], $_FILES['file_upload'])) {
 			if($image->save()) {
 				$attribute = new Attribute($node_id,$_POST['atype_id'],$image->attr('id'));
 				if($attribute->save()) {
@@ -64,6 +64,7 @@ class ImagesController extends Nn\Core\Controller {
 		$image = Image::find($id);
 		$image->attr('title',$_POST['title']);
 		$image->attr('description',$_POST['description']);
+		$image->attr('href',$_POST['href']);
 		$node_id = $_POST['node_id'];
 		if($image->save()) {
 			# Attribute save needs error handling - yawn
