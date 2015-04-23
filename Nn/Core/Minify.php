@@ -17,7 +17,7 @@ class Minify {
 			$tag = '';
 			foreach ($files as $file) {
 				$modified = $this->getLastModified($file);
-				$tag .= '<script src="'.$file.'?'.$modified.'"></script>';
+				$tag .= '<script src="/'.$file.'?'.$modified.'"></script>';
 			}
 			return $tag;
 		}
@@ -27,7 +27,6 @@ class Minify {
 		if(!Nn::settings('DEVELOPMENT_ENV')) {
 			$last_modified = $this->getLastModified($files);
 			$output_path = ROOT.DS.'public'.DS.$output;
-			echo $output_path;
 			$concat_modified = (file_exists($output_path)) ? filemtime($output_path) : 0;
 			if($last_modified > $concat_modified) $this->buildCSS($files,$output);
 			// $this->buildCSS($files,$output);
@@ -36,7 +35,7 @@ class Minify {
 			$tag = '';
 			foreach ($files as $file) {
 				$modified = $this->getLastModified($file);
-				$tag .= '<link href="'.$file.'?'.$modified.'" rel="stylesheet" type="text/css" media="'.$media.'">';
+				$tag .= '<link href="/'.$file.'?'.$modified.'" rel="stylesheet" type="text/css" media="'.$media.'">';
 			}
 			return $tag;
 		}
