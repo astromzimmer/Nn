@@ -89,7 +89,7 @@ class Template extends Basic {
 		if($template = $this->getTemplatePath($extensionless_path)) {
 			$this->output($template,$this->vars);
 		} else {
-			Utils::redirect_to('/404.php');
+			// Utils::redirect_to('/404.php');
 		}
 	}
 

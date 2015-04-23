@@ -1,40 +1,42 @@
 <?php
 
 namespace Nn\Core;
+use Nn;
 
 class Minify {
 	
 	public function jsTags($files=array(),$output='concat.js') {
-		if(!DEVELOPMENT_ENV) {
+		if(!Nn::settings('DEVELOPMENT_ENV')) {
 			$last_modified = $this->getLastModified($files);
-			$output_path = ROOT.DS.'public'.DS.'js'.DS.$output;
+			$output_path = ROOT.DS.'public'.DS.$output;
 			$concat_modified = (file_exists($output_path)) ? filemtime($output_path) : 0;
 			if($last_modified > $concat_modified) $this->buildJS($files,$output);
 			// $this->buildJS($files,$output);
-			return '<script src="/js/'.$output.'?'.$last_modified.'"></script>';
+			return '<script src="/'.$output.'?'.$last_modified.'"></script>';
 		} else {
 			$tag = '';
 			foreach ($files as $file) {
 				$modified = $this->getLastModified($file);
-				$tag .= '<script src="/'.$file.'?'.$modified.'"></script>';
+				$tag .= '<script src="'.$file.'?'.$modified.'"></script>';
 			}
 			return $tag;
 		}
 	}
 
 	public function cssTags($files=array(),$output='concat.css',$media='all') {
-		if(!DEVELOPMENT_ENV) {
+		if(!Nn::settings('DEVELOPMENT_ENV')) {
 			$last_modified = $this->getLastModified($files);
-			$output_path = ROOT.DS.'public'.DS.'css'.DS.$output;
+			$output_path = ROOT.DS.'public'.DS.$output;
+			echo $output_path;
 			$concat_modified = (file_exists($output_path)) ? filemtime($output_path) : 0;
 			if($last_modified > $concat_modified) $this->buildCSS($files,$output);
 			// $this->buildCSS($files,$output);
-			return '<link href="/css/'.$output.'?'.$last_modified.'" rel="stylesheet" type="text/css" media="'.$media.'">';
+			return '<link href="/'.$output.'?'.$last_modified.'" rel="stylesheet" type="text/css" media="'.$media.'">';
 		} else {
 			$tag = '';
 			foreach ($files as $file) {
 				$modified = $this->getLastModified($file);
-				$tag .= '<link href="/'.$file.'?'.$modified.'" rel="stylesheet" type="text/css" media="'.$media.'">';
+				$tag .= '<link href="'.$file.'?'.$modified.'" rel="stylesheet" type="text/css" media="'.$media.'">';
 			}
 			return $tag;
 		}
@@ -92,7 +94,7 @@ class Minify {
 			}
 		}
 		// $concat_data = $this->compress($concat_data);
-		file_put_contents(ROOT.DS.'public'.DS.'js'.DS.$output,$concat_data);
+		file_put_contents(ROOT.DS.'public'.DS.$output,$concat_data);
 	}
 
 	private function buildCSS($files,$output=null) {
@@ -106,7 +108,7 @@ class Minify {
 			}
 		}
 		// $compiled_data = $this->compress($concat_data);
-		file_put_contents(ROOT.DS.'public'.DS.'css'.DS.$output,$concat_data);
+		file_put_contents(ROOT.DS.'public'.DS.$output,$concat_data);
 	}
 
 }
