@@ -94,4 +94,11 @@ public/imgs
 public/fonts
 public/assets
 public/backnn
-App/*
+App/*.php
+App/*/*.php
+App/*/*/*.php
+App/*.jade
+App/*/*.jade
+App/*/*/*.jade
+bootstrap/config.php
+bootstrap/routes.php

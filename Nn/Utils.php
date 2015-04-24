@@ -22,11 +22,9 @@ class Utils {
 		return false;
 	}
 		
-	public static function redirect_to($location = NULL){
-		if($location != NULL){
-			header("Location: {$location}");
-			exit;
-		}
+	public static function redirect_to($location){
+		header("Location: {$location}");
+		exit;
 	}
 
 	public static function sendResponseCode($code) {
@@ -79,6 +77,14 @@ class Utils {
 			$plural = rtrim($plural, 's');
 		}
 		return $plural;
+	}
+
+	public static function strToTime($str) {
+		$dateTime = new \DateTime();
+		$ts = strtotime($str);
+		$dateTime->setTimestamp($ts);
+		$ts += date_offset_get($dateTime);
+		return $ts;
 	}
 
 	public static function formattedDate($ts=null) {

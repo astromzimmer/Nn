@@ -2,11 +2,15 @@
 <input name="atype_id" type="hidden" value="<?php echo $attributetype->attr('id') ?>" />
 <fieldset>
 	<legend><?php echo Nn::babel('Title') ?></legend>
-	<input name="title" type="text" class="formfield" id="titleField" value=""/>
+	<input name="title" type="text" class="formfield" id="titleField" value="" placeholder="<?php echo Nn::babel('Title') ?>" />
 </fieldset>
 <fieldset>
 	<legend><?php echo Nn::babel('Description') ?></legend>
-	<textarea name="description" class="formfield" id="descriptionArea" rows="6"></textarea>
+	<textarea name="description" class="formfield" id="descriptionArea" rows="6" placeholder="<?php echo Nn::babel('Description') ?>"></textarea>
+</fieldset>
+<fieldset>
+	<legend><?php echo Nn::babel('Link') ?></legend>
+	<input name="href" type="text" class="formfield" id="hrefField" value="" placeholder="<?php echo Nn::babel('http://...') ?>" />
 </fieldset>
 <fieldset>
 	<legend><?php echo Nn::babel('File') ?></legend>

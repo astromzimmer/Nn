@@ -13,7 +13,8 @@ class TextsController extends Nn\Core\Controller {
 	
 	function create() {
 		$node_id = $_POST['node_id'];
-		$text = new Text($_POST['content'],$_POST['aMD_markup']);
+		$md = isset($_POST['aMD_markup']) ? $_POST['aMD_markup'] : null;
+		$text = new Text($_POST['content'],$md);
 		if($text->save()) {
 			$attribute = new Attribute($node_id,$_POST['atype_id'],$text->attr('id'));
 			if($attribute->save()) {
@@ -31,7 +32,8 @@ class TextsController extends Nn\Core\Controller {
 	
 	function update($id=null) {
 		$text = Text::find($id);
-		$text = $text->fill($_POST['content'],$_POST['aMD_markup']);
+		$md = isset($_POST['aMD_markup']) ? $_POST['aMD_markup'] : null;
+		$text = $text->fill($_POST['content'],$md);
 		$node_id = $_POST['node_id'];
 		if($text->save()) {
 			# Attribute save needs error handling - yawn

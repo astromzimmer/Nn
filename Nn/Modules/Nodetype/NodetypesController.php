@@ -53,7 +53,8 @@ class NodetypesController extends Nn\Core\Controller {
 	function create() {
 		$attributetypes = isset($_POST['attributetypes']) ? $_POST['attributetypes'] : null;
 		$nodetypes = isset($_POST['nodetypes']) ? $_POST['nodetypes'] : null;
-		$nodetype = new Nodetype($_POST['name'],$attributetypes,$nodetypes);
+		$can_be_root = isset($_POST['can_be_root']) ? $_POST['can_be_root'] : 0;
+		$nodetype = new Nodetype($_POST['name'],$can_be_root,$attributetypes,$nodetypes);
 		if($nodetype->save()) {
 			Utils::redirect_to(DOMAIN.'/admin/nodetypes');
 		} else {
@@ -72,8 +73,10 @@ class NodetypesController extends Nn\Core\Controller {
 	function update($id=null) {
 		$attributetypes = isset($_POST['attributetypes']) ? $_POST['attributetypes'] : array();
 		$nodetypes = isset($_POST['nodetypes']) ? $_POST['nodetypes'] : array();
+		$can_be_root = isset($_POST['can_be_root']) ? $_POST['can_be_root'] : 0;
 		$nodetype = Nodetype::find($id);
 		$nodetype->attr('name',$_POST['name']);
+		$nodetype->attr('can_be_root',$can_be_root);
 		$nodetype->attr('attributetypes',implode(",",$attributetypes));
 		$nodetype->attr('nodetypes',implode(",",$nodetypes));
 		if($nodetype->save()) {

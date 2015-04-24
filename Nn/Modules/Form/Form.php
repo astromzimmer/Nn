@@ -18,6 +18,9 @@ class Form extends Nn\Modules\Text\Text {
 			'created_at' => 'integer',
 			'updated_at' => 'integer'
 		);
+
+	public static $PARAMS = array();
+
 	
 	public function mailto() {
 		return $this->mailto;
@@ -73,7 +76,7 @@ class Form extends Nn\Modules\Text\Text {
 			$HTMLMessage = "<html>
 								<head>
 									<title>
-										Contact form on ".PAGE_NAME.": {$this->name}
+										Contact form on ".Nn::settings('DOMAIN').": {$this->name}
 									</title>
 								</head>
 								<body>
@@ -92,7 +95,7 @@ class Form extends Nn\Modules\Text\Text {
 			
 			$mailer = new Mailer();
 		
-			$mailer->Subject = "Contact form on ".PAGE_NAME.": {$this->name}";
+			$mailer->Subject = "Contact form on ".Nn::settings('DOMAIN').": {$this->name}";
 			$mailer->Body = $HTMLMessage;
 			$mailer->isHTML = true;
 			$mailer->AltBody = $plainTextMessage;

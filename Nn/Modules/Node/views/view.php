@@ -1,5 +1,5 @@
 <div id="left">
-	<?php Nn::partial('node','_tree',array('nodes'=>$nodes,'node'=>$node)); ?>
+	<?php Nn::partial('Node','_tree',array('nodes'=>$nodes,'node'=>$node)); ?>
 </div>
 <div id="right">
 	<div class="header maximised">
@@ -13,9 +13,9 @@
 			<li class="meta">
 				<label><?php echo Nn::babel('Last edited') ?>:</label> <?php echo strftime(DATE_FORMAT,$node->attr('updated_at')); ?>	
 			</li>
-			<li class="meta">
-				<label><?php echo Nn::babel('Slug') ?>:</label> <?php echo $node->slug(); ?>
-			</li>
+			<!-- <li class="meta">
+				<label><?php echo Nn::babel('Slug') ?>:</label> <?php echo Utils::ellipse($node->slug(),32); ?>
+			</li> -->
 			<li class="tools">
 				<a class="edit" href="<?php echo DOMAIN.DS.'admin'.DS.'nodes'.DS.'edit'.DS.$node->attr('id') ?>" data-tooltip="<?php echo Nn::babel('edit') ?>"><?php echo Utils::UIIcon('edit'); ?>
 				</a><a class="trash" href="<?php echo DOMAIN.DS.'admin'.DS.'nodes'.DS.'delete'.DS.$node->attr('id') ?>" data-tooltip="<?php echo Nn::babel('trash') ?>"><?php echo Utils::UIIcon('trash'); ?>
@@ -40,6 +40,6 @@
 		</div>
 	</div>
 	<div id="admin_node" class="manage admin_area">
-		<?php Nn::partial('attribute','_admin_list',array('node'=>$node,'dtype'=>$dtype,'atype'=>$atype,'edit_attribute_id'=>$edit_attribute_id)); ?>
+		<?php Nn::partial('Attribute','_admin_list',array('node'=>$node,'dtype'=>$dtype,'atype'=>$atype,'edit_attribute_id'=>$edit_attribute_id)); ?>
 	</div>
 </div>

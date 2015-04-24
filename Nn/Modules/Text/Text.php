@@ -15,6 +15,10 @@ class Text extends Nn\Modules\Datatype\Datatype {
 			'updated_at' => 'integer'
 		);
 
+	public static $PARAMS = array(
+			'size' => array('short','long')
+		);
+
 	public function exportProperties($excludes=array()) {
 		return array(
 			'id'			=>	$this->id,
@@ -41,6 +45,10 @@ class Text extends Nn\Modules\Datatype\Datatype {
 			$result = false;
 		}
 		return $result;
+	}
+
+	public function isLong() {
+		return $this->attributetype()->params()['size'] == 'long';
 	}
 	
 	public function __construct($content=null,$markup=null){

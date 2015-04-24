@@ -10,6 +10,7 @@ class Nodetype extends Nn\Core\DataModel {
 	protected $id;
 	protected $name;
 	protected $attributetypes;
+	protected $can_be_root;
 	protected $nodetypes;
 	protected $position;
 
@@ -17,16 +18,18 @@ class Nodetype extends Nn\Core\DataModel {
 			'name' => 'short_text',
 			'attributetypes' => 'text',
 			'nodetypes' => 'text',
+			'can_be_root' => 'integer',
 			'position' => 'integer',
 			'created_at' => 'integer',
 			'updated_at' => 'integer'
 		);
 	
-	public function __construct($name=null, $attributetypes=null, $nodetypes=null){
+	public function __construct($name=null, $can_be_root=null, $attributetypes=null, $nodetypes=null){
 		if(isset($name)){
 			$this->name = $name;
 			$this->attributetypes = (!empty($attributetypes)) ? implode(",",$attributetypes) : "";
 			$this->nodetypes = (!empty($nodetypes)) ? implode(",",$nodetypes) : "";
+			$this->can_be_root = isset($can_be_root) ? true : false;
 			return $this;
 		} else {
 			return false;
@@ -64,6 +67,10 @@ class Nodetype extends Nn\Core\DataModel {
 		$query = array('id'=>Utils::explode(',', $this->nodetypes));
 		$result = self::find($query,null,'position');
 		return $result;
+	}
+
+	public function canBeRoot() {
+		return $this->can_be_root;
 	}
 	
 }

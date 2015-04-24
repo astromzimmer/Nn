@@ -28,13 +28,12 @@ class Attribute extends \Nn\Core\DataModel {
 		);
 
 	public function __construct($node_id=null, $attributetype_id=null, $data_id=null, $visible=1){
-		$v = (defined('SAFE_PUBLISHING')) ? !SAFE_PUBLISHING : $visible;
 		if(!empty($node_id) && !empty($attributetype_id) && !empty($data_id)) {
 			$this->node_id = (int)$node_id;
 			$this->position = 99999999999;
 			$this->attributetype_id = (int)$attributetype_id;
 			$this->data_id = (int)$data_id;
-			$this->visible = $v;
+			$this->visible = !Nn::settings('SAFE_PUBLISHING');
 			return $this;
 		} else {
 			return false;
@@ -44,9 +43,14 @@ class Attribute extends \Nn\Core\DataModel {
 	public function public_view() {
 		$partial_suggestion = $this->datatype().DS.'views'.DS."_".str_replace(" ","_",strtolower($this->attributetype()->attr('name')));
 		$partial = Utils::fileExists([
+				ROOT.DS.'App'.DS.$partial_suggestion.'.jade',
 				ROOT.DS.'App'.DS.$partial_suggestion.'.php',
+				ROOT.DS.'Nn'.DS.'Modules'.DS.$partial_suggestion.'.jade',
 				ROOT.DS.'Nn'.DS.'Modules'.DS.$partial_suggestion.'.php',
-				ROOT.DS.'Nn'.DS.'Modules'.DS.$this->datatype().DS.'views'.DS.'_view'.'.php'
+				ROOT.DS.'App'.DS.$this->datatype().DS.'views'.DS.'_view.jade',
+				ROOT.DS.'App'.DS.$this->datatype().DS.'views'.DS.'_view.php',
+				ROOT.DS.'Nn'.DS.'Modules'.DS.$this->datatype().DS.'views'.DS.'_view.jade',
+				ROOT.DS.'Nn'.DS.'Modules'.DS.$this->datatype().DS.'views'.DS.'_view.php'
 			]);
 		return $partial;
 	}
@@ -59,8 +63,13 @@ class Attribute extends \Nn\Core\DataModel {
 		$datatype = $this->datatype();
 		$datatype_class = 'Nn\\Modules\\'.$datatype.'\\'.$datatype;
 		$data_id = $this->data_id;
-		$data = $datatype_class::find($data_id);
-		return $data;
+		try {
+			# Needs better error handling for module updates
+			$data = $datatype_class::find($data_id);
+			return $data;
+		} catch(Exception $e) {
+			return false;
+		}
 	}
 	
 	public function datatype() {

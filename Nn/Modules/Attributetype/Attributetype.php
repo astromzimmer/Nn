@@ -33,7 +33,7 @@ class Attributetype extends Nn\Core\DataModel {
 		if(isset($name) && isset($datatype)){
 			$this->name = $name;
 			$this->datatype = $datatype;
-			$this->params = json_encode($params);
+			if(isset($params)) $this->params = json_encode($params);
 			return $this;
 		} else {
 			return false;
@@ -57,12 +57,16 @@ class Attributetype extends Nn\Core\DataModel {
 		$json = json_decode($this->params,true);
 		return (is_null($json)) ? array() : $json;
 	}
+
+	public function param($param) {
+		return $this->params()[$param];
+	}
 	
 	public function fill($name, $datatype, $params){
 		if(!empty($name) && !empty($datatype)){
 			$this->name = $name;
 			$this->datatype = $datatype;
-			$this->params = json_encode($params);
+			if(isset($params)) $this->params = json_encode($params);
 			return $this;
 		} else {
 			return false;

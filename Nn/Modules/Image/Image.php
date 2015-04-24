@@ -2,8 +2,22 @@
 
 namespace Nn\Modules\Image;
 
-class Image extends \Nn\Modules\Document\Document {
+class Image extends \Nn\Modules\Attachment\Attachment {
 	
+	protected $href;
+	
+	public static $SCHEMA = array(
+			'attribute_id' => 'integer',
+			'title' => 'short_text',
+			'description' => 'text',
+			'filename' => 'short_text',
+			'href' => 'text',
+			'type' => 'short_text',
+			'size' => 'float',
+			'created_at' => 'integer',
+			'updated_at' => 'integer'
+		);
+
 	public function exportProperties($excludes=array()) {
 		return array(
 			'id'			=>	$this->id,
@@ -18,10 +32,11 @@ class Image extends \Nn\Modules\Document\Document {
 		);
 	}
 
-	public function make($title, $description, $file){
+	public function make($title, $description, $href, $file){
 		if($this->attach_file($file)){
 			$this->title = $title;
 			$this->description = $description;
+			$this->href = $href;
 			return $this;
 		} else {
 			return false;
@@ -36,6 +51,10 @@ class Image extends \Nn\Modules\Document\Document {
 		return $this->_size;
 	}
 	
+	public function hasHref() {
+		return ($this->href && $this->href != '');
+	}
+
 	public function src($bound=null,$is_height=false,$is_bw=false) {
 		$filename = $this->filename;
 		if($is_bw) $filename = 'bw-'.$filename;
@@ -82,8 +101,7 @@ class Image extends \Nn\Modules\Document\Document {
 				break;
 		}
 		
-		$bounds = $this->getBounds($bound,$is_height);
-		if($this->writeImg($bounds,$is_height,$is_bw)) {
+		if($this->writeImg($bound,$is_height,$is_bw)) {
 			// success!
 			return true;
 		} else {
@@ -94,32 +112,54 @@ class Image extends \Nn\Modules\Document\Document {
 	}
 	
 	private function getBounds($bound,$is_height) {
-		if(!empty($this->_img)){
-			$width = imagesx($this->_img);
-			$height = imagesy($this->_img);
-			if(isset($bound)) {
-				if($is_height) {
-					$h = $bound;
-					$w = $width * ($h/$height);
-				} else {
-					$w = $bound;
-					$h = $height * ($w/$width);
-				}
+		$this->rotate();
+		$width = imagesx($this->_img);
+		$height = imagesy($this->_img);
+		if(isset($bound)) {
+			if($is_height) {
+				$h = $bound;
+				$w = $width * ($h/$height);
 			} else {
-				$w = $width;
-				$h = $height;
+				$w = $bound;
+				$h = $height * ($w/$width);
 			}
-			
-			return array(
-					'original_width' => $width,
-					'scaled_width'=> $w,
-					'original_height' => $height,
-					'scaled_height' => $h
-				);
+		} else {
+			$w = $width;
+			$h = $height;
+		}
+		
+		return array(
+				'original_width' => $width,
+				'scaled_width'=> $w,
+				'original_height' => $height,
+				'scaled_height' => $h
+			);
+	}
+
+	private function rotate() {
+		# Here we adjust orientation
+		$path = $this->path();
+		$exif = exif_read_data($path);
+		if(isset($exif['Orientation'])){
+			$deg = 0;
+			switch($exif['Orientation']) {
+				case 3:
+					# Rotate 180deg
+					$deg = 180;
+				case 6:
+					# Rotate 90deg clockwise
+					$deg = 90;
+				case 8:
+					# Rotate 90deg counter clockwise
+					$deg = -90;
+			}
+			$this->_img = imagerotate($this->_img,$deg,0);
 		}
 	}
 	
-	private function writeImg($bounds,$is_height,$is_bw) {
+	private function writeImg($bound,$is_height,$is_bw) {
+		if(empty($this->_img)) return false;
+		$bounds = $this->getBounds($bound,$is_height);
 		$new_img = imagecreatetruecolor($bounds['scaled_width'], $bounds['scaled_height']);
 		imagealphablending($new_img, false);
 		imagesavealpha($new_img, true);

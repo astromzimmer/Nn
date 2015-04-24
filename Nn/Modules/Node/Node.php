@@ -40,6 +40,7 @@ class Node extends Nn\Core\DataModel {
 			$this->author_id = (int)$author_id;
 			$this->parent_id = (int)$parent_id;
 			$this->nodetype_id = (int)$nodetype_id;
+			$this->visible = !Nn::settings('SAFE_PUBLISHING');
 			return $this;
 		} else {
 			return false;

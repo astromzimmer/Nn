@@ -9,11 +9,11 @@ class Mailer extends \PHPMailer {
 	public $to_name;
 	public $to_email;
 	// set to admin email by default. use a named {from} address to avoid spam filters; First Last <mail@domain.topdomain>
-	public $From = null;
-	public $FromName = null;
-	public $Sender = null;
+	public $From;
+	public $FromName;
+	public $Sender;
 	
-	public function setSender($from_email, $from_name) {
+	public function setSender($from_email=null, $from_name=null) {
 		$this->From = $from_email;
 		$this->FromName = $from_name;
 		$this->Sender = $from_email;
@@ -31,13 +31,13 @@ class Mailer extends \PHPMailer {
 				$this->Password = Nn::settings('SMTP_PASSWORD');
 			}
 		}
-		if(!$this->From) {
+		if(!isset($this->From)) {
 			$this->From = Nn::settings('FROM_EMAIL');
 		}
-		if(!$this->FromName) {
+		if(!isset($this->FromName)) {
 			$this->FromName = Nn::settings('FROM_NAME');
 		}
-		if(!$this->Sender) {
+		if(!isset($this->Sender)) {
 			$this->Sender = Nn::settings('FROM_EMAIL');
 		}
 		$this->Priority = $this->priority;

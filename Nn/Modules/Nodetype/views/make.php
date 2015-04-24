@@ -1,5 +1,5 @@
 <div id="left">
-	<?php Nn::partial('nodetype','_list',array('nodetypes'=>$nodetypes)) ?>
+	<?php Nn::partial('Nodetype','_list',array('nodetypes'=>$nodetypes)) ?>
 </div>
 <div id="right">
 	<div class="manage">
@@ -8,6 +8,10 @@
 			  <fieldset>
 				<legend><?php echo Nn::babel('Name') ?></legend>
 			    <input type="text" name="name" class="formfield" id="nameField" value="" />
+			  </fieldset>
+			  <fieldset>
+				<legend><?php echo Nn::babel('Can be used as ROOT') ?></legend>
+			    <input type="checkbox" name="can_be_root" value="1" class="formfield" id="canBeRootBox" /><br/>
 			  </fieldset>
 			  <?php if($attributetypes): ?>
 			  <fieldset>
@@ -19,7 +23,7 @@
 			  <?php endif; ?>
 			  <?php if($nodetypes): ?>
 			  <fieldset>
-				<legend><?php echo Nn::babel('Supported Nodetypes') ?></legend>
+				<legend><?php echo Nn::babel('Supported child Nodetypes') ?></legend>
 			    <?php foreach($nodetypes as $nodetype): ?>
 				    <input type="checkbox" name="nodetypes[]" value="<?php echo $nodetype->attr('id') ?>" class="formfield" id="peopleBox" /><?php echo $nodetype->attr('name'); ?><br/>
 				<?php endforeach; ?>

@@ -8,18 +8,22 @@ use Utils;
 
 class Datatype extends Nn\Core\DataModel {
 
+	public static $PARAMS = false;
+	protected $_attribute;
+	protected $_attributetype;
+
 	public function attributetype() {
 		if(!isset($this->attributetype)) {
 			$this->getAttributeAndType();
 		}
-		return $this->attributetype;
+		return $this->_attributetype;
 	}
 
 	public function attribute() {
 		if(!isset($this->attribute)) {
 			if(!$this->getAttributeAndType()) return false;
 		}
-		return $this->attribute;
+		return $this->_attribute;
 	}
 
 	public function node() {
@@ -45,8 +49,8 @@ class Datatype extends Nn\Core\DataModel {
 					'datatype'=>$this->modelName()
 				],1);
 				if($possible_attributetype) {
-					$this->attribute = $possible_attribute;
-					$this->attributetype = $possible_attributetype;
+					$this->_attribute = $possible_attribute;
+					$this->_attributetype = $possible_attributetype;
 					return true;
 				}
 			}

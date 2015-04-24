@@ -3,10 +3,10 @@
 defined('DEVELOPMENT_ENV') ? null : define('DEVELOPMENT_ENV', true);
 
 // here goes your domain URL
-defined('DOMAIN') ? null : define("DOMAIN", "http://nn:8888");
+defined('DOMAIN') ? null : define("DOMAIN", "http://nn");
 
 // name of your site, which will be displayed in the browser title field
-defined('PAGE_NAME') ? null : define("PAGE_NAME", "Astrom / Zimmer");
+defined('PAGE_NAME') ? null : define("PAGE_NAME", "Nn");
 
 // time and date format definitions
 defined('DATE_FORMAT') ? null : define("DATE_FORMAT", "%Y.%m.%d");
@@ -22,7 +22,7 @@ defined('DOCUMENTS') ? null : define('DOCUMENTS', ASSETS.DS.'Document');
 defined('IMAGES') ? null : define('IMAGES', ASSETS.DS.'Image');
 
 // here reassign caching to another directory, if you really want
-defined('CACHE_DIR') ? null : define('CACHE_DIR', ROOT.DS.'cache');
+defined('CACHE_DIR') ? null : define('CACHE_DIR', ROOT.DS.'tmp'.DS.'cache');
 // set to value of seconds if you want the cache to expire
 defined('CACHE_EXPIRE') ? null : define('CACHE_EXPIRE', false);
 
@@ -31,14 +31,14 @@ defined('SAFE_PUBLISHING') ? null : define('SAFE_PUBLISHING', false);
 
 // MAIL CONFIG
 // defined('SMTP_MODE') ? null : define("SMTP_MODE", true);
-// defined('SMTP_HOST') ? null : define("SMTP_HOST", "mail.anthon.se");
+// defined('SMTP_HOST') ? null : define("SMTP_HOST", "");
 // defined('SMTP_PORT') ? null : define("SMTP_PORT", "25");
-// defined('SMTP_USERNAME') ? null : define("SMTP_USERNAME", "everything@anthon.se");
-// defined('SMTP_PASSWORD') ? null : define("SMTP_PASSWORD", "mamma@39");
+// defined('SMTP_USERNAME') ? null : define("SMTP_USERNAME", "");
+// defined('SMTP_PASSWORD') ? null : define("SMTP_PASSWORD", "");
 // // enter the name you want your contact emails to be sent from
 // defined('FROM_NAME') ? null : define("FROM_NAME", PAGE_NAME." Mailer");
 // // enter the email address you want your contact emails to be sent from
-// defined('FROM_EMAIL') ? null : define("FROM_EMAIL", "everything@anthon.se");
+// defined('FROM_EMAIL') ? null : define("FROM_EMAIL", "");
 
 // DATABASE SETUP
 // SQLite

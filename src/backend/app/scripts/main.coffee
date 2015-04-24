@@ -1,5 +1,10 @@
 $(document).ready ->
 
+	if $("base")
+		window.domain = $("base").attr("href")
+	else
+	  	window.domain = "http://" + document.domain
+
 	$document = $(document)
 	$left = $('#left')
 	$flash = $('#flash')
@@ -8,6 +13,9 @@ $(document).ready ->
 		$this = $(this)
 		$this.hide()
 	.delay(2400).fadeOut()
+
+	# Retrieve #left scroll position
+	_left_scroll = parseInt($.cookie('left_scroll'))
 
 	# Init code editor
 	$code_editor = $('#code-editor')
@@ -30,13 +38,16 @@ $(document).ready ->
 		$branches = $('.tree li')
 		tree_type = $tree.attr 'id'
 		expanded_branches_raw = $.cookie('expanded_'+tree_type)
-		expanded_branches = if expanded_branches_raw then JSON.parse($.cookie('expanded_'+tree_type)) else []
+		expanded_branches = if expanded_branches_raw then JSON.parse(expanded_branches_raw) else []
 		# console.log $.cookie('expanded_'+tree_type)
 		$branches.each ()->
 			$this = $(this)
 			id = $this.data('id')
 			if id in expanded_branches
 				expandBranch $this,0
+				setTimeout ->
+					$left[0].scrollTop = _left_scroll
+				,200
 
 		$("ul li .expander").click ->
 			$this = $(this)
@@ -52,11 +63,20 @@ $(document).ready ->
 				$this = $(this)
 				if $this.hasClass('expanded')
 					expanded_branches.push $this.data('id')
-			$.cookie 'domain','.'+domain
-			$.cookie 'path','/'
+			$.cookie 'domain',domain
+			$.cookie 'path',window.location.pathname
 			$.cookie 'expanded_'+tree_type,JSON.stringify(expanded_branches)
 			# console.log $.cookie()
 			false
+
+	$left.on 'scroll', ->
+		$this = $(this)
+		clearTimeout $this.data('scrollTimer')
+		$this.data 'scrollTimer', setTimeout ->
+			$.cookie 'domain',domain
+			$.cookie 'path',window.location.pathname
+			$.cookie 'left_scroll',$this[0].scrollTop
+		,250
 
 	$("#left ul.sortable").sortable
 		connectWith: '#left ul.sortable'
@@ -149,13 +169,15 @@ $(document).ready ->
 
 	$("select#datatypeField").change (e) ->
 		$this = $(this)
+		$("#paramsContainer").html ''
 		$option = $('option:selected',$this)
 		url_param = $option.data 'url_param'
-		$("#optionsContainer").html ''
-		$.ajax
-			url: '/admin/'+url_param+'/_options'
-			success: (response)->
-				$("#optionsContainer").html response
+		if url_param
+			$.ajax
+				url: '/admin/attributetypes/_params/'+url_param
+				success: (response)->
+					console.log response
+					$("#paramsContainer").html response
 
 	$("textarea.md").aMD
 		imgPath: "/backnn/imgs/static/aMD"

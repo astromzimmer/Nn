@@ -1,0 +1,58 @@
+- foreach($roots as $rt)
+	- if($children = $rt->children())
+		.root(id="{{$rt->title()}}")
+			.roll(id="{{$rt->title()}}Roll")
+				- foreach($children as $child):
+					.page(id="{{$child->slug()}}",class="{{$child->type()}}")
+						- if($slideshows = $child->children_by_type('Slideshow')):
+							- foreach($slideshows as $slideshow):
+								:php
+									|Nn::partial('Publik','_slideshow',array('slideshow'=>$slideshow))
+						- elseif($foldouts = $child->children_by_type('Foldout')):
+							- foreach($foldouts as $foldout):
+								:php
+									|Nn::partial('Publik','_foldout',array('foldout'=>$foldout))
+						- elseif($attributes = $child->attributes()):
+							- if($child->type() == 'Fullscreen Section' && $images = $child->attributes('Image')):
+								.images
+									- foreach($images as $image):
+										:php
+											|Nn::partial($image->public_view(),array(strtolower($image->datatype())=>$image->data()))
+							- else:
+								.attributes
+									- foreach($attributes as $attribute):
+										:php
+											|Nn::partial($attribute->public_view(),array(strtolower($attribute->datatype())=>$attribute->data()))
+							- endif;
+						- endif;
+			.menu
+				- foreach($children as $child):
+					.item
+						.btn(data-apage="{{$rt->title()}}",data-apage-target="{{$child->slug()}}")= $child->title()
+
+#top
+	- foreach($roots as $rt)
+		- if($root == $rt->title()):
+			a.root.btn.active(href="/{{$lang.'/'.$rt->title()}}",data-state="{{$rt->title()}}",class="{{$rt->title()}}")
+				.word= $rt->title()
+		- else:
+			a.root.btn(href="/{{$lang.'/'.$rt->title()}}",data-state="{{$rt->title()}}",class="{{$rt->title()}}")
+				.word= $rt->title()
+		- endif;
+	.toggler.fa.fa-bars
+
+#language
+	- foreach($languages as $language):
+		- if($lang == $language->title()):
+			a.language.active(href="/{{$language->title()}}")= $language->title()
+		- else:
+			a.language(href="/{{$language->title()}}")= $language->title()
+		- endif;
+	a(href="https://app.kleio.com/login?lang={{strtolower($lang)}}")= Nn::babel('Log in')
+
+- if($logo):
+	#logo
+		a(href="{{DOMAIN}}",data-state="index")
+			:php
+				|echo $logo->data()->tag(124)
+- endif;

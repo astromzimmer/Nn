@@ -1,5 +1,5 @@
 <div id="left">
-	<?php Nn::partial('attributetype','_list',array('attributetypes'=>$attributetypes,'attributetype'=>$attributetype)) ?>
+	<?php Nn::partial('Attributetype','_list',array('attributetypes'=>$attributetypes,'attributetype'=>$attributetype)) ?>
 </div>
 <div id="right">
 	<div class="manage">
@@ -13,9 +13,12 @@
 				<legend><?php echo Nn::babel('Datatype') ?></legend>
 			    <select name="datatype" class="formfield" id="datatypeField" />
 			    	<?php foreach($datatypes as $datatype): ?>
-				    	<option value="<?php echo $datatype; ?>" <?php if($datatype == $attributetype->attr('datatype')) { echo "selected=\"selected\""; } ?>><?php echo $datatype ?></option>
+				    	<option value="<?php echo $datatype; ?>" data-url_param="<?php echo $datatype ?>" <?php if($datatype == $attributetype->attr('datatype')) { echo "selected=\"selected\""; } ?>><?php echo $datatype ?></option>
 			    	<?php endforeach; ?>
 			    </select>
+			    <span id="paramsContainer">
+			    	<?php Nn::partial('Attributetype','_params',array('params'=>$datatype_params)); ?>
+			    </span>
 			  </fieldset>
 			  <div class="submit">
 			  <a href="<?php echo DOMAIN,DS,'admin',DS,'attributetypes',DS,'delete',DS,$attributetype->attr('id') ?>" class="delete button half float"><?php echo Nn::babel('Delete') ?></a>
