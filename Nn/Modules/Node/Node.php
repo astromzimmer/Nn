@@ -85,8 +85,12 @@ class Node extends Nn\Core\DataModel {
 	}
 
 	public function timestamp() {
-		$timestamp = $this->attribute_by_datatype('Timestamp');
-		$timestamp = !$timestamp ? $this->created_at : $timestamp->data()->attr('timestamp');
+		$integer = $this->attribute_by_datatype('Integer');
+		if($integer && $integer->attributetype()->param('format') == 'timestamp') {
+			$timestamp = $integer->data()->attr('number');
+		} else {
+			$timestamp = $this->created_at;
+		}
 		return $timestamp;
 	}
 	

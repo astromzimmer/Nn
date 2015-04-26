@@ -3,7 +3,6 @@
 namespace Nn\Modules\Document;
 use Nn;
 use Utils;
-use Nn;
 
 class Document extends Nn\Modules\Attachment\Attachment {
 
