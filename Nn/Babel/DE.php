@@ -47,9 +47,10 @@
 		'successfully logged out'				=> 'Erfolgreich abgemeldet',
 
 		# buttons
+		'submit'			=> 'Übermitteln',
 		'save'				=> 'Speichern',
 		'cancel'			=> 'Cancel',
-		'add'				=> '',
+		'add'				=> 'Hinzufügen',
 		'new node'			=> 'Element erstellen',
 		'new node in'		=> 'Element erstellen in',
 		'edit'				=> 'Editieren',
@@ -66,6 +67,11 @@
 		'first name'				=> 'Vorname',
 		'last name'					=> 'Nachname',
 		'email'						=> 'Email',
+		'street'					=> 'Strasse',
+		'zip'						=> 'Postleitzahl',
+		'city'						=> 'Ort',
+		'country'					=> 'Land',
+		'language'					=> 'Sprache',
 		'title'						=> 'Titel',
 		'type'						=> 'Typ',
 		'role'						=> 'Rolle',
@@ -90,5 +96,22 @@
 		'news'					=> 'Meldungen',
 		'latest news'			=> 'Aktuelle Meldungen',
 		'publications'			=> 'Publikationen',
+		'thank you'				=> 'Vielen Dank',
+
+		'yearly subscription fee'	=> 'Jahresgebühr',
+		'period'					=> 'Periode',
+		'card number'				=> 'Kartennummer',
+		'name on card'				=> 'Karteneinhaber',
+		'expiry date'				=> 'Läuft ab',
+
+		'payment_address_title' => 'Address-Update',
+		'payment_address_info' => 'Bevor Du die Zahlung auslöst überprüfe und ergänze bitte Deine Kontaktinformationen um sicher zu sein, dass alles up to date ist.',
+		'payment_pay_title' => 'Zahlungsformular',
+		'payment_pay_info' => 'Wir wickeln die Zahlung via <a href="http://stripe.com">Stripe</a> ab. Deine Kreditkarten-Daten werden im Hintergrund verschlüsselt an <a href="http://stripe.com">Stripe</a> übermittelt, und wie spechern sie nicht auf unserem Server ab.',
+		'payment_done_info'	=> 'Die Zahlung war erfolgreich. Ein Bestätigungsmail wurde an Deine Email Adresse versandt.',
+
+		'payment_confirmation_email_subject' => 'kleio - Abonnementzahlung war erfolgreich',
+		'payment_confirmation_email_html' => '<h4>Die Zahlung war erfolgreich!</h4><br>Dein kleio Abonnement für das nächste Jahr ist bezahlt.<br><br>Es ist toll, dass Du weiter mit kleio arbeitest und wir hoffen, dass es Dir genauso gefällt wie uns!<br><br><br>/ Dein kleio Team',
+		'payment_confirmation_email_text' => "Die Zahlung war erfolgreich!\r\n\r\n\r\nDein kleio Abonnement für das nächste Jahr ist bezahlt.\r\n\r\nEs ist toll, dass Du weiter mit kleio arbeitest und wir hoffen, dass es Dir genauso gefällt wie uns!\r\n\r\n\r\n/ Dein kleio Team",
 
 	];

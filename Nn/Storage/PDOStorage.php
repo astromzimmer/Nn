@@ -15,15 +15,18 @@ class PDOStorage implements StorageInterface {
 			'long_text' => 'LONGTEXT',
 			'float' => 'FLOAT',
 			'integer' => 'INTEGER',
+			'date' => 'DATE',
+			'datetime' => 'DATETIME',
 			'bool' => 'BOOLEAN'
 		);
 
-	public function __construct() {
+	public function __construct($type=null,$host=null,$port=null,$name=null,$user=null,$password=null) {
+		if(!isset($type)) die('No DB type defined');
 		$this->backup_path = ROOT.DS.'db';
 		if(!is_dir($this->backup_path)) {
 			mkdir($this->backup_path);
 		}
-		switch(strtolower(DB_TYPE)) {
+		switch(strtolower($type)) {
 			case "sqlite" :
 				try {
 					$this->dbc = new PDO('sqlite:'.$this->backup_path.DS.'database.sqlite3');
@@ -40,14 +43,20 @@ class PDOStorage implements StorageInterface {
 				}
 			break;
 			case "mysql" :
-				$host = DB_HOST;
-				$port = DB_PORT;
-				$name = DB_NAME;
-				$username = DB_USER;
-				$password = DB_PASSWORD;
+				if(!isset($host) || !isset($port) || !isset($name) || !isset($user) || !isset($password)) {
+					if(Nn::settings('DB_HOST') && Nn::settings('DB_PORT') && Nn::settings('DB_NAME') && Nn::settings('DB_USER') && Nn::settings('DB_PASSWORD')) {
+						$host = Nn::settings('DB_HOST');
+						$port = Nn::settings('DB_PORT');
+						$name = Nn::settings('DB_NAME');
+						$user = Nn::settings('DB_USER');
+						$password = Nn::settings('DB_PASSWORD');
+					} else {
+						die('DB config error');
+					}
+				}
 				try {
 					$this->dbc = new PDO("mysql:host=$host;port=$port;dbname=$name",
-						$username,
+						$user,
 						$password,
 						array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 					$this->dbc->setAttribute(
@@ -63,7 +72,7 @@ class PDOStorage implements StorageInterface {
 				}
 			break;
 			default:
-				echo "please set up your database in /config/config.php.";
+				die("Please set up your database correctly.");
 			break;
 		}
 	}
@@ -134,9 +143,9 @@ class PDOStorage implements StorageInterface {
 			$limit = $subset;
 		}
 		$sql = "SELECT * FROM " . $table_name;
-		$sql .= ' ORDER BY';
-		if(isset($order_by)) $sql .= ' '.$order_by.',';
-		$sql .= ' created_at';
+		if(isset($order_by)) {
+			$sql .= ' ORDER BY '.$order_by;
+		}
 		if(isset($limit)) $sql .= " LIMIT ".$limit;
 		if(isset($offset)) $sql .= " OFFSET ".$offset;
 		$result = $this->find_by_sql($sql,array(),$table_name,$model,true);
@@ -179,9 +188,9 @@ class PDOStorage implements StorageInterface {
 			}
 			$first = false;
 		}
-		$sql .= ' ORDER BY';
-		if(isset($order_by)) $sql .= ' '.$order_by.',';
-		$sql .= ' created_at';
+		if(isset($order_by)) {
+			$sql .= ' ORDER BY '.$order_by;
+		}
 		# TODO
 		if(isset($limit)) $sql .= ' LIMIT '.$limit;
 		if(isset($offset)) $sql .= ' OFFSET '.$offset;

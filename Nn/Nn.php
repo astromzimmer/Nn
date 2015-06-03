@@ -11,7 +11,8 @@ class Nn extends Nn\Core\Singleton {
 	protected $cache;
 	protected $mailer;
 	protected $router;
-	protected $storage;
+	protected $storage_name;
+	protected $storages;
 	protected $dictionary;
 
 	protected $SETTINGS;
@@ -71,7 +72,7 @@ class Nn extends Nn\Core\Singleton {
 		self::instance()->cache = $cache;
 		self::instance()->mailer = $mailer;
 		self::instance()->router = $router;
-		self::instance()->storage = $storage;
+		self::instance()->storage(null,$storage);
 		self::instance()->dictionary = $dictionary;
 		self::instance()->tracker = $tracker;
 
@@ -100,7 +101,6 @@ class Nn extends Nn\Core\Singleton {
 			$editor->save();
 		}
 	}
-
 
 	public static function referer() {
 		return self::instance()->session->referer();
@@ -164,8 +164,21 @@ class Nn extends Nn\Core\Singleton {
 		return self::instance()->session;
 	}
 
-	public static function storage() {
-		return self::instance()->storage;
+	public static function storage($name=null,$storage=null) {
+		if(isset($name)) {
+			$name = 'default';
+		} else {
+			$name = self::instance()->storage_name;
+		}
+		if(isset($storage)) {
+			return self::instance()->storages[$name] = $storage;
+		} else {
+			return self::instance()->storages[$name];
+		}
+	}
+
+	public static function switchStorage($name=null) {
+		if(isset($name)) self::instance()->storage_name;
 	}
 
 	public static function setLanguage($lang) {

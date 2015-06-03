@@ -26,12 +26,14 @@ abstract class DataModel extends Model {
 		if(!is_array($query)) {
 			$query = array();
 		}
+		if(!isset($order_by)) $order_by = 'created_at';
 		if(property_exists(get_called_class(), 'visible') && Nn::settings('HIDE_INVISIBLE') && $respect_invisible) $query['visible'] = 1;
 		$result = Nn::storage()->count(static::collectionName(),get_called_class(),$group,$query);
 		return array_shift($result);
 	}
 
 	public static function find_all($subset=null,$order_by=null,$respect_invisible=true) {
+		if(!isset($order_by)) $order_by = 'created_at';
 		if(property_exists(get_called_class(), 'visible') && Nn::settings('HIDE_INVISIBLE') && $respect_invisible) {
 			$query = array('visible'=>1);
 			return Nn::storage()->find_by_attribute(static::collectionName(),get_called_class(),$query,$subset,$order_by);
@@ -48,6 +50,7 @@ abstract class DataModel extends Model {
 			}
 			$subset = 1;
 		}
+		if(!isset($order_by)) $order_by = 'created_at';
 		if(property_exists(get_called_class(), 'visible') && Nn::settings('HIDE_INVISIBLE') && $respect_invisible) $query['visible'] = 1;
 		$result = Nn::storage()->find_by_attribute(static::collectionName(),get_called_class(),$query,$subset,$order_by);
 		return (is_array($result) && $subset == 1) ? array_shift($result) : $result;
@@ -55,6 +58,7 @@ abstract class DataModel extends Model {
 
 	public static function search($search,$query=array(),$subset=null,$order_by=null,$respect_invisible=true) {
 		if(property_exists(get_called_class(), 'visible') && Nn::settings('HIDE_INVISIBLE') && $respect_invisible) $query['visible'] = 1;
+		if(!isset($order_by)) $order_by = 'created_at';
 		return Nn::storage()->search(static::collectionName(),get_called_class(),$search,$query,$subset,$order_by);
 	}
 

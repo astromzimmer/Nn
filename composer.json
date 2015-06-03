@@ -15,7 +15,8 @@
         "phpmailer/phpmailer": "~5.2",
         "ruudk/twitter-oauth": "~1.0",
         "pagon/jade": "~1.0",
-        "ircmaxell/password-compat": "~1.0"
+        "ircmaxell/password-compat": "~1.0",
+        "stripe/stripe-php": "2.*"
     },
 
     "autoload": {
