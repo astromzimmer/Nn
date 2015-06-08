@@ -55,7 +55,7 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 		return ($this->href && $this->href != '');
 	}
 
-	public function src($bound=null,$is_height=false,$is_bw=false) {
+	public function src($bound=null,$is_height=false,$is_bw=false,$cmpr=null) {
 		$filename = $this->filename;
 		if($is_bw) $filename = 'bw-'.$filename;
 		if($is_height) $filename = 'h-'.$filename;
@@ -73,13 +73,13 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 		$path = str_replace($this->publicDir(), $this->dir(), $src);
 		$size = $this->size($path);
 		if(isset($bound)) {
-			 $retina_src = $this->src($bound*2,$is_height,$is_bw);
-			 $src_attr .= 'data-retina_src="'.$retina_src.'" ';
+			 $retina_src = $this->src($bound*2,$is_height,$is_bw,40);
+			 $src_attr .= 'srcset="'.$src.','.$retina_src.' 2x" ';
 		}
 		return '<img '.$src_attr.'alt="'.$this->title.'" width="'.$size[0].'" height="'.$size[1].'">';
 	}
 	
-	public function generate($bound,$is_height,$is_bw) {
+	public function generate($bound,$is_height,$is_bw,$comp=null) {
 		$path = $this->path();
 		if(!file_exists($path)) {
 			# Error handling
@@ -101,7 +101,7 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 				break;
 		}
 		
-		if($this->writeImg($bound,$is_height,$is_bw)) {
+		if($this->writeImg($bound,$is_height,$is_bw,$comp)) {
 			// success!
 			return true;
 		} else {
@@ -157,9 +157,13 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 		}
 	}
 	
-	private function writeImg($bound,$is_height,$is_bw) {
+	private function writeImg($bound,$is_height,$is_bw,$comp=null) {
 		if(empty($this->_img)) return false;
 		$bounds = $this->getBounds($bound,$is_height);
+		
+		// Set sth up to apply for PNG
+		$compression = isset($comp) ? $comp : 72;
+
 		$new_img = imagecreatetruecolor($bounds['scaled_width'], $bounds['scaled_height']);
 		imagealphablending($new_img, false);
 		imagesavealpha($new_img, true);
@@ -180,7 +184,7 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 			case "image/jpg":
 			case "image/jpeg":
 			case "image/pjpeg":
-				imagejpeg($new_img, $target_path, 100);
+				imagejpeg($new_img, $target_path, $compression);
 				break;
 			case "image/png":
 				imagepng($new_img, $target_path, 3);
