@@ -17,7 +17,7 @@
     <?php
       $platform = (Utils::is_mobile()) ? 'mobile' : 'desktop';
       $files = [
-        'css/public.css',
+        'css/main.css',
       ];
       echo Nn::minify()->cssTags($files,'concat_'.$platform.'.css');
     ?>
