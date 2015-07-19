@@ -29,6 +29,15 @@
 				<?php endforeach; ?>
 			  </fieldset>
 			  <?php endif; ?>
+			  <fieldset>
+					<legend><?php echo Nn::babel('Icon') ?>:</legend>
+					<select name="icon" class="iconselect fontawesome" />
+						<option value="null"><?php echo Nn::babel('None') ?></option>
+						<?php foreach($icons as $key=>$val): ?>
+						<option value="<?php echo $key ?>"><?php echo $val ?></option>
+						<?php endforeach; ?>
+					</select>
+				</fieldset>
 			  <br/>
 			  <div class="submit">
 			    <button type="submit" name="submit" id="submit" class="half"><?php echo Nn::babel('save') ?></button>  

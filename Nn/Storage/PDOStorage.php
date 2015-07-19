@@ -298,12 +298,20 @@ class PDOStorage implements StorageInterface {
 		$sql = "UPDATE " . $table_name . " SET ";
 		$sql .= join(", ", $keys);
 		$sql .= " WHERE id = " . $obj->attr('id');
-		$statement = $this->dbc->prepare($sql);
 		try {
+			$statement = $this->dbc->prepare($sql);
 			$statement->execute($vals);
 			Nn::cache()->flush($table_name);
 			return true;
 		} catch(\PDOException $e) {
+			$message = $e->getMessage();
+			if(strpos($message,'no such column: ') !== false) {
+				// We find the column name at char 50 of the MySQL error message
+				$column_name = substr($message,50);
+				if($this->addColumn($table_name,($obj::$SCHEMA),$column_name)) {
+					return $this->update($table_name,$obj);
+				}
+			}
 			die($e->getMessage());
 		}
 	}
@@ -337,6 +345,30 @@ class PDOStorage implements StorageInterface {
 		$sql .= (strtolower(DB_TYPE) == 'mysql') ? ' AUTO_INCREMENT' : '';
 		$sql .= ", ";
 		$sql .= join(",", $mapped_schema).")";
+		try {
+			$this->dbc->exec($sql);
+			return true;
+		} catch(PDOException $e) {
+			return false;
+		}
+	}
+
+	private function addColumn($table_name,$schema,$column_name) {
+		$previous_column_name = null;
+		$column_mapping = null;
+		foreach($schema as $attribute => $mapping) {
+			if($column_name == $attribute) {
+				$column_mapping = $this->schemify[$mapping];
+				break;
+			}
+			$previous_column_name = $attribute;
+		}
+		$sql = "ALTER TABLE ".$table_name;
+		$sql .= " ADD ".$column_name." ".$column_mapping;
+		if($previous_column_name) {
+			// $sql .= " AFTER ".$previous_column_name;
+		}
+		// die($sql);
 		try {
 			$this->dbc->exec($sql);
 			return true;

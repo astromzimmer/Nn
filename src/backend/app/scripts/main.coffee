@@ -52,7 +52,7 @@ $(document).ready ->
 		$("ul li .expander").click ->
 			$this = $(this)
 			$li = $this.closest('li')
-			$children = $this.siblings('ul.submenu')
+			$children = $this.siblings('ul')
 			if $li.hasClass("expanded")
 				collapseBranch $li
 			else
@@ -116,6 +116,21 @@ $(document).ready ->
 			complete: (feedback) ->
 				$this.toggleClass('visible')
 		return false
+
+	.on 'click', 'ul li .expander', (e)->
+		$this = $(this)
+		$li = $this.closest('li')
+		$children = $this.siblings('ul')
+		if $li.hasClass("expanded")
+			collapseBranch $li
+		else
+			expandBranch $li
+		# Persist node menu state
+		expanded_branches = []
+		$branches.each ()->
+			$this = $(this)
+			if $this.hasClass('expanded')
+				expanded_branches.push $this.data('id')
 
 	.on 'click','.collapse',(e)->
 		e.preventDefault()
@@ -190,7 +205,7 @@ $(document).ready ->
 expandBranch = ($n,t)->
 	duration = t or 100
 	$indicator = $n.children('.expander')
-	$submenu = $n.children('.submenu')
+	$submenu = $n.children('ul')
 	$n.addClass 'expanded'
 	$indicator.addClass 'expanded'
 	$submenu.slideDown duration
@@ -198,7 +213,7 @@ expandBranch = ($n,t)->
 collapseBranch = ($n,t)->
 	duration = t or 100
 	$indicator = $n.children('.expander')
-	$submenu = $n.children('.submenu')
+	$submenu = $n.children('ul')
 	$n.removeClass 'expanded'
 	$indicator.removeClass 'expanded'
 	$submenu.slideUp duration

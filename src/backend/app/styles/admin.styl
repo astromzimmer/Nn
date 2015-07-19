@@ -1,5 +1,5 @@
 @import '_core'
-@import '_fonts'
+// @import '_fonts'
 @import '_form'
 @import '_scrollbars'
 @import '_overrides'
@@ -17,7 +17,7 @@ $spacerBG = darken($itemBG,6%)
 
 $leftWidth = 372px
 // $listWidth = 378px
-$liHeight = 48px
+$liHeight = 42px
 
 $admin_height = 48px
 
@@ -26,10 +26,10 @@ $collapsedHeight = 26px
 $shadowColour = darken($spacerBG,42%)
 
 muli()
-	font-family 'Muli'
+	font-family 'Roboto'
 	font-size 12px
 	letter-spacing .2em
-	font-weight 700
+	font-weight 400
 
 body
 	background-color $bodyBG
@@ -130,6 +130,9 @@ body
 			left 0px
 			width 100%
 	
+	.fontawesome
+		font-family 'FontAwesome'
+	
 	#flash
 		position fixed
 		top 12px
@@ -186,7 +189,7 @@ body
 					clickable(none,wet_asphalt,wet_asphalt,white)
 					width 100%
 					height $admin_height
-					line-height $admin_height
+					line-height $admin_height + 4
 					padding 0 24px
 					a
 						display inline-block
@@ -196,6 +199,9 @@ body
 						display block
 						position absolute
 						top 0
+					&.main
+						font-size 1.2em
+						font-weight 700
 
 		.impressum
 			display none
@@ -349,7 +355,6 @@ body
 					li
 						clickable($itemBG,lighten($itemBG,42%))
 						position relative
-						color #AAA
 						border-top 1px solid $spacerBG
 						&:last-child
 							border-bottom 1px solid $spacerBG
@@ -387,16 +392,16 @@ body
 							height $liHeight
 							padding 0 48px 0 32px
 							border-right 1px solid $spacerBG
-							color black
 							font-weight 300
-							line-height $liHeight
+							line-height $liHeight + 4
 							// &.active
 							&.focus
 								font-weight 700
 							a
 								ellipsis()
-								display inline-block
 								width 100%
+								span
+									display inline-block
 						.add
 						.expander
 							border-right 1px solid $spacerBG
@@ -409,6 +414,9 @@ body
 						&.active
 							.submenu
 								border-color belize_hole
+						&.active
+						&:hover
+							// background-color white
 						&.focus
 							background-color $rightBG
 							.label
@@ -416,15 +424,15 @@ body
 							.submenu
 								.label
 									border-color $spacerBG
-					&.submenu
-						display none
-						border 0px solid $shadowColour
-						border-width 0 0 0 6px
-						&.expanded
-							display block
-						li
-							&:last-child
-								border-bottom none
+						ul
+							display none
+							border 0px solid $shadowColour
+							border-width 0 0 0 6px
+							&.expanded
+								display block
+							li
+								&:last-child
+									border-bottom none
 		
 		#right
 			background-color $rightBG

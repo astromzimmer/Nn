@@ -7,7 +7,10 @@
 	<div class="handle" data-tooltip="<?php echo Nn::babel('Sort') ?>"></div>
 	<a class="link" href="<?php echo $n->permalink() ?>" target="_blank" data-tooltip="<?php echo Nn::babel('Public link') ?>"></a>
 	<div class="label<?php if($is_active) echo ' active'; if($is_in_focus) echo ' focus' ?>">
-		<a href="<?php echo DOMAIN.'/admin/nodes/view/'.$n->attr('id') ?>"><?php echo $n->attr('title') ?></a>
+		<a href="<?php echo DOMAIN.'/admin/nodes/view/'.$n->attr('id') ?>">
+			<span class="fa <?php echo $n->nodetype()->attr('icon') ?>"></span>
+			<?php echo $n->attr('title') ?>
+		</a>
 	</div>
 	<?php if($n->nodetype()->nodetypes()): ?>
 	<ul id="<?php echo $n->attr('id') ?>_nodes" class="submenu sortable<?php if($is_active) echo ' expanded' ?>">

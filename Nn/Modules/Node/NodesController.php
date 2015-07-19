@@ -70,7 +70,7 @@ class NodesController extends Nn\Core\Controller {
 	
 	function make($in=null,$parent_id=null) {
 		$nodes = Node::find(array('parent_id'=>0),null,'position');
-		if(isset($parent_id)) {
+		if(isset($parent_id) && $parent_id != 0) {
 			$parent = Node::find($parent_id);
 			$nodetypes = $parent->nodetype()->nodetypes();
 		} else {
@@ -88,8 +88,6 @@ class NodesController extends Nn\Core\Controller {
 	
 	function edit($id=null) {
 		$nodes = Node::find(array('parent_id'=>0),null,'position');
-		$parent = Node::find($parent_id);
-		$nodetypes = $parent->nodetype()->nodetypes();
 		if(isset($id) && $id != 0) {
 			$node = Node::find($id);
 		} else {

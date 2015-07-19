@@ -3,22 +3,22 @@
 namespace Nn\Modules\API;
 use Nn\Modules\Node\Node as Node;
 use Nn;
+use Utils;
 
 class ApiController extends Nn\Core\Controller {
 	
 	function before() {
-		Nn::cache(['headlines']);
 		header('Access-Control-Allow-Origin: *');
 	}
 
-	function artists() {
-		$node = Node::find_by_title('artists');
-		$node = $node->export();
-		$artists = $node['ownNode'];
-		$json_data = json_encode($artists);
+	function nodes($start=null) {
+		Nn::authenticate();
+		$nodes = Node::find(array('parent_id'=>0),null,'position');
+		$nodes = Utils::exportAll($nodes);
+		$json_data = json_encode($nodes);
 		$this->renderMode('raw');
 		$this->setTemplateVars([
-				'raw'=>$json_data
+				'data'=>$json_data
 			]);
 	}
 	

@@ -8,9 +8,21 @@ use Nn;
 use Utils;
 
 class NodetypesController extends Nn\Core\Controller {
-	
+
+	protected $icons;
+
 	function before() {
 		Nn::authenticate();
+
+		$this->icons = [
+			'fa-user'=> '&#xf007;',
+			'fa-child'=> '&#xf1ae;',
+			'fa-picture-o'=> '&#xf03e;',
+			'fa-asterisk'=> '&#xf069;',
+			'fa-folder-open'=> '&#xf07c;',
+			'fa-file-text'=> '&#xf15c;',
+			'fa-location-arrow'=> '&#xf124;',
+		];
 	}
 	
 	function index() {
@@ -43,18 +55,19 @@ class NodetypesController extends Nn\Core\Controller {
 	
 	function make() {
 		$this->setTemplateVars([
-				'nodetypes'=> Nodetype::find_all(null,'position')
-			]);
-		$this->setTemplateVars([
-				'attributetypes'=> Attributetype::find_all(null,'position')
+				'nodetypes'=> Nodetype::find_all(null,'position'),
+				'attributetypes'=> Attributetype::find_all(null,'position'),
+				'icons'=> $this->icons
 			]);
 	}
 	
 	function create() {
+		$name = isset($_POST['name']) ? $_POST['name'] : null;
+		$icon = isset($_POST['icon']) && $_POST['icon'] != 'null' ? $_POST['icon'] : false;
 		$attributetypes = isset($_POST['attributetypes']) ? $_POST['attributetypes'] : null;
 		$nodetypes = isset($_POST['nodetypes']) ? $_POST['nodetypes'] : null;
 		$can_be_root = isset($_POST['can_be_root']) ? $_POST['can_be_root'] : 0;
-		$nodetype = new Nodetype($_POST['name'],$can_be_root,$attributetypes,$nodetypes);
+		$nodetype = new Nodetype($name,$icon,$can_be_root,$attributetypes,$nodetypes);
 		if($nodetype->save()) {
 			Utils::redirect_to(DOMAIN.'/admin/nodetypes');
 		} else {
@@ -66,16 +79,20 @@ class NodetypesController extends Nn\Core\Controller {
 		$this->setTemplateVars([
 				'nodetypes'=> Nodetype::find_all(null,'position'),
 				'attributetypes'=> Attributetype::find_all(null,'position'),
-				'nodetype'=> Nodetype::find($id)
+				'nodetype'=> Nodetype::find($id),
+				'icons'=> $this->icons
 			]);
 	}
 	
 	function update($id=null) {
+		$name = isset($_POST['name']) ? $_POST['name'] : null;
+		$icon = isset($_POST['icon']) && $_POST['icon'] != 'null' ? $_POST['icon'] : false;
 		$attributetypes = isset($_POST['attributetypes']) ? $_POST['attributetypes'] : array();
 		$nodetypes = isset($_POST['nodetypes']) ? $_POST['nodetypes'] : array();
 		$can_be_root = isset($_POST['can_be_root']) ? $_POST['can_be_root'] : 0;
 		$nodetype = Nodetype::find($id);
-		$nodetype->attr('name',$_POST['name']);
+		$nodetype->attr('name',$name);
+		$nodetype->attr('icon',$icon);
 		$nodetype->attr('can_be_root',$can_be_root);
 		$nodetype->attr('attributetypes',implode(",",$attributetypes));
 		$nodetype->attr('nodetypes',implode(",",$nodetypes));

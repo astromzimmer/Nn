@@ -4,6 +4,7 @@ namespace Nn\Modules\Node;
 use Nn\Modules\Nodetype\Nodetype as Nodetype;
 use Nn\Modules\Attribute\Attribute as Attribute;
 use Nn\Modules\Attributetype\Attributetype as Attributetype;
+use Nn\Modules\User\User as User;
 use Nn;
 use Utils;
 
@@ -135,6 +136,7 @@ class Node extends Nn\Core\DataModel {
 			'raw_title'		=>	$this->title(true),
 			'source'		=>	'node',
 			'title'			=>	$this->title(),
+			'permalink'		=>	$this->permalink(),
 			'nodetype'		=>	$this->nodetype(),
 			'author'		=>	$this->author(),
 			'timestamp'		=>	$this->timestamp()*1000,
@@ -142,7 +144,7 @@ class Node extends Nn\Core\DataModel {
 			'updated_at'	=>	$this->updated_at,
 			'parent_title'	=>	($this->parent()) ? $this->parent()->title() : false,
 			'ownAttribute'	=>	$this->attributes(),
-			'ownNode'		=>	$this->children()
+			'ownNode'		=>	($children = $this->children()) ? $children : []
 		);
 	}
 

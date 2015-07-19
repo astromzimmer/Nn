@@ -25,6 +25,15 @@
 				  <input type="checkbox" name="nodetypes[]" value="<?php echo $nt->attr('id') ?>" class="formfield" id="peopleBox" <?php if($nodetype->has_nodetype($nt->attr('id'))) { echo "checked=\"yes\""; } ?> /><?php echo $nt->attr('name'); ?><br/>
 				<?php endforeach; ?>
 			  </fieldset>
+			  <fieldset>
+					<legend><?php echo Nn::babel('Icon') ?>:</legend>
+					<select name="icon" class="iconselect fontawesome" />
+						<option value="null"><?php echo Nn::babel('None') ?></option>
+						<?php foreach($icons as $key=>$val): ?>
+						<option value="<?php echo $key ?>" <?php if($nodetype->attr('icon') == $key) { echo "selected=\"selected\""; } ?>><?php echo $val ?></option>
+						<?php endforeach; ?>
+					</select>
+				</fieldset>
 			  <div class="submit">
 			    <button type="submit" name="submit" id="submit" class="half"><?php echo Nn::babel('Save') ?></button>  
 			  </div>

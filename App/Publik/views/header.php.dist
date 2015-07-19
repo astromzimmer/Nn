@@ -22,6 +22,12 @@
       echo Nn::minify()->cssTags($files,'concat_'.$platform.'.css');
     ?>
 
+    <?php
+      if($analytics_tag = Nn::settings('ANALYTICS')) {
+        echo $analytics_tag;
+      }
+    ?>
+
   </head>
 
   <body id="body" class="">

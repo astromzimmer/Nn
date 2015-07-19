@@ -4,10 +4,6 @@ exports.config =
 		definition: false
 		wrapper: false
 
-	conventions:
-		ignored = (path)->
-			not /^(.*\.md)$/.test(path) and not startsWith(sysPath.basename(path),'_')
-
 	files:
 		javascripts:
 			joinTo:

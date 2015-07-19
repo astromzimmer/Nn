@@ -11,6 +11,7 @@
     "css-brunch": "^1.7.0",
     "javascript-brunch": "^1.7.1",
     "stylus-brunch": "^1.8.1",
-    "uglify-js-brunch": "^1.7.7"
+    "uglify-js-brunch": "^1.7.7",
+    "react-coffee-brunch": "^1.7.2"
   }
 }

@@ -20,7 +20,8 @@
     "jquery-ui": "~1.11.4",
     "aMD": "https://github.com/anthon/aMD.git",
     "retinaFix": "https://github.com/anthon/retinaFix.git",
-    "aVIDEO": "https://github.com/anthon/aVIDEO.git"
+    "aVIDEO": "https://github.com/anthon/aVIDEO.git",
+    "react": "~0.13.3"
   },
   "overrides": {
     "ace-builds": {
@@ -36,6 +37,16 @@
         "ui/widget.js",
         "ui/mouse.js",
         "ui/sortable.js"
+      ]
+    },
+    "fontawesome": {
+      "main": [
+        "css/font-awesome.css",
+        "fonts/fontawesome-webfont.eot",
+        "fonts/fontawesome-webfont.svg",
+        "fonts/fontawesome-webfont.ttf",
+        "fonts/fontawesome-webfont.woff",
+        "fonts/fontawesome-webfont.woff2"
       ]
     }
   }

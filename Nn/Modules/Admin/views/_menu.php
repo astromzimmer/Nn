@@ -1,6 +1,6 @@
 <div class="main menu">
 	<ul>
-		<li class="btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Nodes') echo ' active"' ?>">
+		<li class="main btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Nodes') echo ' active"' ?>">
 			<a href="<?php echo '/admin/nodes' ?>"><?php echo Nn::babel('Nodes') ?></a>
 		</li>
 		<?php if(Nn::authenticated('admins')): ?>
