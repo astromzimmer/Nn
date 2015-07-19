@@ -17,6 +17,7 @@ class PDOStorage implements StorageInterface {
 			'integer' => 'INTEGER',
 			'date' => 'DATE',
 			'datetime' => 'DATETIME',
+			'timestamp' => 'TIMESTAMP',
 			'bool' => 'BOOLEAN'
 		);
 
@@ -75,6 +76,10 @@ class PDOStorage implements StorageInterface {
 				die("Please set up your database correctly.");
 			break;
 		}
+	}
+
+	public function dbc() {
+		return $this->dbc;
 	}
 
 	private function tableCheck($table_name,$model) {
@@ -246,16 +251,20 @@ class PDOStorage implements StorageInterface {
 		return $clean_properties;
 	}
 	
-	public function save($table_name,$obj){
+	public function save($table_name,$obj,$stamp=true){
 		Nn::cache()->flush($table_name);
 		$id = $obj->attr('id');
-		return isset($id) ? $this->update($table_name,$obj) : $this->create($table_name,$obj);
+		return isset($id) ? $this->update($table_name,$obj,$stamp) : $this->create($table_name,$obj,$stamp);
 	}
 	
-	private function create($table_name,$obj){
-		if(property_exists($obj,'created_at') && $obj->attr('created_at') == null) $obj->attr('created_at',gettimeofday(true));
-		if(property_exists($obj,'updated_at') && $obj->attr('updated_at') == null) $obj->attr('updated_at',$obj->attr('created_at'));
+	private function create($table_name,$obj,$stamp){
+		if($stamp) {
+			$now = gettimeofday(true);
+			$obj->attr('created_at',$now);
+			$obj->attr('updated_at',$now);
+		}
 		$attributes = $obj->getAttributes();
+		unset($attributes['id']);
 		$keys = array_keys($attributes);
 		$vals = array_values($attributes);
 		$sql = "INSERT INTO " . $table_name . " (";
@@ -276,15 +285,24 @@ class PDOStorage implements StorageInterface {
 		} catch(\PDOException $e) {
 			if($e->getCode() == '42S02' || $e->getMessage() == 'SQLSTATE[HY000]: General error: 1 no such table: '.$table_name) {
 				if($this->createTable($table_name,($obj::$SCHEMA))) {
-					return $this->create($table_name,$obj);
+					return $this->create($table_name,$obj,true);
 				}
 			}
-			die($e->getMessage());
+			print_r($keys);
+			echo('<br>');
+			print_r($vals);
+			echo('<br>');
+			print_r($sql);
+			echo('<br>');
+			print_r($obj);
+			die("<p>Can't create object in table '".$table_name."':<p>".$e->getMessage());
 		}
 	}
 	
-	private function update($table_name,$obj){
-		if(property_exists($obj,'updated_at')) $obj->attr('updated_at',gettimeofday(true));
+	private function update($table_name,$obj,$stamp){
+		if($stamp) {
+			$obj->attr('updated_at',gettimeofday(true));
+		}
 		$attributes = $obj->getAttributes();
 		$keys = array();
 		$vals = array();
