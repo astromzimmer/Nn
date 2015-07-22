@@ -27,11 +27,6 @@ $(document).ready ->
 		if $code_editor.hasClass 'read-only'
 			code_editor.setReadOnly true
 
-	
-	# Trash warning
-	$("a.trash").bind "click", ->
-		false unless confirm("Are you sure you want to delete this element?")
-
 	# Retrieve tree menu state
 	$tree = $('.tree')
 	if $tree.length > 0
@@ -78,14 +73,6 @@ $(document).ready ->
 			$.cookie 'left_scroll',$this[0].scrollTop
 		,250
 
-	$("#left ul.sortable").sortable
-		connectWith: '#left ul.sortable'
-		handle: '.handle'
-		axis: "y"
-		update: (e,ui) ->
-			$itm = $(ui.item)
-			doSort $itm
-
 	# Unshift menu
 	$('.unshifter').on 'click', (e)->
 		$this = $(this)
@@ -116,6 +103,10 @@ $(document).ready ->
 			complete: (feedback) ->
 				$this.toggleClass('visible')
 		return false
+
+	# Trash warning
+	.on 'click', 'a.trash', (e)->
+		false unless confirm("Are you sure you want to delete this element?")
 
 	.on 'click', 'ul li .expander', (e)->
 		$this = $(this)
@@ -164,6 +155,18 @@ $(document).ready ->
 	.on 'click', '#right .header:not(.maximised) .title', (e)->
 		$('#right .manage').scrollTop 0
 
+	.on 'mousedown', 'ul.sortable', (e) ->
+		e.stopPropagation()
+
+	.on 'mouseover', 'ul.sortable', (e)->
+		$this = $(this)
+		$this.sortable
+			handle: '.handle'
+			axis: "y"
+			update: (e,ui) ->
+				$itm = $(ui.item)
+				doSort $itm
+
 	$('#right .manage').on 'scroll', (e)->
 		$header = $('#right .header')
 		scroll_top = this.scrollTop
@@ -171,16 +174,6 @@ $(document).ready ->
 			$header.removeClass('maximised')
 		else
 			$header.addClass('maximised')
-
-	$("ul.sortable").bind "mousedown", (e) ->
-		e.stopPropagation()
-
-	$("#right ul.sortable").sortable
-		handle: '.handle'
-		axis: "y"
-		update: (e,ui) ->
-			$itm = $(ui.item)
-			doSort $itm
 
 	$("select#datatypeField").change (e) ->
 		$this = $(this)
@@ -203,20 +196,20 @@ $(document).ready ->
 		icons: true
 
 expandBranch = ($n,t)->
-	duration = t or 100
-	$indicator = $n.children('.expander')
-	$submenu = $n.children('ul')
+	# duration = t or 100
+	# $indicator = $n.children('.expander')
+	# $submenu = $n.children('ul')
 	$n.addClass 'expanded'
-	$indicator.addClass 'expanded'
-	$submenu.slideDown duration
+	# $indicator.addClass 'expanded'
+	# $submenu.slideDown duration
 
 collapseBranch = ($n,t)->
-	duration = t or 100
-	$indicator = $n.children('.expander')
-	$submenu = $n.children('ul')
+	# duration = t or 100
+	# $indicator = $n.children('.expander')
+	# $submenu = $n.children('ul')
 	$n.removeClass 'expanded'
-	$indicator.removeClass 'expanded'
-	$submenu.slideUp duration
+	# $indicator.removeClass 'expanded'
+	# $submenu.slideUp duration
 
 doSort = ($itm)->
 	$this = $itm

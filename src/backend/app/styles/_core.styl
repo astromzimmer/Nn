@@ -75,6 +75,16 @@ transform-origin()
 text-shadow()
     vendor('text-shadow',arguments)
 
+placeholder()
+    &::-webkit-input-placeholder
+        {block}
+    &:-moz-placeholder
+        {block}
+    &::-moz-placeholder
+        {block}
+    &:-ms-placeholder
+        {block}
+
 opacity($val)
     zoom 1
     -ms-filter unquote("progid:DXImageTransform.Microsoft.Alpha(Opacity="+round($val*100)+")");

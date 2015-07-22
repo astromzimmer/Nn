@@ -291,7 +291,7 @@ body
 			a
 				display block
 				width 100%
-				margin 0 24px
+				margin 0 2px
 				padding 2px
 		.tools
 		.add
@@ -334,6 +334,24 @@ body
 			border-right 1px solid $spacerBG
 			overflow-x hidden
 			overflow-y auto
+			
+			input#filter
+				background $itemBG
+				width 100%
+				padding 10px 24px
+				border-color $spacerBG
+				border-width 0 1px 0 0
+				font-family Roboto
+				font-size 1em
+				letter-spacing .1em
+				+placeholder()
+					font-weight 100
+					color lighten(grey,42%)
+					letter-spacing .12em
+					text-transform uppercase
+				&:focus
+					background lighten($itemBG,42%)
+
 			ul
 				li
 					// font-size 18px
@@ -375,8 +393,6 @@ body
 							clickable(none,$rightBG)
 							background-image url(../imgs/static/ui/collapsed.gif)
 							left 0
-							&.expanded
-								background-image url(../imgs/static/ui/expanded.gif)
 						.handle
 						.link
 							position relative
@@ -394,14 +410,11 @@ body
 							border-right 1px solid $spacerBG
 							font-weight 300
 							line-height $liHeight + 4
-							// &.active
-							&.focus
-								font-weight 700
 							a
 								ellipsis()
 								width 100%
 								span
-									display inline-block
+									padding 0 3px 0 0
 						.add
 						.expander
 							border-right 1px solid $spacerBG
@@ -421,18 +434,23 @@ body
 							background-color $rightBG
 							.label
 								border-color $rightBG
-							.submenu
+								font-weight 700
+							li
 								.label
 									border-color $spacerBG
+									font-weight 300
 						ul
 							display none
 							border 0px solid $shadowColour
 							border-width 0 0 0 6px
-							&.expanded
-								display block
 							li
 								&:last-child
 									border-bottom none
+						&.expanded
+							> .expander
+								background-image url(../imgs/static/ui/expanded.gif)
+							> ul
+								display block
 		
 		#right
 			background-color $rightBG
@@ -649,7 +667,7 @@ body
 						padding 0 3px
 						border-color $shadowColour
 					form
-						margin 3px 0 0
+						margin 24px 0 0
 						.aMD_container
 							border none
 						.submit

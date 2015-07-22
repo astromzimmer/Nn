@@ -1,6 +1,9 @@
 <?php
 
 namespace Nn\Modules\Attribute;
+use Nn\Modules\Attribute\Attribute as Attribute;
+use Nn\Modules\Attributetype\Attributetype as Attributetype;
+use Nn\Modules\Node\Node as Node;
 use Nn;
 use Utils;
 
@@ -40,7 +43,7 @@ class AttributesController extends Nn\Core\Controller {
 		}
 		Utils::sendResponseCode(200);
 	}
-	
+
 	function toggle() {
 		$this->renderMode('RAW');
 		$visible = $_POST['visible'];
@@ -50,6 +53,17 @@ class AttributesController extends Nn\Core\Controller {
 			Utils::sendResponseCode(500);
 		}
 		Utils::sendResponseCode(200);
+	}
+
+	function make($atype_name,$in,$node_id) {
+		$node = Node::find($node_id);
+		$atype = Attributetype::find(array('name'=>$atype_name),1);
+		$dtype = $atype->attr('datatype');
+		$this->setTemplateVars([
+				'node' => $node,
+				'atype' => $atype,
+				'dtype' => $dtype
+			]);
 	}
 	
 	function create() {
@@ -68,7 +82,11 @@ class AttributesController extends Nn\Core\Controller {
 	
 	function edit($id=null) {
 		$attribute = Attribute::find($id);
-		Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$attribute->attr('node_id').DS.$attribute->attributetype()->attr('name').DS.$attribute->attr('id'));
+		$node = $attribute->node();
+		$this->setTemplateVars([
+				'node' => $node,
+				'attribute'=> $attribute
+			]);
 	}
 	
 	function delete($id=null) {

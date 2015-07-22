@@ -27,7 +27,7 @@
 			  </fieldset>
 			  <fieldset>
 					<legend><?php echo Nn::babel('Icon') ?>:</legend>
-					<select name="icon" class="iconselect fontawesome" />
+					<select name="icon" class="iconselect fontawesome" >
 						<option value="null"><?php echo Nn::babel('None') ?></option>
 						<?php foreach($icons as $key=>$val): ?>
 						<option value="<?php echo $key ?>" <?php if($nodetype->attr('icon') == $key) { echo "selected=\"selected\""; } ?>><?php echo $val ?></option>

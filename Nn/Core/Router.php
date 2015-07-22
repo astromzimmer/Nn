@@ -58,6 +58,7 @@ class Router {
 	}
 
 	public function route($route_param) {
+		header("Redirect: {$route_param}");
 		$method = $_SERVER['REQUEST_METHOD'];
 		if($route = $this->reRoute($route_param,$method)) {
 			$this->execute($route->callback);

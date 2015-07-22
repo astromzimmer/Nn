@@ -22,9 +22,19 @@ class NodesController extends Nn\Core\Controller {
 				'nodes'=> $nodes
 			]);
 	}
+
+	function tree($node=null) {
+		$nodes = Node::find(array('parent_id'=>0),null,'position');
+		if(!is_object($node)) {
+			$node = (isset($node) && $node != 0) ? Node::find($node) : new Node();
+		}
+		$this->setTemplateVars([
+				'node' => $node,
+				'nodes' => $nodes
+			]);
+	}
 	
 	function view($id=null,$atype_name=null,$edit_attribute_id=null) {
-		$node = Node::find($id);
 		$nodes = Node::find(array('parent_id'=>0),null,'position');
 		$dtype = false;
 		$atype = false;
@@ -33,9 +43,8 @@ class NodesController extends Nn\Core\Controller {
 			$dtype = $atype->attr('datatype');
 			$edit_attribute_id = (isset($edit_attribute_id)) ? $edit_attribute_id : false;
 		}
+		$this->tree($id);
 		$this->setTemplateVars([
-				'node'=> $node,
-				'nodes'=> $nodes,
 				'dtype'=> $dtype,
 				'atype'=> $atype,
 				'edit_attribute_id'=> $edit_attribute_id
@@ -69,7 +78,6 @@ class NodesController extends Nn\Core\Controller {
 	}
 	
 	function make($in=null,$parent_id=null) {
-		$nodes = Node::find(array('parent_id'=>0),null,'position');
 		if(isset($parent_id) && $parent_id != 0) {
 			$parent = Node::find($parent_id);
 			$nodetypes = $parent->nodetype()->nodetypes();
@@ -79,20 +87,14 @@ class NodesController extends Nn\Core\Controller {
 		}
 		$node = new Node();
 		$node->attr('parent_id',$parent_id);
+		$this->tree($node);
 		$this->setTemplateVars([
-				'node'=> $node,
-				'nodes'=> $nodes,
 				'nodetypes'=> $nodetypes
 			]);
 	}
 	
 	function edit($id=null) {
-		$nodes = Node::find(array('parent_id'=>0),null,'position');
-		if(isset($id) && $id != 0) {
-			$node = Node::find($id);
-		} else {
-			$node = new Node();
-		}
+		$node = Node::find($id);
 		$parent_id = $node->attr('parent_id');
 		if(isset($parent_id) && $parent_id > 0) {
 			$parent = Node::find($parent_id);
@@ -102,9 +104,8 @@ class NodesController extends Nn\Core\Controller {
 			$nodetypes = Nodetype::find_all();
 		}
 		$parents = Node::find(array('-id'=>$node->attr('id')));
+		$this->tree($node);
 		$this->setTemplateVars([
-				'node'=> $node,
-				'nodes'=> $nodes,
 				'parents'=> $parents,
 				'nodetypes'=> $nodetypes
 			]);
@@ -113,9 +114,9 @@ class NodesController extends Nn\Core\Controller {
 	function create() {
 		$node = new Node($_POST['title'],Nn::session()->user_id(),$_POST['parent_id'],$_POST['nodetype_id']);
 		if($node->save()) {
-			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node->attr('id'));
+			Utils::redirect_to(DOMAIN.'/admin/nodes/view/'.$node->attr('id'));
 		} else {
-			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'make');
+			Utils::redirect_to(DOMAIN.'/admin/nodes/make');
 		}
 	}
 	
@@ -124,16 +125,18 @@ class NodesController extends Nn\Core\Controller {
 		$parent_id = isset($_POST['parent_id']) ? $_POST['parent_id'] : null;
 		$node->fill($_POST['title'],$_POST['slug'],$parent_id,$_POST['nodetype_id']);
 		if($node->save()) {
-			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$id);
+			Utils::redirect_to(DOMAIN.'/admin/nodes/view/'.$id);
 		} else {
-			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'edit'.DS.$id);
+			Utils::redirect_to(DOMAIN.'/admin/nodes/edit/'.$id);
 		}
 	}
 	
 	function delete($id=null) {
 		$node = Node::find($id);
+		$parent_id = $node->attr('parent_id');
+		$redirect_path = ($parent_id != 0) ? '/admin/nodes/view/'.$parent_id : '/admin/nodes';
 		if($node->recursive_delete()) {
-			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes');
+			Utils::redirect_to(DOMAIN.$redirect_path);
 		} else {
 			die(print_r($node->errors));
 		}

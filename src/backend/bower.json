@@ -21,7 +21,8 @@
     "aMD": "https://github.com/anthon/aMD.git",
     "retinaFix": "https://github.com/anthon/retinaFix.git",
     "aVIDEO": "https://github.com/anthon/aVIDEO.git",
-    "react": "~0.13.3"
+    "react": "~0.13.3",
+    "aROUTER": "https://github.com/anthon/aROUTER.git"
   },
   "overrides": {
     "ace-builds": {

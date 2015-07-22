@@ -20,6 +20,7 @@ class Template extends Basic {
 	function __construct($module,$action) {
 		$this->_dir = $module.DS.'views';
 		$this->_action = $action;
+		if(isset($_GET['render_as'])) $this->render_as = $_GET['render_as'];
 	}
 	
 	public function set($name, $value) {
@@ -85,8 +86,12 @@ class Template extends Basic {
 		}
 	}
 
-	private function renderTemplate($extensionless_path) {
-		if($template = $this->getTemplatePath($extensionless_path)) {
+	private function renderTemplate() {
+		if($this->render_as == 'partial') {
+			$template = $this->getTemplatePath($this->_dir.DS.'_'.$this->_action);
+		}
+		if(!isset($template) || !$template) $template = $this->getTemplatePath($this->_dir.DS.$this->_action);
+		if($template) {
 			$this->output($template,$this->vars);
 		} else {
 			// Utils::redirect_to('/404.php');
@@ -114,7 +119,7 @@ class Template extends Basic {
 		switch($this->render_as) {
 			case 'partial':
 			case 'pdf':
-				$this->renderTemplate($this->_dir.DS.$this->_action);
+				$this->renderTemplate();
 				break;
 			case 'raw':
 			case 'json':
@@ -123,7 +128,7 @@ class Template extends Basic {
 				break;
 			default:
 				$this->renderHeader();
-				$this->renderTemplate($this->_dir.DS.$this->_action);
+				$this->renderTemplate();
 				$this->renderFooter();
 		}
 	}

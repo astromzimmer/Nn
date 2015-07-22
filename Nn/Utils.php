@@ -22,7 +22,11 @@ class Utils {
 		return false;
 	}
 		
-	public static function redirect_to($location){
+	public static function redirect_to($location,$include_params=true){
+		if($include_params) {
+			unset($_GET['route']);
+			$location = $location.'?'.http_build_query($_GET);
+		}
 		header("Location: {$location}");
 		exit;
 	}
