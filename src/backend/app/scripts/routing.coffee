@@ -105,11 +105,13 @@ $(document).ready ->
 			target = $this.data 'target'
 			$target = $('#'+target)
 			url = $this.attr('action')+'?render_as=partial'
-			data = $this.serialize()
+			data = new FormData(this)
 			$.ajax
 				url: url
 				method: 'POST'
 				data: data
+				processData: false
+				contentType: false
 				success: (result,status,jqXHR)->
 					success_path = jqXHR.getResponseHeader('Redirect')
 					if success_path then R.navigate '/'+success_path+window.location.hash

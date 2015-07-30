@@ -9,7 +9,7 @@
 		
 		public function flush($prefix='') {
 			self::unlinkWithPrefix($prefix);
-			self::unlinkWithPrefix('RENDER');
+			if($prefix != 'visitors') self::unlinkWithPrefix('RENDER');
 			# Error checking?
 			return true;
 		}

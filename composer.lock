@@ -4,34 +4,94 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "45501ec2b42d0889394e3acf7ce8ef74",
+    "hash": "3f42479f12f2891263d23485648597ee",
     "packages": [
         {
-            "name": "facebook/php-sdk-v4",
-            "version": "4.0.23",
+            "name": "abraham/twitteroauth",
+            "version": "0.5.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/facebook/facebook-php-sdk-v4.git",
-                "reference": "c82611e05596622c9bd7abfa1cea1512d885c95e"
+                "url": "https://github.com/abraham/twitteroauth.git",
+                "reference": "c72c778c043220e29b81edbc0b521a5dd553e891"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/c82611e05596622c9bd7abfa1cea1512d885c95e",
-                "reference": "c82611e05596622c9bd7abfa1cea1512d885c95e",
+                "url": "https://api.github.com/repos/abraham/twitteroauth/zipball/c72c778c043220e29b81edbc0b521a5dd553e891",
+                "reference": "c72c778c043220e29b81edbc0b521a5dd553e891",
                 "shasum": ""
             },
             "require": {
+                "ext-curl": "*",
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "guzzlehttp/guzzle": "~4.0",
-                "mockery/mockery": "dev-master",
-                "phpunit/phpunit": "3.7.*"
+                "phpmd/phpmd": "2.*",
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Abraham\\TwitterOAuth\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Abraham Williams",
+                    "email": "abraham@abrah.am",
+                    "homepage": "https://abrah.am",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The most popular PHP library for use with the Twitter OAuth REST API.",
+            "homepage": "https://twitteroauth.com",
+            "keywords": [
+                "Twitter API",
+                "Twitter oAuth",
+                "api",
+                "oauth",
+                "rest",
+                "social",
+                "twitter"
+            ],
+            "time": "2015-03-31 15:39:00"
+        },
+        {
+            "name": "facebook/php-sdk-v4",
+            "version": "5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/facebook/facebook-php-sdk-v4.git",
+                "reference": "b5d7e5c8b85419f9031b08a161e9030dca35f5a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/b5d7e5c8b85419f9031b08a161e9030dca35f5a1",
+                "reference": "b5d7e5c8b85419f9031b08a161e9030dca35f5a1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "~5.0",
+                "mockery/mockery": "~0.8",
+                "phpunit/phpunit": "~4.0"
             },
             "suggest": {
                 "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Facebook\\": "src/Facebook/"
@@ -53,7 +113,7 @@
                 "facebook",
                 "sdk"
             ],
-            "time": "2015-04-03 20:31:47"
+            "time": "2015-07-08 19:08:57"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -286,16 +346,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v2.2.0",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "c58a8b221a37ff8641ff88342c42681b37605a38"
+                "reference": "9d76444550a09a6f9c55dd98113ba0901908e60a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/c58a8b221a37ff8641ff88342c42681b37605a38",
-                "reference": "c58a8b221a37ff8641ff88342c42681b37605a38",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/9d76444550a09a6f9c55dd98113ba0901908e60a",
+                "reference": "9d76444550a09a6f9c55dd98113ba0901908e60a",
                 "shasum": ""
             },
             "require": {
@@ -337,7 +397,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2015-06-01 21:09:44"
+            "time": "2015-07-07 01:13:32"
         }
     ],
     "packages-dev": [],

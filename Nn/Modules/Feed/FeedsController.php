@@ -25,8 +25,9 @@ class FeedsController extends Nn\Core\Controller {
 		$node_id = $_POST['node_id'];
 		$handle = $_POST['handle'];
 		$hashtag = $_POST['hashtag'];
-		$timeout = $_POST['timeout'];
-		$feed = new Feed($handle,$hashtag,$timeout);
+		$since = Utils::strToTime($_POST['since']);
+		$until = Utils::strToTime($_POST['until']);
+		$feed = new Feed($handle,$hashtag,$since,$until);
 		if($feed->save()) {
 			$attribute = new Attribute($node_id,$_POST['atype_id'],$feed->attr('id'));
 			if($attribute->save()) {
@@ -46,11 +47,13 @@ class FeedsController extends Nn\Core\Controller {
 		$node_id = $_POST['node_id'];
 		$handle = $_POST['handle'];
 		$hashtag = $_POST['hashtag'];
-		$timeout = $_POST['timeout'];
+		$since = Utils::strToTime($_POST['since']);
+		$until = Utils::strToTime($_POST['until']);
 		$feed = Feed::find($id);
 		$feed->attr('handle',$handle);
 		$feed->attr('hashtag',$hashtag);
-		$feed->attr('timeout',$timeout);
+		$feed->attr('since',$since);
+		$feed->attr('until',$until);
 		if($feed->save()) {
 			# Attribute save needs error handling - yawn
 			$attribute = $feed->attribute();

@@ -1,49 +1,71 @@
 <?php
 
 namespace Nn\Modules\Feed;
-use Post;
+use Nn\Modules\Feed\Post as Post;
 use Nn;
 use Utils;
-
-use Facebook\FacebookSession as FacebookSession;
-use Facebook\FacebookRequest as FacebookRequest;
-use Facebook\GraphUser as GraphUser;
-use Facebook\FacebookRequestException as FacebookRequestException;
+use Facebook\Facebook as Facebook;
+use Abraham\TwitterOAuth\TwitterOAuth as TwitterOAuth;
 
 class Feed extends Nn\Modules\Datatype\Datatype {
 	
 	protected $handle;
 	protected $hashtag;
-	protected $timeout;
+	protected $since;
+	protected $until;
 
 	public static $SCHEMA = array(
-			'attribute_id' => 'integer',
 			'handle' => 'short_text',
 			'hashtag' => 'short_text',
-			'timeout' => 'integer',
+			'since' => 'integer',
+			'until' => 'integer',
 			'created_at' => 'integer',
 			'updated_at' => 'integer'
+		);
+
+	public static $PARAMS = array(
+			'service' => [
+					'Facebook',
+					'Twitter',
+					'Tumblr',
+					'Vimeo',
+					'YouTube',
+					'SoundCloud',
+					'flickr',
+					'Wordpress',
+					'JSON'
+				]
 		);
 
 	public function exportProperties($excludes=array()) {
 		return array(
 			'handle'		=>	$this->handle,
 			'hashtag'		=>	$this->hashtag,
-			'timeout'		=>	$this->timeout,
+			'since'			=>	$this->since,
+			'until'			=>	$this->until,
 			'created_at'	=>	$this->created_at,
 			'updated_at'	=>	$this->updated_at,
 		);
 	}
 	
-	public function __construct($handle=null,$hashtag=null,$timeout=null){
+	public function __construct($handle=null,$hashtag=null,$since=null,$until=null){
 		if(!empty($handle)){
 			$this->handle = $handle;
 			$this->hashtag = $hashtag;
-			$this->timeout = empty($timeout) ? (60*60*24*90) : $timeout;
+			$this->since = $since;
+			$this->until = $until;
 			return $this;
 		} else {
 			return false;
 		}
+	}
+
+	public function since() {
+		return strftime(Nn::settings('DATE_FORMAT'),$this->since);
+	}
+
+	public function until() {
+		return strftime(Nn::settings('DATE_FORMAT'),$this->until);
 	}
 
 	public function fetch() {
@@ -65,69 +87,74 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 	}
 
 	private function facebook() {
-		// require_once ROOT.DS.'vendor'.DS.'Facebook'.DS.'facebook.php';
-		// $facebook = new \Facebook(array(
-		// 	'appId' => '188474151324215',
-		// 	'secret' => '8f4e8fb0f91b41252ba71390d484a4d9'
-		// ));
 		$appId = '188474151324215';
 		$secret = '8f4e8fb0f91b41252ba71390d484a4d9';
-		FacebookSession::setDefaultApplication($appId,$secret);
-		$fb_session = FacebookSession::newAppSession();
-		$since = time() - $this->timeout;
+		$fb = new Facebook([
+				'app_id' => $appId,
+				'app_secret' => $secret,
+				'default_graph_version' => 'v2.4'
+			]);
+		$fb->setDefaultAccessToken($appId.'|'.$secret);
+		$params = '?limit=100&fields=type,source,place,picture,object_id,message,link,caption,created_time';
+		if($this->since) $params .= '&since='.$this->since;
+		if($this->until) $params .= '&until='.$this->until;
 		// $result = $facebook->api($this->handle.'/feed','GET',array('limit'=>200,'since'=>$since));
-		$fb_request = new FacebookRequest($fb_session,'GET','/'.$this->handle.'/feed',array('limit'=>200,'since'=>$since));
-		$response = $fb_request->execute();
-		$result = $response->getGraphObjectList();
-		if(isset($result)) {
+		$response = $fb->get('/'.$this->handle.'/feed'.$params);
+		$edge = $response->getGraphEdge();
+		if(isset($edge)) {
 			// $items = array();
-			foreach ($result as $key => $value) {
-				$obj = $value->asArray();
-				if(strpos(strtolower(serialize($value)),'#'.$this->hashtag) !== false) {
-					if(isset($obj['message']) || isset($obj['name'])) {
-						// if($value['type'] != 'status' && strpos(strtolower(serialize($value)),'#sdc2013') !== false) {
-						// if(strpos(strtolower(serialize($value)),'#sdc2013') !== false) {
-						// Check for photo and attach higher res URL if available
-						if($obj['type'] == 'photo') {
-							$photo_request = new FacebookRequest($fb_session,'GET','/'.$obj['object_id']);
-							$response = $photo_request->execute();
-							$photo = $response->getGraphObject()->asArray();
-							$obj['picture'] = $photo['images'][2]->source;
-						}
-						$uid = $obj['id'];
-						$post = Post::find(['uid'=>$uid,'feed_id'=>$this->id],1,null,false,null,false);
-						if(!$post){
-							$post = new Post();
-							$post->attr('uid',$uid);
-							$post->attr('visible',true);
-							$post->attr('feed_id',$this->id);
-							$post->attr('created_at',strtotime($obj['created_time']));
-						}
-						$json_obj = json_encode($obj);
-						if($post->attr('content') != $json_obj) {
-							$post->attr('content',$json_obj);
-							$post->save();
-						}
-					}
-				}
-			}
+			$this->parseFacebookResults($fb,$edge);
 			return true;
 		} else {
 			return false;
 		}
 	}
 
+	private function parseFacebookResults($fb,$edge) {
+		foreach ($edge as $graphNode) {
+			$obj = $graphNode->asArray();
+			if(strpos(strtolower(serialize($graphNode)),'#'.$this->hashtag) !== false) {
+				if(isset($obj['message']) || isset($obj['name'])) {
+					if($obj['type'] == 'photo') {
+						$photo_response = $fb->get('/'.$obj['object_id'].'?fields=images');
+						$photo = $photo_response->getGraphObject()->asArray();
+						$obj['picture'] = $photo['images'][0]['source'];
+					}
+					$uid = $obj['id'];
+					$post = Post::find(['uid'=>$uid,'feed_id'=>$this->id],1,null,false,null,false);
+					if(!$post){
+						$post = new Post();
+						$post->attr('uid',$uid);
+						$post->attr('visible',true);
+						$post->attr('feed_id',$this->id);
+						$post->attr('created_at',strtotime($obj['created_time']->date));
+					}
+					$json_obj = json_encode($obj);
+					if($post->attr('content') != $json_obj) {
+						$post->attr('content',$json_obj);
+						$post->save();
+					}
+				}
+			}
+		}
+		$next = $fb->next($edge);
+		if($next) $this->parseFacebookResults($fb,$next);
+	}
+
 	private function twitter() {
-		require_once ROOT.DS.'vendor'.DS.'twitteroauth'.DS.'twitteroauth.php';
 		$consumer_key = 'mm6dM0e47IinHYOViQ9pg';
 		$consumer_secret = 'GKpeQglxnnUk9zNSaXd56gG2ir22WRB2NDW9ntFGSY';
 		$access_token = '377840296-VicUNH5cWYHkjtPgZTzQhYothTI4QygzrBdHfbMO';
 		$access_token_secret = 'Os7zGput5SsLRDAX5jMBVQewT9WnsAgmlzcgycsYK9E';
-		$twitter = new \TwitterOauth($consumer_key,$consumer_secret,$access_token,$access_token_secret);
-		$result = $twitter->get("https://api.twitter.com/1.1/search/tweets.json?q=from%3A{$this->handle}%20%23{$this->hashtag}%20since%3A2011-01-01");
-		// $result = $twitter->get("https://api.twitter.com/1.1/search/tweets.json?q=from%3A{$this->handle}%20since%3A2011-01-01");
-		if($items = $result->statuses) {
-			foreach ($items as $value) {
+		$params = [
+				'q' => "from:{$this->handle} #{$this->hashtag}"
+				// 'q' => "from:naypinya"
+			];
+		$twitter = new TwitterOAuth($consumer_key,$consumer_secret,$access_token,$access_token_secret);
+		$result = $twitter->get('search/tweets',$params);
+		// die(print_r($result));
+		if(isset($result->statuses)) {
+			foreach ($result->statuses as $value) {
 				$uid = $value->id;
 				$post = Post::find(['uid'=>$uid,'feed_id'=>$this->id],1,null,false);
 				if(!$post){

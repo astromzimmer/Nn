@@ -42,7 +42,6 @@ class Controller extends Basic {
 			$mode = strtolower($m);
 			$content_type = $ct;
 			$this->render = 1;
-			$this->_template = new Template($this->_module,$this->_action);
 			$this->_template->render_as($mode,$content_type);
 		} else {
 			$this->render = 0;
@@ -53,7 +52,7 @@ class Controller extends Basic {
 		if(in_array($this->_action,$actions)) {
 			if(Nn::cache()->valid($this->_cache_id)) {
 				$this->render = 0;
-				die(Nn::cache()->get($cache_id));
+				die(Nn::cache()->get($this->_cache_id));
 			}
 		}
 	}

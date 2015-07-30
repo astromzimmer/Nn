@@ -23,9 +23,15 @@ class Post extends Nn\Core\DataModel {
 			'id'			=>	$this->id,
 			'uid'			=>	$this->feed_id.'_'.$this->uid,
 			'source'		=>	$this->service(),
+			'node'			=>	[
+									'id'	=> $this->node(),
+									'title'	=> $this->node()->title()
+								],
 			'content'		=>	$this->content(),
 			'created_at'	=>	$this->created_at,
-			'updated_at'	=>	$this->updated_at
+			'updated_at'	=>	$this->updated_at,
+			'created_year'	=>	date('Y',$this->created_at),
+			'created_week'	=>	idate('W',$this->created_at)
 		);
 	}
 	
@@ -45,6 +51,10 @@ class Post extends Nn\Core\DataModel {
 		} else {
 			return false;
 		}
+	}
+
+	public function node() {
+		return Feed::find($this->feed_id,1)->attribute()->node();
 	}
 
 	public function service() {

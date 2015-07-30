@@ -22,6 +22,7 @@ class PDOStorage implements StorageInterface {
 		);
 
 	public function __construct($type=null,$host=null,$port=null,$name=null,$user=null,$password=null) {
+		$type = (isset($type)) ? $type : Nn::settings('DB_TYPE');
 		if(!isset($type)) die('No DB type defined');
 		$this->backup_path = ROOT.DS.'db';
 		if(!is_dir($this->backup_path)) {
@@ -260,8 +261,10 @@ class PDOStorage implements StorageInterface {
 	private function create($table_name,$obj,$stamp){
 		if($stamp) {
 			$now = gettimeofday(true);
-			$obj->attr('created_at',$now);
-			$obj->attr('updated_at',$now);
+			$created_at = $obj->attr('created_at');
+			$updated_at = $obj->attr('updated_at');
+			if(!isset($created_at)) $obj->attr('created_at',$now);
+			if(!isset($updated_at)) $obj->attr('updated_at',$obj->attr('created_at'));
 		}
 		$attributes = $obj->getAttributes();
 		unset($attributes['id']);

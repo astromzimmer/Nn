@@ -26,7 +26,7 @@ $minify = new Nn\Core\Minify();
 $cache = new Nn\Core\Cache();
 $mailer = new Nn\Core\Mailer();
 $router = new Nn\Core\Router();
-$storage = new Nn\Storage\PDOStorage('SQLite');
+$storage = new Nn\Storage\PDOStorage();
 $language = new Nn\Babel\Dictionary();
 $tracker = new Nn\Trackers\Navajo();
 

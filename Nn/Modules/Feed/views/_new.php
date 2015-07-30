@@ -8,6 +8,10 @@
 	<input name="hashtag" class="formField" id="hashField" value="" />
 </fieldset>
 <fieldset>
-	<legend><?php echo Nn::babel('Timeout') ?></legend>
-	<input name="timeout" class="formField" id="hashField" value="" placeholder="Enter timeout in sec" />
+	<legend><?php echo Nn::babel('Since') ?></legend>
+	<input type="date" name="since" class="formField" id="sinceField" value="" />
+</fieldset>
+<fieldset>
+	<legend><?php echo Nn::babel('Until') ?></legend>
+	<input type="date" name="until" class="formField" id="untilField" value="" />
 </fieldset>
