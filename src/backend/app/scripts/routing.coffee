@@ -102,6 +102,7 @@ $(document).ready ->
 		$doc.on 'submit', 'form[data-target]', (e)->
 			e.preventDefault()
 			$this = $(this)
+			$this.addClass 'loading'
 			target = $this.data 'target'
 			$target = $('#'+target)
 			url = $this.attr('action')+'?render_as=partial'
@@ -115,5 +116,6 @@ $(document).ready ->
 				success: (result,status,jqXHR)->
 					success_path = jqXHR.getResponseHeader('Redirect')
 					if success_path then R.navigate '/'+success_path+window.location.hash
+					$this.removeClass 'loading'
 					$target.html result
 			return false

@@ -27,7 +27,7 @@
 	<div class="new tools">
 		<?php if($attributetypes = $node->nodetype()->attributetypes()) : ?>
 		<?php foreach($attributetypes as $attributetype) : ?><a
-			href="<?php echo '/admin/nodes/view/'.$node->attr('id').DS.$attributetype->attr('name') ?>"
+			href="<?php echo '/admin/nodes/view/'.$node->attr('id').DS.$attributetype->attr('id') ?>"
 			data-tooltip="<?php echo Nn::babel('Add') ?> <?php echo $attributetype->attr('name') ?>"
 			data-target="right"
 			data-ajax

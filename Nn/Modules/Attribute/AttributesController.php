@@ -55,9 +55,9 @@ class AttributesController extends Nn\Core\Controller {
 		Utils::sendResponseCode(200);
 	}
 
-	function make($atype_name,$in,$node_id) {
+	function make($atype_id,$in,$node_id) {
 		$node = Node::find($node_id);
-		$atype = Attributetype::find(array('name'=>$atype_name),1);
+		$atype = Attributetype::find($atype_id);
 		$dtype = $atype->attr('datatype');
 		$this->setTemplateVars([
 				'node' => $node,

@@ -34,12 +34,12 @@ class NodesController extends Nn\Core\Controller {
 			]);
 	}
 	
-	function view($id=null,$atype_name=null,$edit_attribute_id=null) {
+	function view($id=null,$atype_id=null,$edit_attribute_id=null) {
 		$nodes = Node::find(array('parent_id'=>0),null,'position');
 		$dtype = false;
 		$atype = false;
-		if(isset($atype_name)) {
-			$atype = Attributetype::find(array('name'=>$atype_name),1);
+		if(isset($atype_id)) {
+			$atype = Attributetype::find($atype_id);
 			$dtype = $atype->attr('datatype');
 			$edit_attribute_id = (isset($edit_attribute_id)) ? $edit_attribute_id : false;
 		}
