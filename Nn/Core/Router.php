@@ -119,7 +119,7 @@ class Router {
 		} else {
 			Nn::settings('HIDE_INVISIBLE',false);
 		}
-		$controller = new $controllerClass($this->action);
+		$controller = new $controllerClass($this->action,$query);
 		if((int)method_exists($controllerClass, $this->action)) {
 			call_user_func_array(array($controller, 'before'), $query);
 			call_user_func_array(array($controller, $this->action), $query);

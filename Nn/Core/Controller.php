@@ -16,7 +16,7 @@ class Controller extends Basic {
 	
 	}
 	
-	function __construct($action) {
+	function __construct($action,$query) {
 		$this->_action = $action;
 		$class_name_array = explode('\\',get_called_class());
 		$controller_name = end($class_name_array);
@@ -24,7 +24,7 @@ class Controller extends Basic {
 		$this->render = 1;
 		# Here there should be some validation – take AJAX responses, for example
 		$this->_template = new Template($this->_module,$this->_action);
-		$this->_cache_id = 'RENDER-'.$this->_module.'_'.$this->_action;
+		$this->_cache_id = 'RENDER-'.$this->_module.'_'.$this->_action.'-'.implode('-',$query);
 	}
 	
 	function setTemplate($module=null,$file=null) {
