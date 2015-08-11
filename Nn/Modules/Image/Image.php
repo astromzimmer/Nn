@@ -74,7 +74,7 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 		$size = $this->size($path);
 		if(isset($bound)) {
 			 $retina_src = $this->src($bound*2,$is_height,$is_bw,40);
-			 $src_attr .= 'srcset="'.$src.','.$retina_src.' 2x" ';
+			 $src_attr .= 'srcset="'.$src.' 1x,'.$retina_src.' 2x" ';
 		}
 		return '<img '.$src_attr.'alt="'.$this->title.'" width="'.$size[0].'" height="'.$size[1].'">';
 	}
