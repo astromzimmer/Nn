@@ -1,10 +1,16 @@
 #!/bin/bash
 
-GREEN='\033[0;30m'
+GREEN='\033[32m'
 BLANK='\033[0m'
 
-printf "Hello ${GREEN}World${BLANK}!"
-
-#composer install
-#cd src/backend && npm install && bower install && brunch build -P
-#cd src/frontend && npm install && bower install && brunch w
+printf "\n\nInstalling Composer dependencies...!\n\n\n"
+composer install
+printf "\n\n${GREEN}Composer dependencies installed successfully${BLANK}\n\n\n"
+printf "\n\nBuilding backend...\n\n\n"
+cd src/backend && npm install && bower install && brunch build -P
+printf "\n\n${GREEN}Backend built successfully${BLANK}\n\n\n"
+printf "\n\nBuilding default frontend...\n\n\n"
+cd src/frontend && npm install && bower install
+printf "\n\n${GREEN}Backend built successfully${BLANK}\n\n\n"
+printf "\n\nStarting up Brunch for frontend...\n\n\n"
+cd src/frontend && brunch w
