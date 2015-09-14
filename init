@@ -1,0 +1,5 @@
+#!/bin/bash
+
+composer install
+cd src/backend && npm install && bower install && brunch build -P
+cd src/frontend && npm install && bower install && brunch build -P
