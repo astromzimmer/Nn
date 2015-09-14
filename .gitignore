@@ -87,6 +87,7 @@ bower_components
 *.sql
 *.sqlite
 *.sqlite3
+*.ft
 tmp/
 src/frontend/
 public/*.txt
@@ -96,6 +97,10 @@ public/imgs
 public/fonts
 public/assets
 public/backnn
+public/*.css
+public/*.js
+public/*.ico
+public/*.png
 App/*.php
 App/*/*.php
 App/*/*/*.php

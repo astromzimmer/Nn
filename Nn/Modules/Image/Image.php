@@ -26,7 +26,7 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 			'filename'		=>	$this->filename,
 			'url'			=>	$this->src(),
 			'type'			=>	$this->type,
-			'size'			=>	$this->size,
+			'size'			=>	$this->size(),
 			'created_at'	=>	$this->created_at,
 			'updated_at'	=>	$this->updated_at,
 		);

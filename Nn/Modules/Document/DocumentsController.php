@@ -42,7 +42,6 @@ class DocumentsController extends Nn\Core\Controller {
 	function create() {
 		$node_id = $_POST['node_id'];
 		$document = new Document();
-		$document->attr('attribute_id',$attribute->attr('id'));
 		if($document->make($_POST['title'], $_POST['description'], $_FILES['file_upload'])) {
 			if($document->save()) {
 				$attribute = new Attribute($node_id,$_POST['atype_id'],$document->attr('id'));

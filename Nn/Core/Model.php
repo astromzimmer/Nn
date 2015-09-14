@@ -10,6 +10,7 @@ class Model extends Basic {
 		if(isset($val)) {
 			$this->$var = $val;
 		} else {
+			if(!isset($this->$var)) return false;
 			return $this->$var;
 		}
 	}

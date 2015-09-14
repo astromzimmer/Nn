@@ -19,6 +19,8 @@ class NodetypesController extends Nn\Core\Controller {
 			'fa-child'=> '&#xf1ae;',
 			'fa-picture-o'=> '&#xf03e;',
 			'fa-asterisk'=> '&#xf069;',
+			'fa-star-o'=> '&#xf006;',
+			'fa-star'=> '&#xf005;',
 			'fa-folder-open'=> '&#xf07c;',
 			'fa-file-text'=> '&#xf15c;',
 			'fa-location-arrow'=> '&#xf124;',

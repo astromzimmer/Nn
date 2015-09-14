@@ -1,6 +1,6 @@
 <?php
 
-namespace Nn\Modules\API;
+namespace Nn\Modules\Api;
 use Nn\Modules\Node\Node as Node;
 use Nn;
 use Utils;
@@ -11,12 +11,16 @@ class ApiController extends Nn\Core\Controller {
 		header('Access-Control-Allow-Origin: *');
 	}
 
-	function nodes($start=null) {
-		Nn::authenticate();
-		$nodes = Node::find(array('parent_id'=>0),null,'position');
-		$nodes = Utils::exportAll($nodes);
-		$json_data = json_encode($nodes);
-		$this->renderMode('raw');
+	function nodes() {
+		if(isset($_GET['query'])) {
+			$query = $_GET['query'];
+			$nodes = Node::find(['*slug'=>$query],6);
+			$data = Utils::exportAll($nodes);
+		} else {
+			$data = ['error'=>'No ref in query'];
+		}
+		$json_data = json_encode($data);
+		$this->renderMode('json');
 		$this->setTemplateVars([
 				'data'=>$json_data
 			]);

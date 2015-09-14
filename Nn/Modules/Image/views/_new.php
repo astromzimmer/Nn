@@ -1,4 +1,4 @@
-<input type="hidden" name="MAX_FILE_SIZE" value="10000000" />
+<!-- <input type="hidden" name="MAX_FILE_SIZE" value="10000000" /> -->
 <input name="atype_id" type="hidden" value="<?php echo $attributetype->attr('id') ?>" />
 <fieldset>
 	<legend><?php echo Nn::babel('Title') ?></legend>

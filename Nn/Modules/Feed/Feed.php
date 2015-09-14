@@ -70,12 +70,13 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 
 	public function fetch() {
 		$attribute = $this->attribute();
+		if(!$attribute) return false;
 		$attributetype = $attribute->attributetype();
 		$params = json_decode($attributetype->attr('params'),true);
 		$service = strtolower($params['service']);
 		$result = $this->$service();
 		if($result) {
-			$this->updated_at = time()*1000;
+			Nn::cache()->flush('api_getPosts_');
 			return $this->save();
 		} else {
 			return false;
@@ -99,7 +100,7 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 		if($this->since) $params .= '&since='.$this->since;
 		if($this->until) $params .= '&until='.$this->until;
 		// $result = $facebook->api($this->handle.'/feed','GET',array('limit'=>200,'since'=>$since));
-		$response = $fb->get('/'.$this->handle.'/feed'.$params);
+		$response = $fb->get('/'.$this->handle.'/posts'.$params);
 		$edge = $response->getGraphEdge();
 		if(isset($edge)) {
 			// $items = array();
@@ -115,10 +116,35 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 			$obj = $graphNode->asArray();
 			if(strpos(strtolower(serialize($graphNode)),'#'.$this->hashtag) !== false) {
 				if(isset($obj['message']) || isset($obj['name'])) {
-					if($obj['type'] == 'photo') {
-						$photo_response = $fb->get('/'.$obj['object_id'].'?fields=images');
-						$photo = $photo_response->getGraphObject()->asArray();
-						$obj['picture'] = $photo['images'][0]['source'];
+					switch($obj['type']) {
+						case 'photo':
+							try {
+								$photo_response = $fb->get('/'.$obj['id'].'?fields=images');
+								$photo = $photo_response->getGraphObject()->asArray();
+								$obj['picture'] = $photo['images'][0]['source'];
+							} catch(\Exception $e) {
+								try {
+									$photo_response = $fb->get('/'.$obj['id'].'?fields=full_picture');
+									$photo = $photo_response->getGraphObject()->asArray();
+									$obj['picture'] = $photo['full_picture'];
+								} catch(\Exception $e) {
+									# Fucked up
+									if(isset($obj['full_picture'])) {
+										$obj['picture'] = $obj['full_picture'];
+									}
+								}
+							}
+							break;
+						case 'link':
+						case 'event':
+							try {
+								$link_response = $fb->get('/'.$obj['id'].'?fields=full_picture');
+								$link = $link_response->getGraphObject()->asArray();
+								if(isset($link['full_picture'])) $obj['picture'] = $link['full_picture'];
+							} catch(\Exception $e) {
+								# Error handling
+							}
+							break;
 					}
 					$uid = $obj['id'];
 					$post = Post::find(['uid'=>$uid,'feed_id'=>$this->id],1,null,false,null,false);
@@ -230,10 +256,10 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 		// $youtube = new \Google_YouTubeService($google);
 		// $result = $youtube->playlistItems->listPlaylistItems('snippet',array('playlistId'=>$this->handle));
 		$key = 'AIzaSyCTRZXXDHR7lXIZYww_NCZYjd6WNemJ3SA';
-		$channels_url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername={$this->handle}&key={$key}";
-		// $channels_url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id={$this->handle}&key={$key}";
+		// $channels_url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername={$this->handle}&key={$key}";
+		$channels_url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id={$this->handle}&key={$key}";
 		$channels = json_decode(Utils::getURL($channels_url),true);
-		if(count($channels['items']) == 0) return false;
+		if(!isset($channels['items']) || count($channels['items']) == 0) return false;
 		$uploads_id = $channels['items'][0]['contentDetails']['relatedPlaylists']['uploads'];
 		$url = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId={$uploads_id}&key={$key}";
 		$result = json_decode(Utils::getURL($url),true);
@@ -349,7 +375,7 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 		$url_handle = rawurlencode($this->handle);
 		$url = "https://public-api.wordpress.com/rest/v1/sites/{$url_handle}/posts/?number=100&pretty=0&tag={$this->hashtag}";
 		$result = json_decode(Utils::getURL($url),true);
-		if($items = $result['posts']) {
+		if(isset($result['posts']) && $items = $result['posts']) {
 			foreach ($items as $key => $value) {
 				$uid = $value['ID'];
 				$post = Post::find(['uid'=>$uid,'feed_id'=>$this->id],1,null,false);

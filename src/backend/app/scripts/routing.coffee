@@ -28,6 +28,7 @@ $(document).ready ->
 		fireAMD = ->
 			$("textarea.md").aMD
 				imgPath: "/backnn/imgs/static/aMD"
+				refEndpoint: '/api/nodes'
 				extStyles: [
 					"/backnn/css/fonts.css"
 					"/backnn/css/editor.css"
@@ -36,30 +37,39 @@ $(document).ready ->
 
 		R = Router()
 		R.add /admin\/nodes\/view\/(\d+)$/, (path,node_id)->
+			$right.addClass 'loading'
 			$.ajax
 				url: '/'+path+'?render_as=partial'
 				success: (result,status,jqXHR)->
 					$right.html result
 					focusTree node_id
+					$right.removeClass 'loading'
 		R.add /admin\/nodes\/make$/, (path)->
+			$right.addClass 'loading'
 			$.ajax
 				url: '/'+path+'?render_as=partial'
 				success: (result,status,jqXHR)->
 					$right.html result
 					$right.html(result).find('input:text').first().focus()
+					$right.removeClass 'loading'
 		R.add /admin\/nodes\/make\/in\/(\d+)$/, (path,parent_id)->
+			$right.addClass 'loading'
 			$.ajax
 				url: '/'+path+'?render_as=partial'
 				success: (result,status,jqXHR)->
 					$('li.node').removeClass 'focus active'
 					$('li.node[data-id='+parent_id+']').addClass('active').parents('li').addClass 'active'
 					$right.html(result).find('input:text').first().focus()
+					$right.removeClass 'loading'
 		R.add /admin\/nodes\/edit\/(\d+)$/, (path,node_id)->
+			$right.addClass 'loading'
 			$.ajax
 				url: '/'+path+'?render_as=partial'
 				success: (result,status,jqXHR)->
 					$right.html result
+					$right.removeClass 'loading'
 		R.add /admin\/nodes\/delete\/(\d+)$/, (path,node_id)->
+			$right.addClass 'loading'
 			$.ajax
 				url: '/'+path+'?render_as=partial'
 				success: (result,status,jqXHR)->
@@ -68,18 +78,30 @@ $(document).ready ->
 					success_path = jqXHR.getResponseHeader('Redirect')
 					R.navigate '/'+success_path
 		R.add /admin\/nodes\/view\/(\d+)\/(\w+)$/, (path,node_id,attribute_type)->
+			$right.addClass 'loading'
 			$.ajax
 				url: '/admin/attributes/make/'+attribute_type+'/in/'+node_id+'?render_as=partial'
 				success: (result,status,jqXHR)->
 					$('.maker',$right).html result
 					fireAMD()
+					$right.removeClass 'loading'
 		R.add /admin\/nodes\/view\/(\d+)\/(\w+)\/(\d+)$/, (path,node_id,attribute_type,attribute_id)->
+			$('#attribute_'+attribute_id).addClass 'loading'
 			$.ajax
 				url: '/admin/attributes/edit/'+attribute_id+'?render_as=partial'
 				success: (result,status,jqXHR)->
 					$('#attribute_'+attribute_id).replaceWith result
 					fireAMD()
 		R.add /admin\/attributes\/delete\/(\d+)$/, (path,attribute_id)->
+			$right.addClass 'loading'
+			$.ajax
+				url: '/'+path+'?render_as=partial'
+				success: (result,status,jqXHR)->
+					success_path = jqXHR.getResponseHeader('Redirect')
+					R.navigate '/'+success_path
+		R.start()
+
+		R.add /admin\/feeds\/delete_post\/(\d+)$/, (path,post_id)->
 			$.ajax
 				url: '/'+path+'?render_as=partial'
 				success: (result,status,jqXHR)->

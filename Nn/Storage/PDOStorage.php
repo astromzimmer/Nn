@@ -206,7 +206,7 @@ class PDOStorage implements StorageInterface {
 		return $result;
 	}
 	
-	private function find_by_sql($sql="",$vals=array(),$table_name,$model=null,$fetch_class=false) {
+	public function find_by_sql($sql="",$vals=array(),$table_name,$model=null,$fetch_class=false) {
 		$id = $table_name.'_'.md5($sql.implode("-",$vals));
 		$cache = Nn::cache();
 		if($cache->valid($id)) {
@@ -255,7 +255,7 @@ class PDOStorage implements StorageInterface {
 	public function save($table_name,$obj,$stamp=true){
 		Nn::cache()->flush($table_name);
 		$id = $obj->attr('id');
-		return isset($id) ? $this->update($table_name,$obj,$stamp) : $this->create($table_name,$obj,$stamp);
+		return ($id) ? $this->update($table_name,$obj,$stamp) : $this->create($table_name,$obj,$stamp);
 	}
 	
 	private function create($table_name,$obj,$stamp){
@@ -263,8 +263,8 @@ class PDOStorage implements StorageInterface {
 			$now = gettimeofday(true);
 			$created_at = $obj->attr('created_at');
 			$updated_at = $obj->attr('updated_at');
-			if(!isset($created_at)) $obj->attr('created_at',$now);
-			if(!isset($updated_at)) $obj->attr('updated_at',$obj->attr('created_at'));
+			if(!$created_at) $obj->attr('created_at',$now);
+			if(!$updated_at) $obj->attr('updated_at',$obj->attr('created_at'));
 		}
 		$attributes = $obj->getAttributes();
 		unset($attributes['id']);

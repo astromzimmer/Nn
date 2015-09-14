@@ -7,9 +7,9 @@
 	This will yield<br>
 	DATE: <?php echo DATE_FORMAT ?><br>
 	TIME: <?php echo TIME_FORMAT ?><br>
-	DATE & TIME: <?php echo DATETIME_FORMAT ?><br><br>
+	DATE & TIME: <?php echo DATETIME_FORMAT ?>
 </div>
-<input type="date" name="number" class="formField" id="numberField" value="" />
+<input type="date" name="number" class="formField" id="numberField" value="" autofocus />
 <?php else: ?>
-<input name="number" type="number" value="" class="formfield" placeholder="<?php echo Nn::babel('Enter an integer') ?>" id="numberField" />
+<input name="number" type="number" value="" class="formfield" placeholder="<?php echo Nn::babel('Enter an integer') ?>" id="numberField" autofocus />
 <?php endif; ?>

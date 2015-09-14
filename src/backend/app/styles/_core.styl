@@ -246,6 +246,49 @@ ellipsis($font-size=0,$line-height=0,$numlines=0)
     else
         text-overflow ellipsis
         white-space nowrap
+
+@keyframes loader
+    0%
+        background-color peter_river
+    50%
+        background-color asbestos
+    100%
+        background-color peter_river
+        vendor(transform, rotate(720deg))
+
+@keyframes loaderFade
+    0%
+        opacity 0
+    100%
+        opacity 1
+
+loader()
+    &:before
+        content ''
+        position absolute
+        top 0
+        left 0
+        right 0
+        bottom 0
+        background rgba(255,255,255,.82)
+        z-index 999998
+        vendor(animation, loaderFade .8s)
+    &:after
+        center()
+        background black
+        content '|'
+        height 2em
+        width 2em
+        vertical-align middle
+        color white
+        font-size 16px
+        font-weight 100
+        border-radius 50%
+        z-index 999999
+        opacity .8
+        box-shadow 0 0 2px 1px rgba(0,0,0,.12)
+        vendor(animation, loader 4s linear infinite)
+        vendor(transform-origin, 50% 50%)
     
 
 // Init setup

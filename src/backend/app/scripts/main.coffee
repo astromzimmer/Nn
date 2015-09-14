@@ -189,6 +189,7 @@ $(document).ready ->
 
 	$("textarea.md").aMD
 		imgPath: "/backnn/imgs/static/aMD"
+		refEndpoint: '/api/nodes'
 		extStyles: [
 			"/backnn/css/fonts.css"
 			"/backnn/css/editor.css"

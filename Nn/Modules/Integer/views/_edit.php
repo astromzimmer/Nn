@@ -8,7 +8,7 @@
 	TIME: <?php echo TIME_FORMAT ?><br>
 	DATE & TIME: <?php echo DATETIME_FORMAT ?><br><br>
 </div>
-<input type="date" name="number" class="formField" id="numberField" value="<?php echo strftime('%Y-%m-%d',$integer->attr('number')) ?>" />
+<input type="date" name="number" class="formField" id="numberField" value="<?php echo strftime('%Y-%m-%d',$integer->attr('number')) ?>" autofocus />
 <?php else: ?>
-<input name="number" type="number" value="<?php echo $integer->attr('number') ?>" class="formfield" id="numberField" />
+<input name="number" type="number" value="<?php echo $integer->attr('number') ?>" class="formfield" id="numberField" autofocus />
 <?php endif; ?>

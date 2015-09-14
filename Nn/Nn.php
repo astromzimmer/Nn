@@ -20,9 +20,11 @@ class Nn extends Nn\Core\Singleton {
 	/*  setup local ini  */
 	private static function setIni() {
 		$mem_limit = Nn::settings('MEMORY_LIMIT');
-		if($mem_limit) ini_set('memory_limit',self::settings('MEMORY_LIMIT'));
+		if($mem_limit) ini_set('memory_limit',$mem_limit);
+		$post_max_size = self::settings('POST_MAX_SIZE');
+		if($post_max_size) ini_set('post_max_size',$post_max_size);
 		$upload_max_filesize = self::settings('UPLOAD_MAX_FILESIZE');
-		if($upload_max_filesize) ini_set('upload_max_filesize',self::settings('UPLOAD_MAX_FILESIZE'));
+		if($upload_max_filesize) ini_set('upload_max_filesize',$upload_max_filesize);
 	}
 
 	/* setup environment specific attributes */

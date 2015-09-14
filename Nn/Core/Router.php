@@ -90,6 +90,7 @@ class Router {
 	}
 
 	private function probeController($target_path=null) {
+		$found_it = false;
 		$this->module = Utils::singularise(ucwords($this->default_controller));
 		$this->controller = ucwords($this->default_controller).'Controller';
 		$this->action = $this->default_action;
@@ -106,13 +107,17 @@ class Router {
 		}
 		if(file_exists(ROOT.DS.'App'.DS.$this->module.DS.$this->controller.'.php')) {
 			$controllerClass = 'App\\'.$this->module.'\\'.$this->controller;
-		} elseif(file_exists(ROOT.DS.'Nn'.DS.'Modules'.DS.$this->module.DS.$this->controller.'.php')) {
+			$found_it = method_exists($controllerClass, $this->action);
+		}
+		if(!$found_it && file_exists(ROOT.DS.'Nn'.DS.'Modules'.DS.$this->module.DS.$this->controller.'.php')) {
 			$controllerClass = 'Nn\\Modules\\'.$this->module.'\\'.$this->controller;
-		} else {
+			$found_it = method_exists($controllerClass, $this->action);
+		}
+		if(!$found_it) {
 			$controllerClass = 'Nn\\Modules\\'.$this->module.'\\DefController';
 			$this->action = 'notFound';
 		}
-		if($this->controller == 'PublikController' || $this->controller == 'APIController') {
+		if($this->controller == 'PublikController' || $this->controller == 'ApiController') {
 			Nn::settings('HIDE_INVISIBLE',true);
 			# Best place for tracker?
 			Nn::track();
@@ -120,14 +125,9 @@ class Router {
 			Nn::settings('HIDE_INVISIBLE',false);
 		}
 		$controller = new $controllerClass($this->action,$query);
-		if((int)method_exists($controllerClass, $this->action)) {
-			call_user_func_array(array($controller, 'before'), $query);
-			call_user_func_array(array($controller, $this->action), $query);
-			call_user_func_array(array($controller, 'after'), $query);
-		} else {
-			Utils::sendResponseCode(404);
-			// die("The action {$this->action} could not be found in class {$this->controller}.");
-		}
+		call_user_func_array(array($controller, 'before'), $query);
+		call_user_func_array(array($controller, $this->action), $query);
+		call_user_func_array(array($controller, 'after'), $query);
 	}
 
 }

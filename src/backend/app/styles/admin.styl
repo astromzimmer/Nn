@@ -31,6 +31,10 @@ muli()
 	letter-spacing .2em
 	font-weight 400
 
+sans-serif()
+	font-family sans-serif
+	letter-spacing .1em
+
 body
 	background-color $bodyBG
 	width 100%
@@ -132,6 +136,9 @@ body
 	
 	.fontawesome
 		font-family 'FontAwesome'
+	
+	.loading
+		loader()
 	
 	#flash
 		position fixed
@@ -631,19 +638,41 @@ body
 				a.anchor
 					position absolute
 					top -112px
-				.handle
+				label
 					position absolute
 					text-transform uppercase
 					top 0
 					left 0
 					right 0
 					padding 4px 5px
+				.note
+					padding 6px 12px 0
+					font-size .8em
+					color $shadowColour
 				.tools
 					display none
 					background-color $rightBG
 					top 0
 					right 0
 					height 23px
+				
+				.feed
+					position relative
+					.posts
+						padding 10px 0 0
+						li
+							border-top 1px solid #CCC
+							padding 4px
+							&:first-child
+								border-top none
+						.uid
+							sans-serif()
+							font-size .8em
+				
+				.text
+					a
+						text-decoration underline
+
 				&:hover
 				&.new
 				&.editing
@@ -664,10 +693,9 @@ body
 						select
 							margin 0
 					label
-						padding 0 3px
 						border-color $shadowColour
 					form
-						margin 24px 0 0
+						padding 27px 0 0
 						.aMD_container
 							border none
 						.submit

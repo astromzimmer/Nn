@@ -24,10 +24,12 @@ class Post extends Nn\Core\DataModel {
 			'uid'			=>	$this->feed_id.'_'.$this->uid,
 			'source'		=>	$this->service(),
 			'node'			=>	[
-									'id'	=> $this->node(),
+									'id'	=> $this->node()->attr('id'),
+									'slug'	=> $this->node()->slug(),
 									'title'	=> $this->node()->title()
 								],
 			'content'		=>	$this->content(),
+			'timestamp'		=>	$this->created_at,
 			'created_at'	=>	$this->created_at,
 			'updated_at'	=>	$this->updated_at,
 			'created_year'	=>	date('Y',$this->created_at),

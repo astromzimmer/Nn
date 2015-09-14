@@ -66,6 +66,17 @@ class FeedsController extends Nn\Core\Controller {
 		}
 		Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node_id);
 	}
+
+	function toggle() {
+		$this->renderMode('RAW');
+		$visible = $_POST['visible'];
+		$post = Post::find($_POST['id']);
+		$post->attr('visible',$visible);
+		if(!$post->save()) {
+			Utils::sendResponseCode(500);
+		}
+		Utils::sendResponseCode(200);
+	}
 }
 
 ?>

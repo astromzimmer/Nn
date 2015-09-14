@@ -41,7 +41,7 @@ class Attachment extends Nn\Modules\Datatype\Datatype {
 		return array(
 			'title'			=>	$this->title,
 			'filename'		=>	$this->filename,
-			'url'			=>	$this->public_path(),
+			'url'			=>	$this->publicPath(),
 			'type'			=>	$this->type,
 			'size'			=>	$this->size,
 			'created_at'	=>	$this->created_at,

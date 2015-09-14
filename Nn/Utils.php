@@ -31,10 +31,10 @@ class Utils {
 		exit;
 	}
 
-	public static function sendResponseCode($code) {
+	public static function sendResponseCode($code,$exit=false) {
 		# Consider adding support for > 5.4
 		http_response_code($code);
-		exit;
+		if($exit) exit;
 	}
 
 	public static function exportAll($nodes) {
@@ -86,6 +86,8 @@ class Utils {
 	public static function strToTime($str) {
 		$dateTime = new \DateTime();
 		$ts = strtotime($str);
+		$today = time() - strtotime('today');
+		$ts += $today;
 		$dateTime->setTimestamp($ts);
 		$ts += date_offset_get($dateTime);
 		return $ts;
@@ -109,7 +111,10 @@ class Utils {
 	}
 
 	public static function ellipse($text,$char_count=32) {
-		return substr($text,0,$char_count).'...';
+		if(count($text) > $char_count) {
+			$text = substr($text,0,$char_count);
+		}
+		return $text;
 	}
 
 	public static function noHTML($html_text) {
@@ -234,6 +239,20 @@ class Utils {
 					return 0;
 				}
 				return ($at > $bt) ? -1 : 1;
+			});
+		}
+		return $array;
+	}
+
+	public static function sortByPositionAndDate($array){
+		if(count($array) > 1) {
+			usort($array,function($a,$b){
+				$timediff = $a->timestamp() - $b->timestamp();
+				if($timediff) return $timediff;
+				if($a->attr('position') && $b->attr('position')) {
+					$posdiff = $a->attr('position') - $b->attr('position');
+					if($posdiff) return $posdiff;
+				}
 			});
 		}
 		return $array;

@@ -5,7 +5,7 @@
 	<div class="tools">
 		<a
 			class="edit"
-			href="<?php echo '/admin/nodes/view/',$node->attr('id'),'/',$attribute->attributetype()->attr('name').'/',$attribute->attr('id'),'#attribute_',$attribute->attr('id') ?>"
+			href="<?php echo '/admin/nodes/view/',$node->attr('id'),'/',$attribute->attributetype()->attr('id').'/',$attribute->attr('id'),'#attribute_',$attribute->attr('id') ?>"
 			data-tooltip="<?php echo Nn::babel('edit') ?>"
 			data-target="right"
 			data-ajax

@@ -1,11 +1,11 @@
 <?php if($image->hasFile()): ?>
 	<div class="image" data-id="<?php echo $image->attr('id') ?>">
 	<?php if($image->hasHref()): ?>
-		<a href="<?php echo $image->attr('href') ?>"><?php echo $image->tag(920); ?></a>
+		<a href="<?php echo $image->attr('href') ?>"><?php echo $image->tag(); ?></a>
 	<?php else: ?>
-		<?php echo $image->tag(920); ?>
+		<?php echo $image->tag(); ?>
 	<?php endif; ?>
 	</div>
 <?php else: ?>
-	No image file found.
+	<?php echo $image->attr('filename') ?> not found.
 <?php endif; ?>

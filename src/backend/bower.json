@@ -48,6 +48,9 @@
         "fonts/fontawesome-webfont.woff",
         "fonts/fontawesome-webfont.woff2"
       ]
+    },
+    "textarea-caret-position": {
+      "main": "index.js"
     }
   }
 }

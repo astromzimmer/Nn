@@ -1,7 +1,7 @@
 <?php
 
 namespace Nn\Modules\Def;
-use Nn\Modules\Models\Image as Image;
+use Nn\Modules\Image\Image as Image;
 use Nn;
 use Utils;
 
