@@ -1,5 +1,10 @@
 #!/bin/bash
 
-composer install
-cd src/backend && npm install && bower install && brunch build -P
-cd src/frontend && npm install && bower install && brunch build -P
+GREEN='\033[0;30m'
+BLANK='\033[0m'
+
+printf "Hello ${GREEN}World${BLANK}!"
+
+#composer install
+#cd src/backend && npm install && bower install && brunch build -P
+#cd src/frontend && npm install && bower install && brunch w
