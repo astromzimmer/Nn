@@ -37,11 +37,11 @@ class Utils {
 		if($exit) exit;
 	}
 
-	public static function exportAll($nodes) {
+	public static function exportAll($objs) {
 		$result = array();
-		if($nodes) {
-			foreach ($nodes as $node) {
-				array_push($result,$node->export());
+		if($objs) {
+			foreach ($objs as $obj) {
+				if(method_exists($obj, 'export')) array_push($result,$obj->export());
 			}
 		}
 		return $result;
