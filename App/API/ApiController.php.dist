@@ -13,6 +13,15 @@ class ApiController extends Nn\Core\Controller {
 		header('Access-Control-Allow-Origin: *');
 	}
 
+	function texts($slug=null) {
+		// $this->cache('application/json');
+		if(!isset($slug)) Utils::sendResponseCode(500);
+		$node = Node::find(['slug'=>$slug],1);
+		$this->setTemplateVars([
+			'text'=>$text
+		]);
+	}
+
 	function observations() {
 		$observations = Node::find_by_type('observation');
 		$voice = Utils::exportAll($observations);
@@ -26,18 +35,6 @@ class ApiController extends Nn\Core\Controller {
 		$days = Node::find_by_type('day, period');
 		$diary = Utils::exportAll($days);
 		$json_data = json_encode($diary);
-		$this->renderMode('json');
-		$this->setTemplateVars(['data'=>$json_data]);
-	}
-
-	function artists() {
-		// $this->cache('application/json');
-		$artists = Node::find_by_type('artist');
-		$artists_array = Utils::exportAll($artists);
-		foreach($artists as $key=>$artist) {
-			$artists_array[$key]['posts'] = Utils::exportAll($this->getPosts($artist,0,9999));
-		}
-		$json_data = json_encode($artists_array);
 		$this->renderMode('json');
 		$this->setTemplateVars(['data'=>$json_data]);
 	}

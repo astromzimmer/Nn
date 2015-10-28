@@ -19,17 +19,16 @@ class DefController extends Nn\Core\Controller {
 	function thumbnail($id,$filename) {
 		$filename_array = explode('-', $filename);
 		$bound = (int)$filename_array[0];
-		if($bound == 0) {
-			Utils::redirect_to(DOMAIN.DS.'404');
+		if($bound == 0) $bound = null;
+		# Come on...
+		$h = (strpos($filename, 'h-') !== false) ? true : false;
+		$bw = (strpos($filename, 'bw-') !== false) ? true : false;
+		$alpha = (strpos($filename, 'a-') !== false) ? true : false;
+		$image = Image::find($id);
+		if($src = $image->src($bound,$h,$bw,$alpha)) {
+			Utils::redirect_to($src);
 		} else {
-			$h = ($filename_array[1] == 'h');
-			$bw = (isset($filename_array[2]) && ($filename_array[1] == 'bw' || $filename_array[2] == 'bw'));
-			$image = Image::find($id);
-			if($src = $image->src($bound,$h,$bw)) {
-				Utils::redirect_to($src);
-			} else {
-				Utils::redirect_to('/500');
-			}
+			Utils::redirect_to('/500');
 		}
 	}
 	

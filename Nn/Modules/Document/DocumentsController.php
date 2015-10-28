@@ -54,7 +54,8 @@ class DocumentsController extends Nn\Core\Controller {
 				}
 			}
 		} else {
-			Nn::flash(print_r($document->errors()));
+			$attribute->delete();
+			Nn::flash(['error'=>$document->errors()[0]]);
 			Utils::redirect_to(Nn::referer());
 		}
 	}

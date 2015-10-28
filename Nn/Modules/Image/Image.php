@@ -55,31 +55,32 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 		return ($this->href && $this->href != '');
 	}
 
-	public function src($bound=null,$is_height=false,$is_bw=false,$cmpr=null) {
+	public function src($bound=null,$is_height=false,$is_bw=false,$is_alpha=false,$cmpr=null) {
 		$filename = $this->filename;
+		if($is_alpha) $filename = 'a-'.$filename;
 		if($is_bw) $filename = 'bw-'.$filename;
 		if($is_height) $filename = 'h-'.$filename;
 		if(isset($bound)) $filename = $bound.'-'.$filename;
 		$path = ROOT.DS.'public'.DS.'assets'.DS.'Image'.DS.$this->id.DS.$filename;
 		if(!file_exists($path)) {
-			if(!$this->generate($bound,$is_height,$is_bw)) return false;
+			if(!$this->generate($bound,$is_height,$is_bw,$is_alpha)) return false;
 		}
 		return $this->publicDir().'/'.$filename;
 	}
 
-	public function tag($bound=null,$is_height=false,$is_bw=false) {
-		$src = $this->src($bound,$is_height,$is_bw);
+	public function tag($bound=null,$is_height=false,$is_bw=false,$is_alpha=false,$cmpr=null) {
+		$src = $this->src($bound,$is_height,$is_bw,$is_alpha,$cmpr);
 		$src_attr = 'src="'.$src.'" ';
 		$path = str_replace($this->publicDir(), $this->dir(), $src);
 		$size = $this->size($path);
 		if(isset($bound)) {
-			 $retina_src = $this->src($bound*2,$is_height,$is_bw,40);
+			 $retina_src = $this->src($bound*2,$is_height,$is_bw,$is_alpha,$cmpr);
 			 $src_attr .= 'srcset="'.$src.' 1x,'.$retina_src.' 2x" ';
 		}
 		return '<img '.$src_attr.'alt="'.$this->title.'" width="'.$size[0].'" height="'.$size[1].'">';
 	}
 	
-	public function generate($bound,$is_height,$is_bw,$comp=null) {
+	public function generate($bound,$is_height,$is_bw,$is_alpha,$comp=null) {
 		$path = $this->path();
 		if(!file_exists($path)) {
 			# Error handling
@@ -101,7 +102,7 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 				break;
 		}
 		
-		if($this->writeImg($bound,$is_height,$is_bw,$comp)) {
+		if($this->writeImg($bound,$is_height,$is_bw,$is_alpha,$comp)) {
 			// success!
 			return true;
 		} else {
@@ -112,7 +113,7 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 	}
 	
 	private function getBounds($bound,$is_height) {
-		$this->rotate();
+		if(in_array($this->type, ['image/jpg','image/jpeg','image/pjpeg'])) $this->rotate();
 		$width = imagesx($this->_img);
 		$height = imagesy($this->_img);
 		if(isset($bound)) {
@@ -157,7 +158,7 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 		}
 	}
 	
-	private function writeImg($bound,$is_height,$is_bw,$comp=null) {
+	private function writeImg($bound,$is_height,$is_bw,$is_alpha=false,$comp=null) {
 		if(empty($this->_img)) return false;
 		$bounds = $this->getBounds($bound,$is_height);
 		
@@ -171,12 +172,21 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 		$filename = $this->filename;
 		if($is_bw) {
 			imagefilter($new_img,IMG_FILTER_GRAYSCALE);
-			$filename = 'bw-'.$filename;
 		}
-		if($is_height) {
-			$filename = $bounds['scaled_height'].'-h-'.$filename;
-		} else {
-			$filename = $bounds['scaled_width'].'-'.$filename;
+		if($is_alpha && $this->type == 'image/png') {
+			$mask = imagecreatetruecolor($bounds['scaled_width'], $bounds['scaled_height']);
+			imagecopy($mask, $new_img, 0, 0, 0, 0, $bounds['scaled_width'], $bounds['scaled_height']);
+			$new_img = self::alpha($new_img);
+		}
+		# Should really clean this up...
+		if($is_alpha) $filename = 'a-'.$filename;
+		if($is_bw) $filename = 'bw-'.$filename;
+		if(isset($bound)) {
+			if($is_height) {
+				$filename = $bounds['scaled_height'].'-h-'.$filename;
+			} else {
+				$filename = $bounds['scaled_width'].'-'.$filename;
+			}
 		}
 		$target_path = $this->dir().DS.$filename;
 		
@@ -196,6 +206,25 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 		imagedestroy($this->_img);
 		imagedestroy($new_img);
 		return true;
+	}
+
+	private static function alpha($img) {
+		$width = imagesx($img);
+		$height = imagesy($img);
+		$new_img = imagecreatetruecolor($width, $height);
+		$transparent = imagecolorallocatealpha($new_img, 0, 0, 0, 127);
+		imagefill($new_img, 0, 0, $transparent);
+		for($x=0; $x < $width; $x++) { 
+			for($y=0; $y < $height; $y++) {
+				$colour = imagecolorsforindex($img, imagecolorat($img, $x, $y));
+				$alpha = (1-($colour['red']/255))*127;
+				imagesetpixel($new_img, $x, $y, imagecolorallocatealpha($new_img, 255, 255, 255, $alpha));
+			}
+		}
+		imagealphablending($new_img, true);
+		imagesavealpha($new_img, true);
+		imagedestroy($img);
+		return $new_img;
 	}
 	
 	public function delete() {
