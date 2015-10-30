@@ -1,4 +1,4 @@
-<div class="logo" style="width:278px;height:28px;">
+<div class="logo">
 <?php if(isset($logo) && $image = $logo->data()): ?>
 	<?php echo $image->tag(28,true) ?>
 <?php else: ?>
