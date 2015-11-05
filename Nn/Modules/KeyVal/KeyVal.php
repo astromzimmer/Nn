@@ -1,9 +1,9 @@
 <?php
 
-namespace Nn\Modules\KeyVal;
+namespace Nn\Modules\Keyval;
 use Nn;
 
-class KeyVal extends Nn\Modules\Datatype\Datatype {
+class Keyval extends Nn\Modules\Datatype\Datatype {
 	
 	protected $id;
 	protected $key;

@@ -1,12 +1,12 @@
 <?php
 
-namespace Nn\Modules\KeyVal;
+namespace Nn\Modules\Keyval;
 use Nn\Modules\Attributetype\Attributetype as Attributetype;
 use Nn\Modules\Attribute\Attribute as Attribute;
 use Nn;
 use Utils;
 
-class KeyValsController extends Nn\Core\Controller {
+class KeyvalsController extends Nn\Core\Controller {
 	
 	function before() {
 		Nn::authenticate();
@@ -16,7 +16,7 @@ class KeyValsController extends Nn\Core\Controller {
 		$atype_id = $_POST['atype_id'];
 		$atype = Attributetype::find($atype_id);
 		$node_id = $_POST['node_id'];
-		$keyVal = new KeyVal();
+		$keyVal = new Keyval();
 		$key = $_POST['key'];
 		$value = $_POST['value'];
 		$keyVal->attr('key',$key);
@@ -39,7 +39,7 @@ class KeyValsController extends Nn\Core\Controller {
 	function update($id=null) {
 		// $uts = strptime($_POST['number'],DATE_FORMAT);
 		// $ts = mktime($uts['tm_hour'],$uts['tm_min'],$uts['tm_sec'],++$uts['tm_mon'],$uts['tm_mday'],($uts['tm_year']+1900));
-		$keyVal = KeyVal::find($id);
+		$keyVal = Keyval::find($id);
 		$key = $_POST['key'];
 		$value = $_POST['value'];
 		$keyVal->attr('key',$key);
