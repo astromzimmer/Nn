@@ -1,11 +1,11 @@
-<li id="attribute_<?php echo $attribute->attr('id'); ?>" class="aMD attribute">
+<li id="attribute_<?php echo $attribute->attr('id'); ?>" class="aMD attribute" data-id="<?php echo $attribute->attr('id') ?>">
 	<a class="anchor" name="attribute_<?php echo $attribute->attr('id'); ?>"></a>
 	<label class="handle"><?php echo strtolower($attribute->attributetype()->attr('name')); ?></label>
 	<?php Nn::partial($attribute->public_view(),array(strtolower($attribute->datatype())=>$attribute->data())); ?>
 	<div class="tools">
 		<a
 			class="edit"
-			href="<?php echo '/admin/nodes/view/',$node->attr('id'),'/',$attribute->attributetype()->attr('id').'/',$attribute->attr('id'),'#attribute_',$attribute->attr('id') ?>"
+			href="<?php echo '/admin/nodes/view/',$node->attr('id'),'/',$attribute->attributetype()->attr('id').'/',$attribute->attr('id') ?>"
 			data-tooltip="<?php echo Nn::babel('edit') ?>"
 			data-target="right"
 			data-ajax
