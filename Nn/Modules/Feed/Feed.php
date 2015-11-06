@@ -96,7 +96,7 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 				'default_graph_version' => 'v2.4'
 			]);
 		$fb->setDefaultAccessToken($appId.'|'.$secret);
-		$params = '?limit=100&fields=type,source,place,picture,object_id,message,link,caption,created_time';
+		$params = '?limit=100&fields=type,source,place,picture,object_id,message,link,caption,created_time,attachments';
 		if($this->since) $params .= '&since='.$this->since;
 		if($this->until) $params .= '&until='.$this->until;
 		// $result = $facebook->api($this->handle.'/feed','GET',array('limit'=>200,'since'=>$since));
@@ -118,20 +118,28 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 				if(isset($obj['message']) || isset($obj['name'])) {
 					switch($obj['type']) {
 						case 'photo':
-							try {
-								$photo_response = $fb->get('/'.$obj['id'].'?fields=images');
-								$photo = $photo_response->getGraphObject()->asArray();
-								$obj['picture'] = $photo['images'][0]['source'];
-							} catch(\Exception $e) {
-								try {
-									$photo_response = $fb->get('/'.$obj['id'].'?fields=full_picture');
-									$photo = $photo_response->getGraphObject()->asArray();
-									$obj['picture'] = $photo['full_picture'];
-								} catch(\Exception $e) {
-									# Fucked up
-									if(isset($obj['full_picture'])) {
-										$obj['picture'] = $obj['full_picture'];
-									}
+						case 'video':
+							// try {
+							// 	$photo_response = $fb->get('/'.$obj['id'].'?fields=images');
+							// 	$photo = $photo_response->getGraphObject()->asArray();
+							// 	$obj['picture'] = $photo['images'][0]['source'];
+							// } catch(\Exception $e) {
+							// 	try {
+							// 		$photo_response = $fb->get('/'.$obj['id'].'?fields=full_picture');
+							// 		$photo = $photo_response->getGraphObject()->asArray();
+							// 		$obj['picture'] = $photo['full_picture'];
+							// 	} catch(\Exception $e) {
+							// 		# Fucked up
+							// 		if(isset($obj['full_picture'])) {
+							// 			$obj['picture'] = $obj['full_picture'];
+							// 		}
+							// 	}
+							// }
+							if(isset($obj['attachments'])) {
+								if(isset($obj['attachments'][0]['media'])) {
+									$obj['picture'] = $obj['attachments'][0]['media']['image']['src'];
+								} else if(isset($obj['attachments'][0]['subattachments'])) {
+									$obj['picture'] = $obj['attachments'][0]['subattachments'][0]['media']['image']['src'];
 								}
 							}
 							break;
