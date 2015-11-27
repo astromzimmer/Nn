@@ -28,7 +28,7 @@ class DefController extends Nn\Core\Controller {
 		if($src = $image->src($bound,$h,$bw,$alpha)) {
 			Utils::redirect_to($src);
 		} else {
-			Utils::redirect_to('/500');
+			Utils::redirect_to('/404');
 		}
 	}
 	

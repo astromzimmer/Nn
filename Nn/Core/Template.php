@@ -118,8 +118,17 @@ class Template extends Basic {
 		header('Content-Type: '.$this->content_type);
 		switch($this->render_as) {
 			case 'partial':
-			case 'pdf':
 				$this->renderTemplate();
+				break;
+			case 'pdf':
+				extract($this->vars);
+				if(isset($data)) {
+					header('Content-Type: '.$this->content_type);
+					header('Content-Transfer-Encoding: binary');
+					header('Content-Disposition: inline');
+					header('Content-Length: '.filesize($data));
+					readfile($data);
+				}
 				break;
 			case 'raw':
 			case 'json':
