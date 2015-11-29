@@ -70,7 +70,11 @@ class Router {
 	private function reRoute($route_param,$method) {
 		foreach($this->routes as $route) {
 			if(preg_match($route->pattern, $route_param) && strtoupper($route->method) == $method) {
+				// echo $route->pattern.'<br>';
+				// echo $route->callback.'<br>';
+				// echo $route_param.'<br>';
 				$route->callback = preg_replace($route->pattern, $route->callback, $route_param);
+				// die($route->callback);
 				return $route;
 			}
 		}
