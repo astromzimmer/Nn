@@ -179,9 +179,10 @@ this.appSpace = {}
 					$itm = $(ui.item)
 					doSort $itm
 
-		$('#right .manage').on 'scroll', (e)->
+		$('#right').on 'scroll', (e)->
 			$header = $('#right .header')
 			scroll_top = this.scrollTop
+			console.log scroll_top
 			if scroll_top > 48
 				$header.removeClass('maximised')
 			else
