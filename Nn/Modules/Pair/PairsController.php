@@ -1,12 +1,12 @@
 <?php
 
-namespace Nn\Modules\Keyval;
+namespace Nn\Modules\Pair;
 use Nn\Modules\Attributetype\Attributetype as Attributetype;
 use Nn\Modules\Attribute\Attribute as Attribute;
 use Nn;
 use Utils;
 
-class KeyvalsController extends Nn\Core\Controller {
+class PairsController extends Nn\Core\Controller {
 	
 	function before() {
 		Nn::authenticate();
@@ -16,17 +16,17 @@ class KeyvalsController extends Nn\Core\Controller {
 		$atype_id = $_POST['atype_id'];
 		$atype = Attributetype::find($atype_id);
 		$node_id = $_POST['node_id'];
-		$keyVal = new Keyval();
-		$key = $_POST['key'];
-		$value = $_POST['value'];
-		$keyVal->attr('key',$key);
-		$keyVal->attr('value',$value);
-		if($keyVal->save()) {
-			$attribute = new Attribute($node_id,$_POST['atype_id'],$keyVal->attr('id'));
+		$pair = new Pair();
+		$left = $_POST['left'];
+		$right = $_POST['right'];
+		$pair->attr('left',$left);
+		$pair->attr('right',$right);
+		if($pair->save()) {
+			$attribute = new Attribute($node_id,$_POST['atype_id'],$pair->attr('id'));
 			if($attribute->save()) {
 				Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node_id);
 			} else {
-				$keyVal->delete();
+				$pair->delete();
 				Nn::flash(['error'=>Nn::babel("Failed to register attribute")]);
 				Utils::redirect_to(Nn::referer());
 			}
@@ -39,18 +39,18 @@ class KeyvalsController extends Nn\Core\Controller {
 	function update($id=null) {
 		// $uts = strptime($_POST['number'],DATE_FORMAT);
 		// $ts = mktime($uts['tm_hour'],$uts['tm_min'],$uts['tm_sec'],++$uts['tm_mon'],$uts['tm_mday'],($uts['tm_year']+1900));
-		$keyVal = Keyval::find($id);
-		$key = $_POST['key'];
-		$value = $_POST['value'];
-		$keyVal->attr('key',$key);
-		$keyVal->attr('value',$value);
-		if($keyVal->save()) {
+		$pair = Pair::find($id);
+		$left = $_POST['left'];
+		$right = $_POST['right'];
+		$pair->attr('left',$left);
+		$pair->attr('right',$right);
+		if($pair->save()) {
 			# Attribute save needs error handling - yawn
-			$attribute = $keyVal->attribute();
+			$attribute = $pair->attribute();
 			$attributetype_id = $_POST['attributetype_id'];
 			$attribute->attr('attributetype_id',$attributetype_id);
 			$attribute->save();
-			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$keyVal->node()->attr('id'));
+			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$pair->node()->attr('id'));
 		} else {
 			die("failed to update number");
 		}

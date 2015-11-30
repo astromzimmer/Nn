@@ -70,7 +70,7 @@ class Node extends Nn\Core\DataModel {
 	public function __construct($title=null, $author_id=null, $parent_id=null, $nodetype_id=null){
 		if(!empty($title) && !empty($author_id)){
 			$this->title = $title;
-			$this->position = 99999999999;
+			$this->position = 2147483647;
 			$this->author_id = (int)$author_id;
 			$this->parent_id = (int)$parent_id;
 			$this->nodetype_id = (int)$nodetype_id;
