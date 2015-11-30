@@ -13,9 +13,6 @@ defined('DATE_FORMAT') ? null : define("DATE_FORMAT", "%Y.%m.%d");
 defined('TIME_FORMAT') ? null : define("TIME_FORMAT", "%H:%M");
 defined('DATETIME_FORMAT') ? null : define("DATETIME_FORMAT", "%H:%M, %Y.%m.%d");
 
-// defining datatypes. If you add your own models, these should be added here
-defined('DATATYPES') ? null : define('DATATYPES', "Document,Image,Text,Timestamp,Feed");
-
 // here goes your assets paths
 defined('ASSETS') ? null : define('ASSETS', ROOT.DS.'public'.DS.'assets');
 defined('DOCUMENTS') ? null : define('DOCUMENTS', ASSETS.DS.'Document');
