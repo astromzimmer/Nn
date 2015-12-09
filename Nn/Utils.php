@@ -110,11 +110,21 @@ class Utils {
 		new ContactForm($fields,$redirect_to,$required_fields);
 	}
 
-	public static function ellipse($text,$char_count=32) {
-		if(count($text) > $char_count) {
-			$text = substr($text,0,$char_count);
+	public static function ellipsis($text,$char_count=32) {
+		$text_array = self::mb_str_split($text);
+		$length = count($text_array);
+		if($length > $char_count) {
+			$text = '';
+			for($i=0; $i < $char_count; $i++) {
+				$text .= $text_array[$i];
+			}
+			$text = trim($text).'...';
 		}
 		return $text;
+	}
+
+	public static function mb_str_split($string) {
+		return preg_split('/(?<!^)(?!$)/u',$string);
 	}
 
 	public static function noHTML($html_text) {
@@ -160,6 +170,17 @@ class Utils {
 			return true;
 		}
 		return false;
+	}
+
+	public static function randomString($length=8) {
+		$str = '';
+		$chars = array_merge(range('A','Z'),range('a','z'),range('0','9'));
+		$max = count($chars) - 1;
+		for($i=0; $i < $length; $i++) { 
+			$rand = mt_rand(0,$max);
+			$str .= $chars[$rand];
+		}
+		return $str;
 	}
 
 	public static function is_mobile(){

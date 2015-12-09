@@ -22,7 +22,7 @@
 				<select name="parent_id" class="formfield" id="parentField" >
 					<option value="0" <?php if($node->attr('parent_id') == 0) { echo "selected=\"selected\""; } ?>>ROOT</option>
 					<?php foreach($parents as $parent): ?>
-					<option value="<?php echo $parent->attr('id'); ?>" <?php if($parent->attr('id') == $node->attr('parent_id')) { echo "selected=\"selected\""; } ?>><?php echo Utils::ellipse($parent->title(),32) ?></option>
+					<option value="<?php echo $parent->attr('id'); ?>" <?php if($parent->attr('id') == $node->attr('parent_id')) { echo "selected=\"selected\""; } ?>><?php echo Utils::ellipsis($parent->title(),32) ?></option>
 					<?php endforeach; ?>
 				</select>
 			</fieldset>

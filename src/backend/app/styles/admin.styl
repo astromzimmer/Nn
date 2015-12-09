@@ -366,11 +366,12 @@ body
 			.borderline
 				width $leftWidth
 				height 100%
-				border-right 1px solid $spacerBG
+				// border-right 1px solid $spacerBG
 
 			.menu
 				width $leftWidth
 				height 100%
+				border-right 1px solid $spacerBG
 				.add
 					a
 						img
@@ -381,6 +382,8 @@ body
 						clickable($itemBG,lighten($itemBG,42%))
 						position relative
 						border-top 1px solid $spacerBG
+						white-space nowrap
+						font-size 0
 						&:last-child
 							border-bottom 1px solid $spacerBG
 						.expander
@@ -396,10 +399,12 @@ body
 							z-index 1
 							opacity .4
 						.expander
-							position absolute
+							// position absolute
+							display inline-block
 							clickable(none,$rightBG)
 							background-image url(../imgs/static/ui/collapsed.gif)
 							left 0
+							border-right 1px solid $spacerBG
 						.handle
 						.link
 							position relative
@@ -412,19 +417,21 @@ body
 							background-image url(../imgs/static/ui/public_link.gif)
 						.label
 							position relative
+							display inline-block
 							height $liHeight
-							padding 0 48px 0 32px
-							border-right 1px solid $spacerBG
+							width 100%
+							vertical-align top
+							padding 0 72px 0 12px
+							font-size 13px
 							font-weight 300
-							line-height $liHeight + 4
+							line-height $liHeight +3
 							a
-								ellipsis()
+								display inline-block
 								width 100%
 								span
 									padding 0 3px 0 0
 						.add
 						.expander
-							border-right 1px solid $spacerBG
 							a
 								display block
 						&:hover
@@ -614,18 +621,6 @@ body
 										border-color $shadowColour
 							&.right
 								bottom 24px
-				
-				.manage
-					// background-color white
-					height 100%
-					padding 24px 72px 24px
-					overflow-y auto
-					
-					#optionsContainer
-						input
-							width 30%
-							padding 0
-							border-width 0 0 1px
 
 				.menu
 					width $rightMenuWidth
@@ -734,6 +729,18 @@ body
 								text-overflow ellipsis
 								white-space nowrap
 								overflow hidden
+			
+			.manage
+				// background-color white
+				height 100%
+				padding 24px 72px 24px
+				overflow-y auto
+				
+				#optionsContainer
+					input
+						width 30%
+						padding 0
+						border-width 0 0 1px
 
 			#code-editor
 				position absolute

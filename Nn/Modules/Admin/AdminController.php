@@ -3,6 +3,7 @@
 namespace Nn\Modules\Admin;
 use Nn\Modules\User\User as User;
 use Nn\Modules\Node\Node as Node;
+use Nn\Core\Mailer as Mailer;
 use Nn;
 use Utils;
 
@@ -41,6 +42,10 @@ class AdminController extends Nn\Core\Controller {
 
 	}
 
+	function forgot() {
+
+	}
+
 	function index() {
 		Nn::authenticate();
 		$this->setTemplateVars([
@@ -75,6 +80,40 @@ class AdminController extends Nn\Core\Controller {
 		Nn::session()->logout();
 		Nn::flash(['success'=>Nn::babel('Successfully logged out')]);
 		Utils::redirect_to('/');
+	}
+
+	function reset_password() {
+		$this->renderMode(false);
+		$email = $_POST['uid'];
+		if($user = User::find(['email'=>$email],1)){
+			$new_password = $user->resetPassword();
+
+			$message = "Your password for ".Nn::settings('DOMAIN')." has been reset: \r\n\r\n".$new_password;
+			$message .= "\r\n\r\nPlease log in and change it as soon as possible, to avoid security breaches.";
+			
+			$mailer = new Mailer();
+		
+			$mailer->Subject = Nn::settings('DOMAIN').': Password reset';
+			$mailer->Body = $message;
+			$mailer->isHTML = false;
+			// $mailer->AltBody = $message;
+			
+			$mailer->AddAddress($email);
+			
+			if(!$mailer->Send()) {
+				$result = false;
+			} else {
+				$result = true;
+			}
+			$mailer->ClearAddresses();
+			$mailer->ClearAttachments();
+
+			Nn::flash(['success'=>Nn::babel('New password send to').' '.$email]);
+			Utils::redirect_to('/admin/login');
+		} else {
+			Nn::flash(['error'=>Nn::babel('No valid account found for that email')]);
+			Utils::redirect_to('/admin/forgot');
+		}
 	}
 	
 	function after() {

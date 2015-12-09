@@ -9,6 +9,7 @@
 		'log in'			=> 'Einloggen',
 		'username'			=> 'Benutzername',
 		'password'			=> 'Passwort',
+		'forgot password'	=> 'Passwort vergessen',
 
 		# menu
 		'nodes'				=> 'Elemente',

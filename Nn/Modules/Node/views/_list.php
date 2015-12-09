@@ -17,7 +17,7 @@
 			data-ajax
 			><span
 				class="fa <?php echo $n->nodetype()->attr('icon') ?>"
-				></span><?php echo $n->attr('title') ?></a>
+				></span><?php echo Utils::ellipsis($n->attr('title'),30); ?></a>
 	</div>
 	<?php if($n->nodetype()->nodetypes()): ?>
 	<ul id="<?php echo $n->attr('id') ?>_nodes" class="submenu sortable<?php if($is_active) echo ' expanded' ?>">

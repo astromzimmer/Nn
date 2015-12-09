@@ -2,6 +2,7 @@
 
 namespace Nn\Modules\User;
 use Nn;
+use Utils;
 
 class User extends Nn\Core\DataModel {
 
@@ -52,6 +53,13 @@ class User extends Nn\Core\DataModel {
 			$user = (password_verify(static::$hashbrown.$password,$user->attr('password'))) ? $user : false;
 		}
 		return $user;
+	}
+
+	public function resetPassword($npw=null){
+		$password = (isset($npw)) ? $npw : Utils::randomString(8);
+		$this->password = password_hash(static::$hashbrown.$password,PASSWORD_BCRYPT);
+		$this->save();
+		return $password;
 	}
 	
 	public function full_name(){

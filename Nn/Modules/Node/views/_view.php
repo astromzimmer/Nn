@@ -11,7 +11,7 @@
 				<label><?php echo Nn::babel('Last edited') ?>:</label> <?php echo strftime(DATE_FORMAT,$node->attr('updated_at')); ?>	
 			</li>
 			<!-- <li class="meta">
-				<label><?php echo Nn::babel('Slug') ?>:</label> <?php echo Utils::ellipse($node->slug(),32); ?>
+				<label><?php echo Nn::babel('Slug') ?>:</label> <?php echo Utils::ellipsis($node->slug(),32); ?>
 			</li> -->
 			<li class="tools">
 				<a class="edit" href="<?php echo DOMAIN.DS.'admin'.DS.'nodes'.DS.'edit'.DS.$node->attr('id') ?>" data-tooltip="<?php echo Nn::babel('edit') ?>" data-target="right" data-ajax><?php echo Utils::UIIcon('edit'); ?>
