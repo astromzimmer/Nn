@@ -31,6 +31,16 @@ class DefController extends Nn\Core\Controller {
 			Utils::redirect_to('/404');
 		}
 	}
+
+	function placeholder($width,$height,$background_colour,$font_colour) {
+		$image = imagecreatetruecolor($width, $height);
+		imagefilledrectangle($image, 0, 0, $width, $height, $background_colour);
+		imagestring($image, 8, $width/2, $height/2, 'hejhej', $font_colour);
+		$this->renderMode('image','image/gif');
+		$this->setTemplateVars([
+				'data'=>$image
+			]);
+	}
 	
 	function after() {
 	

@@ -226,6 +226,27 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 		imagedestroy($img);
 		return $new_img;
 	}
+
+	public static function placeholder($w,$h,$bg_clrs,$fnt_clrs) {
+		$width = isset($w) ? $width : 200;
+		$height = isset($h) ? $height : 200;
+		$bg_clrs = isset($bg_clrs) ? $bg_clrs : 200;
+		$fnt_clrs = isset($fnt_clrs) ? $fnt_clrs : 200;
+		$size = 12;
+		$angle = 0;
+		$font = 'Arial';
+		$x = 0;
+		$y = $size;
+		$img = imagecreatetruecolor($width,$height);
+		$background_colour = imagecolorallocate($img,$bg_clrs[0],$bg_clrs[1],$bg_clrs[2]);
+		$font_colour = imagecolorallocate($img,$fnt_clrs[0],$fnt_clrs[1],$fnt_clrs[2]);
+		imagettftext($img,$size,$angle,$x,$y,$txtColour,$font,$str);
+		imagefill($img,0,0,$bgColour);
+		imagealphablending($img,false);
+		imagesavealpha($img,true);
+		imagepng($img, $str.".png");
+		imagedestroy($img);
+	}
 	
 	public function delete() {
 		if(parent::delete()) {

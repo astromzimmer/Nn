@@ -130,6 +130,14 @@ class Template extends Basic {
 					readfile($data);
 				}
 				break;
+			case 'image':
+				extract($this->vars);
+				if(isset($data)) {
+					header('Content-Type: '.$this->content_type);
+					imagegif($data);
+					imagedestroy($data);
+				}
+				break;
 			case 'raw':
 			case 'json':
 				extract($this->vars);
