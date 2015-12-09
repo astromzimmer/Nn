@@ -39,6 +39,7 @@ Nn::get('/api/','api');
 # Default routes
 Nn::get('/404/','def/notFound');
 Nn::get('/500/','def/error');
+Nn::get('/placeholder\/(\d+)x(\d+)\/(\w+)\/(\w+)/','def/placeholder/\1/\2/\3/\4');
 Nn::get('/assets\/Image\/(\d+)\/(.*)/','def/thumbnail/\1/\2');
 
 # Public routes
