@@ -41,23 +41,25 @@ class ImagesController extends Nn\Core\Controller {
 	
 	function create() {
 		$node_id = $_POST['node_id'];
-		$image = new Image();
-		if($image->make($_POST['title'], $_POST['description'], $_POST['href'], $_FILES['file_upload'])) {
-			if($image->save()) {
-				$attribute = new Attribute($node_id,$_POST['atype_id'],$image->attr('id'));
-				if($attribute->save()) {
-					Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node_id);
-				} else {
-					$image->delete();
-					Nn::flash(['error'=>Nn::babel("Failed to register attribute")]);
-					Utils::redirect_to(Nn::referer());
+		$files = Image::fixFilesArray($_FILES['file_upload']);
+		foreach($files as $file) {
+			$image = new Image();
+			if($image->make($_POST['title'], $_POST['description'], $_POST['href'], $file)) {
+				if($image->save()) {
+					$attribute = new Attribute($node_id,$_POST['atype_id'],$image->attr('id'));
+					if(!$attribute->save()) {
+						$image->delete();
+						Nn::flash(['error'=>Nn::babel("Failed to register attribute")]);
+						Utils::redirect_to(Nn::referer());
+					}
 				}
+			} else {
+				$attribute->delete();
+				Nn::flash(['error'=>$image->errors()[0]]);
+				Utils::redirect_to(Nn::referer());
 			}
-		} else {
-			$attribute->delete();
-			Nn::flash(['error'=>$image->errors()[0]]);
-			Utils::redirect_to(Nn::referer());
 		}
+		Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node_id);
 	}
 	
 	function update($id=null) {

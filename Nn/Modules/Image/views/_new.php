@@ -14,5 +14,5 @@
 </fieldset>
 <fieldset>
 	<legend><?php echo Nn::babel('File') ?></legend>
-	<input type="file" name="file_upload" />
+	<input type="file" name="file_upload[]" multiple />
 </fieldset>

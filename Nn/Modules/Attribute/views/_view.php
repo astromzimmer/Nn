@@ -1,7 +1,7 @@
 <li id="attribute_<?php echo $attribute->attr('id'); ?>" class="aMD attribute" data-id="<?php echo $attribute->attr('id') ?>">
 	<a class="anchor" name="attribute_<?php echo $attribute->attr('id'); ?>"></a>
 	<label class="handle"><?php echo strtolower($attribute->attributetype()->attr('name')); ?></label>
-	<?php Nn::partial($attribute->public_view(),array(strtolower($attribute->datatype())=>$attribute->data())); ?>
+	<?php Nn::partial($attribute->admin_view(),array(strtolower($attribute->datatype())=>$attribute->data())); ?>
 	<div class="tools">
 		<a
 			class="edit"

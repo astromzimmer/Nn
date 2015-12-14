@@ -114,7 +114,7 @@ class PDOStorage implements StorageInterface {
 				# Check if LIKE
 				if(substr($key,0,1) == '*') {
 					$first_val = true;
-					$value_array = explode(' ', ($val));
+					$value_array = is_array($val) ? $val : explode(' ', $val);
 					$clean_key = substr($key,1);
 					$sql .= $clean_key;
 					foreach($value_array as $i => $value) {
@@ -172,13 +172,14 @@ class PDOStorage implements StorageInterface {
 			# Check if first filter
 			$sql .= ($first) ? ' WHERE ' : ' AND ';
 			# Check if LIKE
-			if(substr($key,0,1) == '*') {
+			if(substr($key,0,1) == '&' || substr($key,0,1) == '*') {
+				$operator = (substr($key,0,1) == '&') ? 'AND' : 'OR';
 				$first_val = true;
-				$value_array = explode(' ', ($val));
+				$value_array = is_array($val) ? $val : explode(' ', $val);
 				$clean_key = substr($key,1);
 				$sql .= $clean_key;
 				foreach($value_array as $i => $value) {
-					$sql .= ($first_val) ? ' LIKE ?' : ' AND '.$clean_key.' LIKE ?';
+					$sql .= ($first_val) ? ' LIKE ?' : ' '.$operator.' '.$clean_key.' LIKE ?';
 					$value_array[$i] = '%'.$value.'%';
 					$first_val = false;
 				}

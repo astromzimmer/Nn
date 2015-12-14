@@ -54,6 +54,16 @@ class Attribute extends \Nn\Core\DataModel {
 			]);
 		return $partial;
 	}
+
+	public function admin_view() {
+		$partial = Utils::fileExists([
+				ROOT.DS.'App'.DS.$this->datatype().DS.'views'.DS.'_view.jade',
+				ROOT.DS.'App'.DS.$this->datatype().DS.'views'.DS.'_view.php',
+				ROOT.DS.'Nn'.DS.'Modules'.DS.$this->datatype().DS.'views'.DS.'_view.jade',
+				ROOT.DS.'Nn'.DS.'Modules'.DS.$this->datatype().DS.'views'.DS.'_view.php'
+			]);
+		return $partial;
+	}
 	
 	public function node() {
 		return Node::find($this->node_id);
