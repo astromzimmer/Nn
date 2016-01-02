@@ -57,10 +57,12 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 
 	public function src($bound=null,$is_height=false,$is_bw=false,$is_alpha=false,$cmpr=null) {
 		$filename = $this->filename;
-		if($is_alpha) $filename = 'a-'.$filename;
-		if($is_bw) $filename = 'bw-'.$filename;
-		if($is_height) $filename = 'h-'.$filename;
-		if(isset($bound)) $filename = $bound.'-'.$filename;
+		if($this->type != 'image/gif') {
+			if($is_alpha) $filename = 'a-'.$filename;
+			if($is_bw) $filename = 'bw-'.$filename;
+			if($is_height) $filename = 'h-'.$filename;
+			if(isset($bound)) $filename = $bound.'-'.$filename;
+		}
 		$path = ROOT.DS.'public'.DS.'assets'.DS.'Image'.DS.$this->id.DS.$filename;
 		if(!file_exists($path)) {
 			if(!$this->generate($bound,$is_height,$is_bw,$is_alpha)) return false;

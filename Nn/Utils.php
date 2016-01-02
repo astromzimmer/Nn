@@ -373,21 +373,25 @@ class Utils {
 		return $bounds;
 	}
 
-	public static function mailto($e=null) {
+	public static function mailto($e=null,$lnk=null) {
 		$email = (isset($e)) ? $e : MAILER_TO;
-		$tag = '<a href="mailto:' . $email . '">' . $email . '</a>';
-		$chars = str_split($tag);
+		$link = (isset($lnk) ? $lnk : $email);
+		$hashed_email = self::characterise($email);
+		$hashed_link = self::characterise($link);
+		
+		$tag = '<a data-pml="'.$hashed_email.'" data-link="'.$hashed_link.'">[protected link]</a>';
+		return $tag;
+	}
+
+	private static function characterise($str) {
+		$chars = str_split($str);
 		$strOut = '';
 		foreach($chars as $char) {
 			$strOut .= ord($char);
 			$strOut .= ',';
 		}
 		$strOut = rtrim($strOut,',');
-		
-		$JStag = '<script type="text/javascript">{';
-		$JStag .= '	document.write(String.fromCharCode(' . $strOut . '))';
-		$JStag .= '}</script>';
-		return $JStag;
+		return $strOut;
 	}
 
 	public static function generate_image($str=null, $font=null) {
