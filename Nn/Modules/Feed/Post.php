@@ -14,8 +14,8 @@ class Post extends Nn\Core\DataModel {
 			'uid' => 'short_text',
 			'content' => 'long_text',
 			'visible' => 'integer',
-			'created_at' => 'integer',
-			'updated_at' => 'integer'
+			'created_at' => 'float',
+			'updated_at' => 'float'
 		);
 
 	public function exportProperties($excludes=array()) {

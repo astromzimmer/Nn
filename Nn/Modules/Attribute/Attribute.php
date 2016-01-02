@@ -23,14 +23,14 @@ class Attribute extends \Nn\Core\DataModel {
 			'node_id' => 'integer',
 			'attributetype_id' => 'integer',
 			'visible' => 'integer',
-			'created_at' => 'integer',
-			'updated_at' => 'integer'
+			'created_at' => 'float',
+			'updated_at' => 'float'
 		);
 
 	public function __construct($node_id=null, $attributetype_id=null, $data_id=null, $visible=1){
 		if(!empty($node_id) && !empty($attributetype_id) && !empty($data_id)) {
 			$this->node_id = (int)$node_id;
-			$this->position = 99999999999;
+			$this->position = 2147483647;
 			$this->attributetype_id = (int)$attributetype_id;
 			$this->data_id = (int)$data_id;
 			$this->visible = !Nn::settings('SAFE_PUBLISHING');

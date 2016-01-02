@@ -29,8 +29,8 @@ class Node extends Nn\Core\DataModel {
 			'title' => 'short_text',
 			'nodetype_id' => 'integer',
 			'author_id' => 'integer',
-			'created_at' => 'integer',
-			'updated_at' => 'integer',
+			'created_at' => 'float',
+			'updated_at' => 'float',
 			'parent_id' => 'integer'
 		);
 

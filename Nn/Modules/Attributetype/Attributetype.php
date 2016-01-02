@@ -17,8 +17,8 @@ class Attributetype extends Nn\Core\DataModel {
 			'datatype' => 'short_text',
 			'params' => 'text',
 			'position' => 'integer',
-			'created_at' => 'integer',
-			'updated_at' => 'integer',
+			'created_at' => 'float',
+			'updated_at' => 'float',
 		);
 
 	public function exportProperties($excludes=array()) {
@@ -33,6 +33,7 @@ class Attributetype extends Nn\Core\DataModel {
 		if(isset($name) && isset($datatype)){
 			$this->name = $name;
 			$this->datatype = $datatype;
+			$this->position = 2147483647;
 			if(isset($params)) $this->params = json_encode($params);
 			return $this;
 		} else {

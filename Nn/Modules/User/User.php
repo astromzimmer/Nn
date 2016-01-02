@@ -20,8 +20,8 @@ class User extends Nn\Core\DataModel {
 			'first_name' => 'short_text',
 			'last_name' => 'short_text',
 			'role_id' => 'integer',
-			'created_at' => 'integer',
-			'updated_at' => 'integer'
+			'created_at' => 'float',
+			'updated_at' => 'float'
 		);
 	
 	public function __construct($first_name=null, $last_name=null, $email=null, $password=null, $role_id=null){

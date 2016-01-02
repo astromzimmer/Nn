@@ -9,17 +9,39 @@ class PDOStorage implements StorageInterface {
 
 	private $backup_path;
 	private $dbc;
-	private $schemify = array(
-			'short_text' => 'VARCHAR(128)',
-			'text' => 'TEXT',
-			'long_text' => 'LONGTEXT',
-			'float' => 'FLOAT',
-			'integer' => 'INTEGER',
-			'date' => 'DATE',
-			'datetime' => 'DATETIME',
-			'timestamp' => 'TIMESTAMP',
-			'bool' => 'BOOLEAN'
-		);
+
+	private function schematics() {
+		$dbtype = strtolower(Nn::settings('DB_TYPE'));
+		switch ($dbtype) {
+			case 'pgsql':
+				return array(
+					'short_text' => 'VARCHAR(128)',
+					'text' => 'TEXT',
+					'long_text' => 'TEXT',
+					'float' => 'FLOAT',
+					'integer' => 'INTEGER',
+					'date' => 'DATE',
+					'datetime' => 'DATETIME',
+					'timestamp' => 'TIMESTAMP',
+					'bool' => 'BOOLEAN'
+				);
+				break;
+			
+			default:
+				return array(
+					'short_text' => 'VARCHAR(128)',
+					'text' => 'TEXT',
+					'long_text' => 'LONGTEXT',
+					'float' => 'FLOAT',
+					'integer' => 'INTEGER',
+					'date' => 'DATE',
+					'datetime' => 'DATETIME',
+					'timestamp' => 'TIMESTAMP',
+					'bool' => 'BOOLEAN'
+				);
+				break;
+		}
+	}
 
 	public function __construct($type=null,$host=null,$port=null,$name=null,$user=null,$password=null) {
 		$type = (isset($type)) ? $type : Nn::settings('DB_TYPE');
@@ -61,6 +83,34 @@ class PDOStorage implements StorageInterface {
 						$user,
 						$password,
 						array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+					$this->dbc->setAttribute(
+							PDO::ATTR_ERRMODE,
+							PDO::ERRMODE_EXCEPTION
+						);
+					$this->dbc->setAttribute(
+							PDO::ATTR_ORACLE_NULLS,
+							PDO::NULL_NATURAL
+						);
+				} catch(\PDOException $e) {
+					die($e->getMessage());
+				}
+			break;
+			case "pgsql" :
+				if(!isset($host) || !isset($port) || !isset($name) || !isset($user) || !isset($password)) {
+					if(Nn::settings('DB_HOST') && Nn::settings('DB_PORT') && Nn::settings('DB_NAME') && Nn::settings('DB_USER') && Nn::settings('DB_PASSWORD')) {
+						$host = Nn::settings('DB_HOST');
+						$port = Nn::settings('DB_PORT');
+						$name = Nn::settings('DB_NAME');
+						$user = Nn::settings('DB_USER');
+						$password = Nn::settings('DB_PASSWORD');
+					} else {
+						die('DB config error');
+					}
+				}
+				try {
+					$this->dbc = new PDO("pgsql:host=$host;port=$port;dbname=$name",
+						$user,
+						$password);
 					$this->dbc->setAttribute(
 							PDO::ATTR_ERRMODE,
 							PDO::ERRMODE_EXCEPTION
@@ -225,7 +275,7 @@ class PDOStorage implements StorageInterface {
 				$cache->set($id,$result);
 				return $result;
 			} catch(\PDOException $e) {
-				if($e->getCode() == '42S02' || $e->getMessage() == 'SQLSTATE[HY000]: General error: 1 no such table: '.$table_name) {
+				if($e->getCode() == '42S02' || $e->getCode() == '42P01' || $e->getMessage() == 'SQLSTATE[HY000]: General error: 1 no such table: '.$table_name) {
 					if($this->createTable($table_name,($model::$SCHEMA))) {
 						return $this->find_by_sql($sql,$vals,$table_name,$model);
 					}
@@ -272,8 +322,10 @@ class PDOStorage implements StorageInterface {
 		$keys = array_keys($attributes);
 		$vals = array_values($attributes);
 		$sql = "INSERT INTO " . $table_name . " (";
+		$sql .= "id, ";
 		$sql .= join(", ", $keys);
 		$sql .= ") VALUES (";
+		$sql .= "DEFAULT,";
 		$i = count($attributes);
 		for(;$i--;) {
 		$sql .= '?';
@@ -283,11 +335,12 @@ class PDOStorage implements StorageInterface {
 		try {
 			$statement = $this->dbc->prepare($sql);
 			$statement->execute($vals);
-			$obj->attr('id',$this->dbc->lastInsertId());
+			$obj->attr('id',$this->dbc->lastInsertId($table_name.'_id_seq'));
 			Nn::cache()->flush($table_name);
 			return true;
 		} catch(\PDOException $e) {
-			if($e->getCode() == '42S02' || $e->getMessage() == 'SQLSTATE[HY000]: General error: 1 no such table: '.$table_name) {
+			if($e->getCode() == '42S02' || $e->getCode() == '42P01' || $e->getMessage() == 'SQLSTATE[HY000]: General error: 1 no such table: '.$table_name) {
+				print_r($table_name);
 				if($this->createTable($table_name,($obj::$SCHEMA))) {
 					return $this->create($table_name,$obj,true);
 				}
@@ -359,12 +412,17 @@ class PDOStorage implements StorageInterface {
 
 	private function createTable($table_name,$schema) {
 		$mapped_schema = array();
+		$schematics = $this->schematics();
 		foreach($schema as $attribute => $mapping) {
-			$mapped_schema[] = $attribute.' '.$this->schemify[$mapping];
+			$mapped_schema[] = $attribute.' '.$schematics[$mapping];
 		}
+		$dbtype = strtolower(Nn::settings('DB_TYPE'));
 		$sql = "CREATE TABLE ".$table_name;
-		$sql .= " (id INTEGER PRIMARY KEY";
-		$sql .= (strtolower(DB_TYPE) == 'mysql') ? ' AUTO_INCREMENT' : '';
+		$sql .= " (id";
+		$sql .= ($dbtype == 'mysql' || $dbtype == 'sqlite') ? ' INTEGER' : '';
+		$sql .= ($dbtype == 'pgsql') ? ' SERIAL' : '';
+		$sql .= ' PRIMARY KEY';
+		$sql .= ($dbtype == 'mysql') ? ' AUTO_INCREMENT' : '';
 		$sql .= ", ";
 		$sql .= join(",", $mapped_schema).")";
 		try {
@@ -378,9 +436,10 @@ class PDOStorage implements StorageInterface {
 	private function addColumn($table_name,$schema,$column_name) {
 		$previous_column_name = null;
 		$column_mapping = null;
+		$schematics = $this->schematics();
 		foreach($schema as $attribute => $mapping) {
 			if($column_name == $attribute) {
-				$column_mapping = $this->schemify[$mapping];
+				$column_mapping = $schematics[$mapping];
 				break;
 			}
 			$previous_column_name = $attribute;

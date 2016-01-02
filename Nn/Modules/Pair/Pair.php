@@ -12,8 +12,8 @@ class Pair extends Nn\Modules\Datatype\Datatype {
 	public static $SCHEMA = array(
 			'left' => 'short_text',
 			'right' => 'text',
-			'created_at' => 'integer',
-			'updated_at' => 'integer'
+			'created_at' => 'float',
+			'updated_at' => 'float'
 		);
 
 	public static $PARAMS = array(

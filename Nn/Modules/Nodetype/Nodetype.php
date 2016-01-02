@@ -22,14 +22,15 @@ class Nodetype extends Nn\Core\DataModel {
 			'nodetypes' => 'text',
 			'can_be_root' => 'integer',
 			'position' => 'integer',
-			'created_at' => 'integer',
-			'updated_at' => 'integer'
+			'created_at' => 'float',
+			'updated_at' => 'float'
 		);
 	
 	public function __construct($name=null, $icon=null, $can_be_root=null, $attributetypes=null, $nodetypes=null){
 		if(isset($name)){
 			$this->name = $name;
 			$this->icon = $icon;
+			$this->position = 2147483647;
 			$this->attributetypes = (!empty($attributetypes)) ? implode(",",$attributetypes) : "";
 			$this->nodetypes = (!empty($nodetypes)) ? implode(",",$nodetypes) : "";
 			$this->can_be_root = isset($can_be_root) ? true : false;
@@ -56,8 +57,11 @@ class Nodetype extends Nn\Core\DataModel {
 	}
 	
 	public function attributetypes() {
-		$query = array('id'=>Utils::explode(',', $this->attributetypes));
-		$result = Attributetype::find($query,null,'position');
+		$result = false;
+		if($this->attributetypes != '') {
+			$query = array('id'=>Utils::explode(',', $this->attributetypes));
+			$result = Attributetype::find($query,null,'position');
+		}
 		return $result;
 	}
 
@@ -67,8 +71,11 @@ class Nodetype extends Nn\Core\DataModel {
 	}
 
 	public function nodetypes() {
-		$query = array('id'=>Utils::explode(',', $this->nodetypes));
-		$result = self::find($query,null,'position');
+		$result = false;
+		if($this->nodetypes != '') {
+			$query = array('id'=>Utils::explode(',', $this->nodetypes));
+			$result = self::find($query,null,'position');
+		}
 		return $result;
 	}
 

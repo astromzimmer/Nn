@@ -14,8 +14,8 @@ class Setting extends Nn\Core\DataModel {
 			'name' => 'short_text',
 			'value' => 'text',
 			'description' => 'text',
-			'created_at' => 'integer',
-			'updated_at' => 'integer'
+			'created_at' => 'float',
+			'updated_at' => 'float'
 		);
 
 	public function exportProperties($excludes=array()) {

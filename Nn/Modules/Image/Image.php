@@ -14,8 +14,8 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 			'href' => 'text',
 			'type' => 'short_text',
 			'size' => 'float',
-			'created_at' => 'integer',
-			'updated_at' => 'integer'
+			'created_at' => 'float',
+			'updated_at' => 'float'
 		);
 
 	public function exportProperties($excludes=array()) {

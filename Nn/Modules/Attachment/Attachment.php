@@ -33,8 +33,8 @@ class Attachment extends Nn\Modules\Datatype\Datatype {
 			'filename' => 'short_text',
 			'type' => 'short_text',
 			'size' => 'float',
-			'created_at' => 'integer',
-			'updated_at' => 'integer'
+			'created_at' => 'float',
+			'updated_at' => 'float'
 		);
 
 	public static function fixFilesArray($files) {
