@@ -16,6 +16,10 @@ class DefController extends Nn\Core\Controller {
 		// echo 'Not Found';
 	}
 
+	function error() {
+		
+	}
+
 	function thumbnail($id,$filename) {
 		$filename_array = explode('-', $filename);
 		$bound = (int)$filename_array[0];

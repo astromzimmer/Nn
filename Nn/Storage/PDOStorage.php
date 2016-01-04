@@ -43,9 +43,9 @@ class PDOStorage implements StorageInterface {
 		}
 	}
 
-	public function __construct($type=null,$host=null,$port=null,$name=null,$user=null,$password=null) {
+	public function init($type=null,$host=null,$port=null,$name=null,$user=null,$password=null) {
 		$type = (isset($type)) ? $type : Nn::settings('DB_TYPE');
-		if(!isset($type)) die('No DB type defined');
+		if(!isset($type)) trigger_error('No DB type defined');
 		$this->backup_path = ROOT.DS.'db';
 		if(!is_dir($this->backup_path)) {
 			mkdir($this->backup_path);
@@ -63,7 +63,7 @@ class PDOStorage implements StorageInterface {
 							PDO::NULL_NATURAL
 						);
 				} catch(\PDOException $e) {
-					die($e->getMessage());
+					trigger_error($e);
 				}
 			break;
 			case "mysql" :
@@ -75,7 +75,7 @@ class PDOStorage implements StorageInterface {
 						$user = Nn::settings('DB_USER');
 						$password = Nn::settings('DB_PASSWORD');
 					} else {
-						die('DB config error');
+						trigger_error('DB config error');
 					}
 				}
 				try {
@@ -92,7 +92,7 @@ class PDOStorage implements StorageInterface {
 							PDO::NULL_NATURAL
 						);
 				} catch(\PDOException $e) {
-					die($e->getMessage());
+					trigger_error($e);
 				}
 			break;
 			case "pgsql" :
@@ -104,7 +104,7 @@ class PDOStorage implements StorageInterface {
 						$user = Nn::settings('DB_USER');
 						$password = Nn::settings('DB_PASSWORD');
 					} else {
-						die('DB config error');
+						trigger_error('DB config error');
 					}
 				}
 				try {
@@ -120,11 +120,13 @@ class PDOStorage implements StorageInterface {
 							PDO::NULL_NATURAL
 						);
 				} catch(\PDOException $e) {
-					die($e->getMessage());
+					// die($e->getMessage());
+					// Utils::throwError();
+					trigger_error($e);
 				}
 			break;
 			default:
-				die("Please set up your database correctly.");
+				trigger_error("Please set up your database correctly.");
 			break;
 		}
 	}
@@ -266,7 +268,7 @@ class PDOStorage implements StorageInterface {
 			try {
 				$statement = $this->dbc->prepare($sql);
 				if(!$statement) {
-					die(print_r($statement->errorInfo()));
+					trigger_error($statement->errorInfo());
 				}
 				$vals = (count($vals) > 0) ? $vals : null;
 				$exec = $statement->execute($vals);
@@ -280,7 +282,7 @@ class PDOStorage implements StorageInterface {
 						return $this->find_by_sql($sql,$vals,$table_name,$model);
 					}
 				}
-				die(print_r($e));
+				trigger_error($e);
 			}
 		}
 	}
@@ -352,7 +354,7 @@ class PDOStorage implements StorageInterface {
 			print_r($sql);
 			echo('<br>');
 			print_r($obj);
-			die("<p>Can't create object in table '".$table_name."':<p>".$e->getMessage());
+			trigger_error("<p>Can't create object in table '".$table_name."':<p>".$e->getMessage());
 		}
 	}
 	
@@ -387,7 +389,7 @@ class PDOStorage implements StorageInterface {
 					return $this->update($table_name,$obj);
 				}
 			}
-			die($e->getMessage());
+			trigger_error($e;
 		}
 	}
 	

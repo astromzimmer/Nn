@@ -4,6 +4,7 @@ use Nn\Modules\Setting\Setting as Setting;
 use Nn\Modules\User\User as User;
 use Nn\Modules\User\Role as Role;
 
+
 class Nn extends Nn\Core\Singleton {
 
 	protected $session;
@@ -39,10 +40,14 @@ class Nn extends Nn\Core\Singleton {
 			// ini_set('error_log',ROOT.DS.'logs'.DS.'development.log');
 		} else {
 			ini_set('display_startup_errors','Off');
-			ini_set('display_errors','Off');
-			ini_set('html_errors','Off');
+			ini_set('display_errors','On');
+			ini_set('html_errors','On');
 			ini_set('log_errors','On');
-			ini_set('error_log',ROOT.DS.'logs'.DS.'production.log');
+			if(!file_exists(self::settings('LOG_DIR'))) {
+				mkdir(self::settings('LOG_DIR'),0755,true);
+			}
+			ini_set('error_log',self::settings('LOG_DIR').DS.'production.log');
+			set_error_handler(['Nn','handleServerErrors']);
 		}
 	}
 
@@ -64,6 +69,27 @@ class Nn extends Nn\Core\Singleton {
 		}
 	}
 
+	public static function handleServerErrors($number,$msg,$file,$line,$vars) {
+		$path = $_SERVER['REQUEST_URI'];
+		$subject = self::settings('PAGE_NAME').': Error';
+		$message = "<p><strong>Path:</strong> $path</p>";
+		$message .= "<p><strong>Error number:</strong> $number</p>";
+		$message .= "<p><strong>Error message:</strong><pre>$msg</pre></p>";
+		$message .= "<p><strong>File:</strong> $file</p>";
+		$message .= "<p><strong>Line number:</strong> $line</p>";
+		$message .= '<p><strong>Vars:</strong><pre>'.print_r($vars,1).'</pre></p>';
+		$headers = 'From: '.self::settings('FROM_EMAIL')."\r\n";
+		$headers .= 'Content-Type: text/html; charset=utf8'."\r\n";
+		mail(self::settings('ERROR_EMAIL'),$subject,$message,$headers);
+		$log = date('Y-m-d H:i:s').": $path\r\n";
+		$log .= '    PATH: '.$path."\r\n";
+		$log .= '    FILE: '.$file." ($line)\r\n";
+		$log .= '    MESSAGE: '.$msg."\r\n";
+		$log .= "\r\n".'••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••'."\r\n";
+		error_log($log);
+		Utils::redirect_to('500.php');
+	}
+
 	public static function init(Nn\Core\Session $session,Nn\Core\Minify $minify,Nn\Core\Cache $cache,Nn\Core\Mailer $mailer,Nn\Core\Router $router,Nn\Storage\StorageInterface $storage,Nn\Babel\Dictionary $dictionary,Nn\Trackers\TrackerInterface $tracker) {
 
 		static::setEnvironmentSpecifics();
@@ -78,6 +104,7 @@ class Nn extends Nn\Core\Singleton {
 		self::instance()->dictionary = $dictionary;
 		self::instance()->tracker = $tracker;
 
+		self::instance()->storage()->init();
 		self::instance()->session->init();
 
 		$settings = Setting::find_all();

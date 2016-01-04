@@ -25,10 +25,18 @@ class Utils {
 	public static function redirect_to($location,$include_params=true){
 		if($include_params) {
 			unset($_GET['route']);
-			$location = $location.'?'.http_build_query($_GET);
+			$params = http_build_query($_GET);
+			if(!empty($params)) $location = $location.'?'.http_build_query($_GET);
 		}
 		header("Location: {$location}");
 		exit;
+	}
+
+	public static function throwError($code=500) {
+		switch($code) {
+			case 500:
+				self::redirect_to('500.php');
+		}
 	}
 
 	public static function sendResponseCode($code,$exit=false) {

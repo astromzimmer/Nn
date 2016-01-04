@@ -36,6 +36,7 @@ defined('SAFE_PUBLISHING') ? null : define('SAFE_PUBLISHING', false);
 // defined('FROM_NAME') ? null : define("FROM_NAME", PAGE_NAME." Mailer");
 // // enter the email address you want your contact emails to be sent from
 // defined('FROM_EMAIL') ? null : define("FROM_EMAIL", "");
+// defined('ERROR_EMAIL') ? null : define("ERROR_EMAIL", "");
 
 // DATABASE SETUP
 // SQLite
