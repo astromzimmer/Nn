@@ -13,8 +13,8 @@ class Visitor extends Nn\Core\DataModel {
 			'ip' => 'short_text',
 			'user_agent' => 'text',
 			'referrer' => 'text',
-			'created_at' => 'integer',
-			'updated_at' => 'integer'
+			'created_at' => 'float',
+			'updated_at' => 'float'
 		);
 
 	public function exportProperties($excludes=array()) {

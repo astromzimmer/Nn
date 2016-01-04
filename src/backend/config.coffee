@@ -38,6 +38,7 @@ exports.config =
 				assets: on
 		stylus:
 			includeCss: true
+			plugins: ['autoprefixer-stylus']
 
 	overrides:
 		production:

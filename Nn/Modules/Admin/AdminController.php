@@ -56,8 +56,13 @@ class AdminController extends Nn\Core\Controller {
 	function backup_db() {
 		$this->renderMode(false);
 		Nn::authenticate();
-		if(Nn::storage()->backup()) {
-			Nn::flash(['success'=>Nn::babel('Database backed up successfully')]);
+		$backup_return = Nn::storage()->backup();
+		if($backup_return) {
+			if(is_string($backup_return)) {
+				Nn::flash(['error'=>Nn::babel($backup_return)]);
+			} else {
+				Nn::flash(['success'=>Nn::babel('Database backed up successfully')]);
+			}
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 		}

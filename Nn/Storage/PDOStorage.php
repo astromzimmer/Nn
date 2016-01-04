@@ -470,7 +470,7 @@ class PDOStorage implements StorageInterface {
 				break;
 			
 			default:
-				return false;
+				return 'No backup function implemented for your database type. Please ensure your database is backed up systematically.';
 				break;
 		}
 	}
