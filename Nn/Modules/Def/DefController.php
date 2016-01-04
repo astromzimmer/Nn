@@ -36,8 +36,18 @@ class DefController extends Nn\Core\Controller {
 		}
 	}
 
-	function placeholder($width,$height,$background_colour,$font_colour) {
+	function placeholder($width,$height,$bg_colour,$fnt_colour) {
 		$image = imagecreatetruecolor($width, $height);
+		if(isset($bg_colour)) {
+			$background_colour = Utils::getImageColorFromHex($image,$bg_colour);
+		} else {
+			$background_colour = imagecolorallocate($image, 0xAA, 0xCC, 0xDD);
+		}
+		if(isset($fnt_colour)) {
+			$font_colour = Utils::getImageColorFromHex($image,$fnt_colour);
+		} else {
+			$font_colour = imagecolorallocate($image, 0xAA, 0xCC, 0xDD);
+		}
 		imagefilledrectangle($image, 0, 0, $width, $height, $background_colour);
 		imagestring($image, 8, $width/2, $height/2, 'hejhej', $font_colour);
 		$this->renderMode('image','image/gif');

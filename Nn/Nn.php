@@ -38,7 +38,7 @@ class Nn extends Nn\Core\Singleton {
 			# Disabling dev log for now.
 			ini_set('log_errors','Off');
 			// ini_set('error_log',ROOT.DS.'logs'.DS.'development.log');
-			set_error_handler();
+			set_error_handler(NULL);
 		} else {
 			ini_set('display_startup_errors','Off');
 			ini_set('display_errors','On');

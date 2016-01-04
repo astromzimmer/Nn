@@ -381,6 +381,20 @@ class Utils {
 		return $bounds;
 	}
 
+	public static function getImageColorFromHex($image,$hex) {
+		$bgc_array = str_split($hex);
+		if(count($bgc_array) == 3) {
+			$red = hexdec($bgc_array[0]).hexdec($bgc_array[0]);
+			$green = hexdec($bgc_array[1]).hexdec($bgc_array[1]);
+			$blue = hexdec($bgc_array[2]).hexdec($bgc_array[2]);
+		} elseif(count($bgc_array) == 6) {
+			$red = hexdec($bgc_array[0]).hexdec($bgc_array[1]);
+			$green = hexdec($bgc_array[2]).hexdec($bgc_array[3]);
+			$blue = hexdec($bgc_array[4]).hexdec($bgc_array[5]);
+		}
+		return imagecolorallocate($image, $red, $green, $blue);
+	}
+
 	public static function mailto($e=null,$lnk=null) {
 		$email = (isset($e)) ? $e : MAILER_TO;
 		$link = (isset($lnk) ? $lnk : $email);

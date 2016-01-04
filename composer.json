@@ -9,12 +9,17 @@
             "homepage": "http://astromzimmer.com"
         }
     ],
+    "respositories": [{
+        "type": "vcs",
+        "url": "https://github.com/anthon/jade.php.git"
+    }],
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.4",
         "facebook/php-sdk-v4": "~5.0",
         "phpmailer/phpmailer": "~5.2",
         "ruudk/twitter-oauth": "~1.0",
-        "pagon/jade": "~1.0",
+        "pagon/jade": "dev-pregfix",
         "ircmaxell/password-compat": "~1.0",
         "stripe/stripe-php": "2.*",
         "nategood/httpful": "^0.2.19",
