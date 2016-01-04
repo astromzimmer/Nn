@@ -389,7 +389,7 @@ class PDOStorage implements StorageInterface {
 					return $this->update($table_name,$obj);
 				}
 			}
-			trigger_error($e;
+			trigger_error($e);
 		}
 	}
 	

@@ -38,6 +38,7 @@ class Nn extends Nn\Core\Singleton {
 			# Disabling dev log for now.
 			ini_set('log_errors','Off');
 			// ini_set('error_log',ROOT.DS.'logs'.DS.'development.log');
+			set_error_handler();
 		} else {
 			ini_set('display_startup_errors','Off');
 			ini_set('display_errors','On');
@@ -71,16 +72,19 @@ class Nn extends Nn\Core\Singleton {
 
 	public static function handleServerErrors($number,$msg,$file,$line,$vars) {
 		$path = $_SERVER['REQUEST_URI'];
-		$subject = self::settings('PAGE_NAME').': Error';
-		$message = "<p><strong>Path:</strong> $path</p>";
-		$message .= "<p><strong>Error number:</strong> $number</p>";
-		$message .= "<p><strong>Error message:</strong><pre>$msg</pre></p>";
-		$message .= "<p><strong>File:</strong> $file</p>";
-		$message .= "<p><strong>Line number:</strong> $line</p>";
-		$message .= '<p><strong>Vars:</strong><pre>'.print_r($vars,1).'</pre></p>';
-		$headers = 'From: '.self::settings('FROM_EMAIL')."\r\n";
-		$headers .= 'Content-Type: text/html; charset=utf8'."\r\n";
-		mail(self::settings('ERROR_EMAIL'),$subject,$message,$headers);
+		$error_email = self::settings('ERROR_EMAIL');
+		if($error_email) {
+			$subject = self::settings('PAGE_NAME').': Error';
+			$message = "<p><strong>Path:</strong> $path</p>";
+			$message .= "<p><strong>Error number:</strong> $number</p>";
+			$message .= "<p><strong>Error message:</strong><pre>$msg</pre></p>";
+			$message .= "<p><strong>File:</strong> $file</p>";
+			$message .= "<p><strong>Line number:</strong> $line</p>";
+			$message .= '<p><strong>Vars:</strong><pre>'.print_r($vars,1).'</pre></p>';
+			$headers = 'From: '.self::settings('FROM_EMAIL')."\r\n";
+			$headers .= 'Content-Type: text/html; charset=utf8'."\r\n";
+			mail(self::settings('ERROR_EMAIL'),$subject,$message,$headers);
+		}
 		$log = date('Y-m-d H:i:s').": $path\r\n";
 		$log .= '    PATH: '.$path."\r\n";
 		$log .= '    FILE: '.$file." ($line)\r\n";
