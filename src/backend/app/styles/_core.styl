@@ -52,28 +52,9 @@ rarr = '\2192'
 
 // Mixins
 
-vendor(prop,args)
-    -webkit-{prop} args
-    -moz-{prop} args
-    -ms-{prop} args
-    -o-{prop} args
-    {prop} args
-
 transition()
-    vendor('transform', translate3d(0,0,0))
-    vendor('transition',arguments)
-
-box-shadow()
-    vendor('box-shadow',arguments)
-
-transform()
-    vendor('transform',arguments)
-
-transform-origin()
-    vendor('transform-origin',arguments)
-
-text-shadow()
-    vendor('text-shadow',arguments)
+    transform translate3d(0,0,0)
+    transition arguments
 
 placeholder()
     &::-webkit-input-placeholder
@@ -89,7 +70,7 @@ opacity($val)
     zoom 1
     -ms-filter unquote("progid:DXImageTransform.Microsoft.Alpha(Opacity="+round($val*100)+")");
     filter unquote("alpha(opacity="+round($val*100)+")")
-    vendor('opacity',$val)
+    opacity $val
 
 background-linear-gradient(startPoint, startColor, startInterval, endColor, endInterval)
     background-color startColor
@@ -254,7 +235,7 @@ ellipsis($font-size=0,$line-height=0,$numlines=0)
         background-color asbestos
     100%
         background-color peter_river
-        vendor(transform, rotate(720deg))
+        transform rotate(720deg)
 
 @keyframes loaderFade
     0%
@@ -272,7 +253,7 @@ loader()
         bottom 0
         background rgba(255,255,255,.82)
         z-index 999998
-        vendor(animation, loaderFade .8s)
+        animation loaderFade .8s
     &:after
         center()
         background black
@@ -287,13 +268,13 @@ loader()
         z-index 999999
         opacity .8
         box-shadow 0 0 2px 1px rgba(0,0,0,.12)
-        vendor(animation, loader 4s linear infinite)
-        vendor(transform-origin, 50% 50%)
+        animation loader 4s linear infinite
+        transform-origin 50% 50%
     
 
 // Init setup
 *
-    vendor(box-sizing, border-box)
+    box-sizing border-box
     margin 0
     padding 0
     outline none
