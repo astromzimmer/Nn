@@ -324,10 +324,10 @@ class PDOStorage implements StorageInterface {
 		$keys = array_keys($attributes);
 		$vals = array_values($attributes);
 		$sql = "INSERT INTO " . $table_name . " (";
-		$sql .= "id, ";
+		if(Nn::settings('DB_TYPE') == 'pgsql') $sql .= "id, ";
 		$sql .= join(", ", $keys);
 		$sql .= ") VALUES (";
-		$sql .= "DEFAULT,";
+		if(Nn::settings('DB_TYPE') == 'pgsql') $sql .= "DEFAULT,";
 		$i = count($attributes);
 		for(;$i--;) {
 		$sql .= '?';
@@ -342,7 +342,6 @@ class PDOStorage implements StorageInterface {
 			return true;
 		} catch(\PDOException $e) {
 			if($e->getCode() == '42S02' || $e->getCode() == '42P01' || $e->getMessage() == 'SQLSTATE[HY000]: General error: 1 no such table: '.$table_name) {
-				print_r($table_name);
 				if($this->createTable($table_name,($obj::$SCHEMA))) {
 					return $this->create($table_name,$obj,true);
 				}
