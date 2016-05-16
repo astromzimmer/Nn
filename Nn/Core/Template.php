@@ -48,6 +48,9 @@ class Template extends Basic {
 				case 'pdf':
 					$this->content_type = 'application/pdf';
 					break;
+				case 'binary':
+					$this->content_type = 'application/octet-stream';
+					break;
 				case 'json':
 					$this->content_type = 'application/json';
 					break;
@@ -123,17 +126,30 @@ class Template extends Basic {
 			case 'pdf':
 				extract($this->vars);
 				if(isset($data)) {
-					header('Content-Type: '.$this->content_type);
 					header('Content-Transfer-Encoding: binary');
 					header('Content-Disposition: inline');
 					header('Content-Length: '.filesize($data));
+					ob_clean();
+					flush();
 					readfile($data);
+					exit;
+				}
+				break;
+			case 'binary':
+				extract($this->vars);
+				if(isset($data)) {
+					header('Content-Transfer-Encoding: binary');
+					header('Content-Disposition: attachment; filename='.basename($data));
+					header('Content-Length: '.filesize($data));
+					ob_clean();
+					flush();
+					readfile($data);
+					exit;
 				}
 				break;
 			case 'image':
 				extract($this->vars);
 				if(isset($data)) {
-					header('Content-Type: '.$this->content_type);
 					imagegif($data);
 					imagedestroy($data);
 				}

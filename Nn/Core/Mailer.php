@@ -20,15 +20,17 @@ class Mailer extends \PHPMailer {
 	}
 	
 	public function __construct() {
-		parent::__construct();
+		parent::__construct(true);
+		$this->CharSet = 'UTF-8';
 		if(Nn::settings('SMTP_MODE')) {
 			$this->IsSMTP();
 			$this->Host = Nn::settings('SMTP_HOST');
-			$this->Port = Nn::settings('SMTP_PORT');
 			if(Nn::settings('SMTP_USERNAME')) {
 				$this->SMTPAuth = true;
 				$this->Username = Nn::settings('SMTP_USERNAME');
 				$this->Password = Nn::settings('SMTP_PASSWORD');
+				if(Nn::settings('SMTP_PROTOCOL')) $this->SMTPSecure = Nn::settings('SMTP_PROTOCOL');
+				if(Nn::settings('SMTP_PORT')) $this->Port = Nn::settings('SMTP_PORT');
 			}
 		}
 		if(!isset($this->From)) {

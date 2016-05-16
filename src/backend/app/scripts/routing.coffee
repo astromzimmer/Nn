@@ -102,7 +102,6 @@
 					success: (result,status,jqXHR)->
 						success_path = jqXHR.getResponseHeader('Redirect')
 						App.router.navigate '/'+success_path
-			App.router.start()
 
 			App.router.add /admin\/feeds\/delete_post\/(\d+)$/, (path,post_id)->
 				$.ajax
@@ -110,6 +109,7 @@
 					success: (result,status,jqXHR)->
 						success_path = jqXHR.getResponseHeader('Redirect')
 						App.router.navigate '/'+success_path
+			
 			App.router.start()
 
 			$doc.on 'click', '[data-ajax]', (e)->

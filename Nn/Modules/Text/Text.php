@@ -19,7 +19,7 @@ class Text extends Nn\Modules\Datatype\Datatype {
 			'size' => array('short','long')
 		);
 
-	public function exportProperties($excludes=array()) {
+	public function exportProperties() {
 		return array(
 			'id'			=>	$this->id,
 			'content'		=>	$this->content(),

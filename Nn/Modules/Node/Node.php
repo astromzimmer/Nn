@@ -34,7 +34,7 @@ class Node extends Nn\Core\DataModel {
 			'parent_id' => 'integer'
 		);
 
-	public function exportProperties($excludes=array()) {
+	public function exportProperties() {
 		return array(
 			'id'			=>	$this->id,
 			'uid'			=>	'N_'.$this->id,
@@ -57,13 +57,13 @@ class Node extends Nn\Core\DataModel {
 			'updated_at'	=>	$this->updated_at,
 			'created_year'	=>	date('Y',$this->timestamp()),
 			'created_week'	=>	idate('W',$this->timestamp()),
-			'node'			=>	($this->parent()) ? [
+			'node'			=>	($parent = $this->parent()) ? [
 										'id'=>$this->parent_id,
-										'title'=>$this->parent()->title(),
-										'slug'=>$this->parent()->slug()
+										'title'=>$parent->title(),
+										'slug'=>$parent->slug()
 									] : false,
 			'ownAttribute'	=>	$this->attributes_except('Date'),
-			'ownNode'		=>	($children = $this->children()) ? $children : []
+			'ownNode'		=>	($children = $this->children_by_type('container,person,city')) ? $children : []
 		);
 	}
 
@@ -182,9 +182,9 @@ class Node extends Nn\Core\DataModel {
 		$tree = $this->navigation_tree();
 		$path = '';
 		foreach ($tree as $branch) {
-			$path .= Utils::ellipse($branch->title(),24).'/';
+			$path .= Utils::ellipsis($branch->title(),24).'/';
 		}
-		$path .= Utils::ellipse($this->title(),24);
+		$path .= Utils::ellipsis($this->title(),24);
 		return $path;
 	}
 

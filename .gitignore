@@ -29,7 +29,7 @@ Temporary Items
 
 ### Node ###
 # Logs
-logs
+^logs
 *.log
 
 # Runtime data
@@ -88,24 +88,25 @@ bower_components
 *.sqlite
 *.sqlite3
 *.ft
-tmp/
-src/frontend/
-public/*.txt
-public/js
-public/css
-public/imgs
-public/fonts
-public/assets
-public/backnn
-public/*.css
-public/*.js
-public/*.ico
-public/*.png
-App/*.php
-App/*/*.php
-App/*/*/*.php
-App/*.jade
-App/*/*.jade
-App/*/*/*.jade
-bootstrap/config.php
-bootstrap/routes.php
+/tmp
+/form_data
+/src/frontend/
+/public/*.txt
+/public/js
+/public/css
+/public/imgs
+/public/fonts
+/public/assets
+/public/backnn
+/public/*.css
+/public/*.js
+/public/*.ico
+/public/*.png
+/App/*.php
+/App/*/*.php
+/App/*/*/*.php
+/App/*.jade
+/App/*/*.jade
+/App/*/*/*.jade
+/bootstrap/config.php
+/bootstrap/routes.php

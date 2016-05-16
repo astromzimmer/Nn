@@ -73,37 +73,6 @@ form
 		width 100%
 		clear both
 		text-align center
-		button
-		.button
-			color #444
-			padding 6px
-			background-color #DDD
-			border-style none
-			font-size 11px
-			line-height 1.2em
-			cursor pointer
-			
-			&.float
-				float left
-			
-			&.whole
-				width 100%
-			&.half
-				width 50%
-			&.third
-				width (100/3)%
-			
-			&.save
-				clickable($editButtonBG)
-			&.cancel
-			&.delete
-				clickable($trashButtonBG,darken($trashButtonBG,12%))
-
-			&:hover
-				background-color $neutralButtonBG
-
-			&:active
-				background-color $neutralButtonBG
 	
 	&.loading
 		&:before
@@ -119,3 +88,35 @@ form
 			width 100%
 			height 2em
 			z-index 2
+
+button
+.button
+	color #444
+	padding 6px
+	background-color #DDD
+	border-style none
+	font-size 11px
+	line-height 1.2em
+	cursor pointer
+	
+	&.float
+		float left
+	
+	&.whole
+		width 100%
+	&.half
+		width 50%
+	&.third
+		width (100/3)%
+	
+	&.save
+		clickable($editButtonBG)
+	&.cancel
+	&.delete
+		clickable($trashButtonBG,darken($trashButtonBG,12%))
+
+	&:hover
+		background-color $neutralButtonBG
+
+	&:active
+		background-color $neutralButtonBG

@@ -37,7 +37,7 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 				]
 		);
 
-	public function exportProperties($excludes=array()) {
+	public function exportProperties() {
 		return array(
 			'handle'		=>	$this->handle,
 			'hashtag'		=>	$this->hashtag,
@@ -113,8 +113,9 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 
 	private function parseFacebookResults($fb,$edge) {
 		foreach ($edge as $graphNode) {
-			$obj = $graphNode->asArray();
-			if(strpos(strtolower(serialize($graphNode)),'#'.$this->hashtag) !== false) {
+			$json_obj = $graphNode->asJson();
+			if(strpos(strtolower($json_obj),'#'.$this->hashtag) !== false) {
+				$obj = $graphNode->asArray();
 				if(isset($obj['message']) || isset($obj['name'])) {
 					switch($obj['type']) {
 						case 'photo':

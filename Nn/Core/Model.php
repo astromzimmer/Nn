@@ -15,8 +15,9 @@ class Model extends Basic {
 		}
 	}
 
-	public function export() {
-		$array = $this->exportProperties();
+	public function export($excludes=[]) {
+		$export_properties = $this->exportProperties();
+		$array = array_diff_key($export_properties, array_flip($excludes));
 		array_walk_recursive($array, function(&$val,$key){
 			if(method_exists($val, 'exportProperties')) {
 				$val = $val->export();

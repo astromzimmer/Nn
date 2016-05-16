@@ -121,12 +121,8 @@ class Router {
 			$controllerClass = 'Nn\\Modules\\'.$this->module.'\\DefController';
 			$this->action = 'notFound';
 		}
-		if($this->controller == 'PublikController' || $this->controller == 'ApiController') {
-			Nn::settings('HIDE_INVISIBLE',true);
-			# Best place for tracker?
-			Nn::track();
-		} else {
-			Nn::settings('HIDE_INVISIBLE',false);
+		if(Nn::authenticated() && isset($_GET['preview'])) {
+			Nn::settings('HIDE_INVISIBLE', false);
 		}
 		$controller = new $controllerClass($this->action,$query);
 		call_user_func_array(array($controller, 'before'), $query);
