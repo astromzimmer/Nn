@@ -1,0 +1,206 @@
+body
+	#page
+		#center
+			#node
+				.node
+					.header
+						background-color $rightBG
+						position fixed
+						top 0
+						left $leftWidth + 54
+						right 54px
+						padding 0
+						margin 0
+						border-bottom 1px solid $spacerBG
+						font-size 13px
+						text-align center
+						z-index 999
+						transition padding .2s
+						ul
+							margin 0 0 12px
+							color grey
+							font-weight 300
+							line-height 24px
+							transition margin .2s
+							border-bottom 1px solid $spacerBG
+							li
+								display inline-block
+								margin 0
+								&.meta
+									margin 0 12px 0 0
+						.title
+							ellipsis()
+							display block
+							margin 12px
+							font-weight 600
+							font-size 2rem
+							cursor pointer
+							transition font-size .2s
+						.tools
+							// display none
+							&.new
+							&.right
+								height 24px
+								margin 0 auto -24px
+								white-space nowrap
+								a
+									background $rightBG
+									padding 4px 8px 8px
+									border 0px solid $spacerBG
+									border-width 0 0 1px 0
+									transition padding .2s
+									&:first-child
+										border-left-width 1px
+										padding-left 16px
+									&:last-child
+										border-right-width 1px
+										padding-right 16px
+							&.new
+								position relative
+							&.right
+								top auto
+								bottom 0
+								transition bottom .2s
+
+						&.maximised
+							padding 0 0 24px
+							border none
+							ul
+								margin 0 0 24px
+								li
+									font-size 13px
+									line-height 1.4em
+							.title
+								display block
+								font-size 48px
+								cursor inherit
+							.tools
+								&.new
+								&.right
+									a
+										margin 6px
+										padding 16px
+										border-width 1px
+										border-color $spacerBG
+										border-radius 50%
+										img
+											opacity 1
+										&:hover
+											border-color $spacerBG
+								&.right
+									bottom 24px
+
+					.menu
+						width $rightMenuWidth
+					
+					.attribute
+						overflow hidden
+						margin 24px 0
+						padding 32px 24px 24px
+						border 1px solid $spacerBG
+						border-color $spacerBG $rightBG $rightBG
+						text-align left
+						a.anchor
+							position absolute
+							top -112px
+						label
+							position absolute
+							text-transform uppercase
+							top 0
+							left 0
+							right 0
+							padding 4px 5px
+						.note
+							padding 6px 12px 0
+							font-size .8em
+							color $shadowColour
+						.tools
+							display none
+							background-color $rightBG
+							top 0
+							right 0
+							height 23px
+						
+						.feed
+							position relative
+							.posts
+								padding 10px 0 0
+								li
+									border-top 1px solid #CCC
+									padding 4px
+									&:first-child
+										border-top none
+								.uid
+									sans-serif()
+									font-size .8em
+						
+						.text
+							a
+								text-decoration underline
+						.image
+							img
+								max-width 100%
+								height auto
+
+						&:hover
+						&.new
+						&.editing
+							background white
+							border 1px solid $shadowColour
+							// label
+							// 	border-bottom 1px solid $shadowColour
+							.tools
+								display block
+						&:hover
+							border-color $spacerBG
+							label
+								border-color $spacerBG
+						&.new
+						&.editing
+							padding 0
+							border-color $shadowColour
+							.handle
+								select
+									margin 0
+							label
+								border-color $shadowColour
+							form
+								padding 27px 0 0
+								.aMD_container
+									border none
+								.submit
+									border-top 1px solid $shadowColour
+
+					.attributes
+						position relative
+						margin-top $admin_height + 198px
+
+						&.collapsed .attribute
+						.attribute.collapsed
+							height $collapsedHeight
+							padding 0
+							.image
+								display inline-block
+								img
+									position absolute
+									top 0
+							label
+								position relative
+								float left
+								min-width 124px
+							&:hover
+								label
+									border none
+							.text
+								*
+									max-width 50%
+									margin 4px 0 0
+									padding 0
+									display inline-block
+									vertical-align top
+									font-size 11px !important
+									color lighten(black,54%)
+									text-overflow ellipsis
+									white-space nowrap
+									overflow hidden
+					

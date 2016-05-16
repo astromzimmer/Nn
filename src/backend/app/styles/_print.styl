@@ -1,0 +1,206 @@
+
+duration = .2s
+right_closed_width = 72px
+
+body
+	&.print
+		#page
+			#center
+			#right
+				position absolute
+				height 100%
+				overflow-x hidden
+				transition width duration, right duration, padding duration
+			#center
+				font-size 0
+				letter-spacing 0
+				overflow-y hidden
+				.navigation
+					position fixed
+					letter-spacing 0
+					top 0
+					left 0
+					right 0
+					.item
+						// clickable transparent, $itemBG, grey, black
+						clickable $topBG,$active_menu_bg,$active_menu_bg,white
+						display inline-block
+						width (100/2)%
+						height $admin_height
+						font-size 1.3rem
+						line-height $admin_height - 4
+						font-weight 300
+						letter-spacing .04em
+						text-align center
+						text-transform uppercase
+						padding 4px
+				#node
+				#section
+					position absolute
+					top 0
+					bottom 0
+					// overflow hidden
+					font-size 1.5rem
+					transition width duration, right duration
+				#node
+				#section
+					// margin-top $admin_height
+				#node
+					width 100%
+					overflow hidden
+					.node
+						height 100%
+						.header
+							position absolute
+							left 16px
+							right 16px
+							transition height duration, padding duration
+						.manage
+							height 100%
+							overflow-y auto
+							transition padding duration
+							.attributes
+								transition margin duration
+								.attribute
+									transition margin duration, padding duration
+				#section
+					background $itemBG
+					right -64%
+					width 64%
+					box-shadow 0 0 4px 1px rgba(0,0,0,.42)
+					.section
+						height 100%
+					iframe
+						width 100%
+						height 100%
+						border-width 0
+					.handle
+						background $itemBG
+						position absolute
+						top 54px
+						left -64px
+						width 68px
+						text-align center
+						clip-path polygon(0 0, 70px 0, 70px 100%, 0 100%)
+						box-shadow 0 0 4px 1px rgba(0,0,0,.42)
+						.button
+							width 90%
+							opacity .42
+							cursor pointer
+							padding 12px 0
+							text-align center
+							img
+								display inline-block
+								width 40%
+								height auto
+							&:hover
+								opacity 1
+								background none
+							&.reset
+								display none
+						&.shift
+							.toggle
+								display none
+							.reset
+								display block
+				
+			#center
+				right right_closed_width
+			#right
+				background green_sea
+				width right_closed_width
+				font-size 1.5rem
+			&.layout
+			&.publication
+				#center
+					// #node
+					// 	.node
+					// 		.header
+					// 			padding 0
+					// 			ul
+					// 				display none
+					// 			&.maximised
+					// 				.title
+					// 					font-size 2rem
+					// 				.tools
+					// 					&.new
+					// 					&.right
+					// 						a
+					// 							background none
+					// 							border none
+					// 							margin 0
+					// 							padding 4px 8px 8px
+					// 							&:first-child
+					// 								padding-left 16px
+					// 							&:last-child
+					// 								padding-right 16px
+					// 					&.right
+					// 						// right 12px
+					// 						bottom 0
+					// 		.manage
+					// 			padding 12px
+					// 			.attributes
+					// 				margin-top 98px
+					// 				.attribute
+					// 					margin 0
+					// 					padding 24px 12px 12px
+					// 					border-color $rightBG $rightBG $spacerBG
+					// 					.tools
+					// 						display none
+					// 					.text
+					// 						font-size 1.2rem
+					// 				&.collapsed .attribute
+					// 				.attribute.collapsed
+					// 					padding 2px 6px 0
+			&.content
+				#center
+					#node
+						width 100%
+					#section
+						right -64%
+						width 64%
+			&.layout
+				#center
+					#node
+						width 100%
+						.attributes
+							.image
+								width 33%
+								transition width .2s
+					#section
+						right 0
+			&.cart
+				#center
+					right $leftWidth + 15
+				#right
+					left auto
+					width $leftWidth + 15
+					#cart
+						right 0
+					.toggle
+						display none
+				&.layout
+					#center
+						#section
+							width 88%
+			&.publication
+				#right
+					right - $leftWidth
+					width 100%
+					.toggle
+						display none
+					#cart
+						right $leftWidth
+				#center
+					right $leftWidth
+					// #node
+					// 	width 100%
+					// #section
+					// 	width 88%
+						
+
+
+
+
+
+

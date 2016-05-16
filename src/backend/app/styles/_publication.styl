@@ -1,0 +1,82 @@
+
+duration = .2s
+right_closed_width = 72px
+
+publicationBG = #DDF2EC
+publicationItemBG = #A1DAC8
+
+body
+	&.print
+		#page
+			#right
+				background publicationBG
+				right 0
+				border-left 16px solid green_sea
+				.menu
+					ul
+						li
+							&.cover
+								.grouper
+									.label
+										font-weight 700
+				.toggle
+					clickable rgba(0,0,0,.24), transparent
+					position absolute
+					top 0
+					left 0
+					right 0
+					bottom 0
+				#publication
+					position absolute
+					top 0
+					left 0
+					right ($leftWidth*2) - 15px
+					bottom 0
+					overflow hidden
+					iframe
+						width 100%
+						height 100%
+					&.loading
+						section
+							opacity 0
+					.footer
+						position absolute
+						bottom 0
+						width 100%
+						height $liHeight
+						.button 
+							clickable transparent, sun_flower
+							height 100%
+							img
+								display inline-block
+								width auto
+								height 80%
+								opacity .42
+								margin-top 4px
+							&:hover
+								img
+									opacity 1
+				#cart
+					background green_sea
+					position absolute
+					top 0
+					right - $leftWidth + right_closed_width
+					bottom 0
+					width $leftWidth
+					transition right duration
+					ul
+						li
+							clickable(turquoise,publicationItemBG)
+							border-color green_sea
+							&.focus
+								> .grouper
+									background-color publicationBG
+							.tools
+								.bubble
+									line-height 39px
+						&.chapters
+							position absolute
+							top $liHeight
+							bottom 0
+							width 100%
+							overflow-y auto

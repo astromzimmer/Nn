@@ -1,0 +1,256 @@
+@import '../styles/_fonts'
+
+// pageWidth = 90
+
+// // A4 w/h
+a4width = 210
+a4height = 297
+// mm = ((100/a4width)*(pageWidth/100))
+// pt = mm*.3527778
+
+sans-serif-light()
+	font-family 'Akkurat-Web', sans-serif
+	font-weight 300
+sans-serif()
+	font-family 'Akkurat-Web', sans-serif
+sans-serif-bold()
+	font-family 'Akkurat-Web', sans-serif
+	font-weight 600
+
+body
+	sans-serif-light()
+	ul
+		list-style-type none
+	ol
+		list-style-position inside
+	
+	strong
+		sans-serif-bold()
+	
+	section
+	
+		.page
+			position relative
+			display flex
+			flex-direction column
+			// align-content flex-start
+			font-size 0
+			padding 11mm 15mm 7mm 22mm
+			&.A4
+				.image
+					img
+						max-width 100%
+						height auto
+						max-height 100%
+						width auto
+					&:before
+						content attr(data-image-number)
+						position absolute
+						top 0
+						right -2em
+						line-height 1em
+						padding 0 7px
+				.header_container
+				.ingress_container
+				.body
+					position relative
+				.header_container
+					background white
+					width 100%
+					flex 0 0 auto
+					display flex
+					flex-direction row
+					align-items flex-start
+					.header
+					.list
+						min-height 16mm
+						z-index 1
+						&.border
+							border .25pt solid black
+					.header
+						width 100%
+						font-size 18pt
+						line-height 19pt
+						text-transform uppercase
+						margin-bottom 11mm
+						&.border
+							background #FFF
+							width ((100/3)*2)%
+							margin-right -.5pt
+							padding 3.5mm 3.5mm 2.5mm
+							margin-bottom 8mm
+							font-size 32pt
+							line-height 32pt
+							
+					.list
+						width (100/3)%
+						font-size 8pt
+						line-height 12.3pt
+						margin-bottom 8mm
+						padding 1mm 0 .5mm
+						.header_list
+							ul
+								list-style-type none
+								li
+									position relative
+									padding .1em 1mm .2em
+									line-height 1.4em
+									&:after
+										position absolute
+										content ''
+										left 0
+										bottom 0
+										width 200%
+										border-bottom 1px solid #CCC
+										transform-origin 0 0
+										transform scale(.5)
+									&:last-child
+										&:after
+											display none
+				.ingress_container
+				.body
+					display flex
+				.ingress_container
+					flex 0 1 auto
+					.ingress
+						background white
+						width 100%
+						margin-top -11mm
+						padding-top 11mm
+						font-size 10.7pt
+						line-height 15pt
+						p
+						ul
+							padding-bottom 1em
+						.image
+							background white
+							padding-bottom 6mm
+							text-align center
+				.body
+					// flex-grow 1
+					flex 1 99 auto
+					flex-direction column
+					.columns
+						flex 1 0 auto
+						display flex
+						flex-direction row
+						.column
+							position relative
+							width 100%
+							.texts
+							.images
+								position absolute
+								top 0
+								left 0
+								right 0
+								bottom 0
+								p
+								ul
+									padding-bottom 1em
+								.image
+									padding-bottom 3mm
+									&:last-child
+										padding-bottom 0 !important
+									&.left
+									&.right
+									&.middle
+										img
+											max-width 50%
+									&.right
+										text-align right
+									&.middle
+										text-align center
+							.texts
+								padding 0 2mm 0 0
+								font-size 8pt
+								line-height 11pt
+							.images
+								padding 0 0 0 2mm
+								font-size 10pt
+								line-height 14pt
+							&.one_third
+								width 73mm
+							// 	width (100/3)%
+							// &.half
+							// 	width 50%
+							// &.two_thirds
+							// 	width ((100/3)*2)%
+				.pusher
+					flex 0 0 0px
+				&.even
+					padding 11mm 22mm 7mm 15mm
+					.body
+						.columns
+							flex-direction row-reverse
+							.texts
+								padding 0 0 0 2mm
+							.images
+								padding 0 2mm 0 0
+					.ingress
+					.images
+						.image
+							&:before
+								left -2em
+								right auto
+				&.odd
+					.body
+						.texts
+							.image
+								&:before
+									left -2em
+									right auto
+			
+		&.project
+			.page
+				&:before
+					position absolute
+					content ''
+					top 11mm
+					left 73mm
+					height (a4height*2-(2*18))mm
+					border-right 1px solid #CCC
+					transform-origin 100% 0
+					transform scale(.5)
+				&.even
+					&:before
+						right 73mm
+		
+	.cover
+		text-align right
+		.page
+			display inline-block
+			text-align left
+			padding 8.75mm 7.75mm 8.75mm 9.75mm !important
+			ul
+				li
+					margin 2.25mm
+					padding 7.5mm 6mm 6mm
+					list-style-type none
+					font-size 42pt
+					line-height 43pt
+					text-transform uppercase
+					display inline-block
+					border .25pt solid black
+			.logo
+			.imprint
+				position absolute
+				left 12.5mm
+				bottom 6mm
+				font-size 8pt
+			.logo
+				background-image url('/backnn/imgs/static/HM_Bildm_Trans.svg')
+				background-size contain
+				background-repeat no-repeat
+				background-position left bottom
+				width 41mm
+				height 35mm
+			&.back
+				display none
+
+@media print
+	body
+		.cover
+			width (a4width*2)mm
+			.page
+				&.back
+					display inline-block
