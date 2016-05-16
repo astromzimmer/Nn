@@ -37,17 +37,7 @@ class Attachment extends Nn\Modules\Datatype\Datatype {
 			'updated_at' => 'float'
 		);
 
-	public static function fixFilesArray($files) {
-		$fixed_files = [];
-		foreach($files as $key=>$all) {
-			foreach($all as $i=>$val) {
-				$fixed_files[$i][$key] = $val;
-			}
-		}
-		return $fixed_files;
-	}
-
-	public function exportProperties($excludes=array()) {
+	public function exportProperties() {
 		return array(
 			'title'			=>	$this->title,
 			'filename'		=>	$this->filename,

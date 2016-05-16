@@ -21,7 +21,7 @@ class Pair extends Nn\Modules\Datatype\Datatype {
 			'right_format' => array('string','integer','float')
 		);
 
-	public function exportProperties($excludes=array()) {
+	public function exportProperties() {
 		return array(
 			'id'			=>	$this->id,
 			'left'			=>	$this->left(),

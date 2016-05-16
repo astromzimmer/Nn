@@ -18,7 +18,7 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 			'updated_at' => 'float'
 		);
 
-	public function exportProperties($excludes=array()) {
+	public function exportProperties() {
 		return array(
 			'id'			=>	$this->id,
 			'title'			=>	$this->title,

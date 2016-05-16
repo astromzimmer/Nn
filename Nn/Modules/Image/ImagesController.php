@@ -41,7 +41,7 @@ class ImagesController extends Nn\Core\Controller {
 	
 	function create() {
 		$node_id = $_POST['node_id'];
-		$files = Image::fixFilesArray($_FILES['file_upload']);
+		$files = Utils::fixFilesArray($_FILES['file_upload']);
 		foreach($files as $file) {
 			$image = new Image();
 			$title = isset($_POST['title']) ? $_POST['title'] : '';

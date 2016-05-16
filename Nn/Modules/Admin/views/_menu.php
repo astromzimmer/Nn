@@ -22,7 +22,10 @@
 			<a href="<?php echo '/admin/files' ?>"><?php echo Nn::babel('Files') ?></a>
 		</li>
 		<?php endif; ?>
-		<li class="super btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Users') echo ' active"' ?>">
+		<li class="btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Forms') echo ' active"' ?>">
+			<a href="<?php echo '/admin/forms' ?>"><?php echo Nn::babel('Forms') ?></a>
+		</li>
+		<li class="btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Users') echo ' active"' ?>">
 			<a href="<?php echo '/admin/users' ?>"><?php echo Nn::babel('Users') ?></a>
 		</li>
 		<li>

@@ -18,7 +18,7 @@ class Setting extends Nn\Core\DataModel {
 			'updated_at' => 'float'
 		);
 
-	public function exportProperties($excludes=array()) {
+	public function exportProperties() {
 		return array(
 			'id'			=>	$this->id,
 			'name'			=>	$this->name(),

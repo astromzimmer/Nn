@@ -44,7 +44,7 @@ class Nn extends Nn\Core\Singleton {
 			ini_set('display_errors','On');
 			ini_set('html_errors','On');
 			ini_set('log_errors','On');
-			if(!file_exists(self::settings('LOG_DIR'))) {
+			if(!is_dir(self::settings('LOG_DIR'))) {
 				mkdir(self::settings('LOG_DIR'),0755,true);
 			}
 			ini_set('error_log',self::settings('LOG_DIR').DS.'production.log');
@@ -72,6 +72,20 @@ class Nn extends Nn\Core\Singleton {
 
 	public static function handleServerErrors($number,$msg,$file,$line,$vars) {
 		$path = $_SERVER['REQUEST_URI'];
+		switch ($number) {
+			case 8 || 1024:
+				$level = 'NOTICE';
+				break;
+			case 2 || 512:
+				$level = 'WARNING';
+				break;
+			case 1 || 256:
+				$level = 'FATAL ERROR';
+				break;
+			default:
+				$level = 'GENERAL';
+				break;
+		}
 		$error_email = self::settings('ERROR_EMAIL');
 		if($error_email) {
 			$subject = self::settings('PAGE_NAME').': Error';
@@ -86,15 +100,17 @@ class Nn extends Nn\Core\Singleton {
 			mail(self::settings('ERROR_EMAIL'),$subject,$message,$headers);
 		}
 		$log = date('Y-m-d H:i:s').": $path\r\n";
-		$log .= '    PATH: '.$path."\r\n";
+		$log .= '    LEVEL: '.$level."[".$number."]"."\r\n";
 		$log .= '    FILE: '.$file." ($line)\r\n";
 		$log .= '    MESSAGE: '.$msg."\r\n";
 		$log .= "\r\n".'••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••'."\r\n";
 		error_log($log);
-		Utils::redirect_to('500.php');
+		if($level == 'FATAL ERROR') {
+			Utils::redirect_to('/500.php');
+		}
 	}
 
-	public static function init(Nn\Core\Session $session,Nn\Core\Minify $minify,Nn\Core\Cache $cache,Nn\Core\Mailer $mailer,Nn\Core\Router $router,Nn\Storage\StorageInterface $storage,Nn\Babel\Dictionary $dictionary,Nn\Trackers\TrackerInterface $tracker) {
+	public static function init(Nn\Core\Session $session,Nn\Core\Minify $minify,Nn\Core\Cache $cache,Nn\Core\Mailer $mailer,Nn\Core\Router $router,Nn\Storage\StorageInterface $storage,Nn\Babel\Dictionary $dictionary,Nn\Trackers\TrackerInterface $tracker=null) {
 
 		static::setEnvironmentSpecifics();
 		static::stripMQ();
@@ -105,10 +121,10 @@ class Nn extends Nn\Core\Singleton {
 		self::instance()->mailer = $mailer;
 		self::instance()->router = $router;
 		self::instance()->storage(null,$storage);
+		self::instance()->storage()->init();
 		self::instance()->dictionary = $dictionary;
 		self::instance()->tracker = $tracker;
 
-		self::instance()->storage()->init();
 		self::instance()->session->init();
 
 		$settings = Setting::find_all();
@@ -117,6 +133,9 @@ class Nn extends Nn\Core\Singleton {
 		}
 
 		static::setIni();
+
+		# Set initial values
+		Nn::settings('HIDE_INVISIBLE',false);
 
 		# Set language
 		if($lang = self::instance()->settings('LANGUAGE')) self::instance()->setLanguage($lang);

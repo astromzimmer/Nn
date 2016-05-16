@@ -16,8 +16,11 @@
 
 		private static function unlinkWithPrefix($prefix) {
 			$mask = Nn::settings('CACHE_DIR').DS.$prefix.'*';
+			clearstatcache();
 			foreach(glob($mask) as $path) {
-				unlink($path);
+				if(is_file($path)) {
+					unlink($path);
+				}
 			}
 		}
 		
@@ -26,7 +29,7 @@
 		}
 
 		public function filePath($id) {
-			if(!file_exists(Nn::settings('CACHE_DIR'))) {
+			if(!is_dir(Nn::settings('CACHE_DIR'))) {
 				mkdir(Nn::settings('CACHE_DIR'),0755,true);
 			}
 			return Nn::settings('CACHE_DIR').DS.$id.'.cache';
@@ -35,9 +38,6 @@
 		public function set($id,$data) {
 			$file_path = $this->filePath($id);
 			if(!Nn::settings('DEVELOPMENT_ENV')){
-				if(file_exists($file_path)) {
-					unlink($file_path);
-				}
 				if(!file_put_contents($file_path,serialize($data))) {
 					throw new \Exception('Unable to write data to cache');
 				}
@@ -57,7 +57,7 @@
 				$valid = false;
 			} else {
 				$file_path = $this->filePath($id);
-				$valid = file_exists($file_path);
+				$valid = is_file($file_path);
 				if(Nn::settings('CACHE_EXPIRE')) {
 					$valid = (bool)(time() - filemtime($file_path) <= Nn::settings('CACHE_EXPIRE'));
 				}

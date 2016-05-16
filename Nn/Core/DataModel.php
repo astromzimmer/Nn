@@ -10,7 +10,7 @@ abstract class DataModel extends Model {
 	protected $created_at;
 	protected $updated_at;
 
-	protected $_errors;
+	protected $_errors = [];
 
 	public static $schema;
 

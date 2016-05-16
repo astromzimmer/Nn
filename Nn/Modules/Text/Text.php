@@ -21,7 +21,7 @@ class Text extends Nn\Modules\Datatype\Datatype {
 
 	public static $DEFAULT = 'textarea';
 
-	public function exportProperties($excludes=array()) {
+	public function exportProperties() {
 		return array(
 			'id'			=>	$this->id,
 			'content'		=>	$this->content(),
