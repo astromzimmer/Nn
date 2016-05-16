@@ -3,12 +3,13 @@ this.appSpace = {}
 (($,Dispatcher,Router,App)->
 
 	App.dispatcher = new Dispatcher()
-	App.router = Router()
+	App.router = Router
+		autostart: true
 
 	if document.domain is "localhost"
-		window.domain = $("base").attr("href")
+		window.DOMAIN = $("base").attr("href")
 	else
-		window.domain = "http://" + document.domain
+		window.DOMAIN = "http://" + document.domain
 
 	$(document).ready ->
 
@@ -65,7 +66,7 @@ this.appSpace = {}
 					$this = $(this)
 					if $this.hasClass('expanded')
 						expanded_branches.push $this.data('id')
-				$.cookie 'domain',domain
+				$.cookie 'domain',DOMAIN
 				$.cookie 'path',window.location.pathname
 				$.cookie 'expanded_'+tree_type,JSON.stringify(expanded_branches)
 				# console.log $.cookie()
@@ -75,7 +76,7 @@ this.appSpace = {}
 			$this = $(this)
 			clearTimeout $this.data('scrollTimer')
 			$this.data 'scrollTimer', setTimeout ->
-				$.cookie 'domain',domain
+				$.cookie 'domain',DOMAIN
 				$.cookie 'path',window.location.pathname
 				$.cookie 'left_scroll',$this[0].scrollTop
 			,250
@@ -148,10 +149,11 @@ this.appSpace = {}
 		.on 'click', '#admin .menu li.active a', (e)->
 			e.preventDefault()
 			$this = $(this)
-			$('#admin').toggleClass 'expanded'
+			$menu = $this.closest('.menu')
+			$menu.toggleClass 'expanded'
 			return false
 
-		.on 'mouseleave', '#admin', ()->
+		.on 'mouseleave', '#admin .menu', ()->
 			$this = $(this)
 			$this.removeClass 'expanded'
 
@@ -174,19 +176,10 @@ this.appSpace = {}
 			$this = $(this)
 			$this.sortable
 				handle: '.handle'
-				axis: "y"
+				axis: 'y'
 				update: (e,ui) ->
 					$itm = $(ui.item)
 					doSort $itm
-
-		$('#right').on 'scroll', (e)->
-			$header = $('#right .header')
-			scroll_top = this.scrollTop
-			console.log scroll_top
-			if scroll_top > 48
-				$header.removeClass('maximised')
-			else
-				$header.addClass('maximised')
 
 		$("select#datatypeField").change (e) ->
 			$this = $(this)
@@ -197,17 +190,22 @@ this.appSpace = {}
 				$.ajax
 					url: '/admin/attributetypes/_params/'+url_param
 					success: (response)->
-						console.log response
 						$("#paramsContainer").html response
+				$.ajax
+					url: '/admin/attributetypes/_default/'+url_param
+					success: (response)->
+						$("#defaultContainer").html response
 
-		$("textarea.md").aMD
-			imgPath: "/backnn/imgs/static/aMD"
-			refEndpoint: '/api/nodes'
-			extStyles: [
-				"/backnn/css/fonts.css"
-				"/backnn/css/editor.css"
-			]
-			icons: true
+		# $("textarea.md:not(.clean)").aMD
+		# 	imgPath: "/backnn/imgs/static/aMD"
+		# 	extStyles: [
+		# 		"/backnn/css/fonts.css"
+		# 		"/backnn/css/editor.css"
+		# 	]
+		# 	icons: true
+
+		$("textarea.md.clean").aMD
+			helpers: false
 
 	expandBranch = ($n,t)->
 		# duration = t or 100
@@ -230,16 +228,10 @@ this.appSpace = {}
 		$ul = $this.closest 'ul.sortable'
 		id = $ul.attr('id')
 		model = id.replace(/\w*_/, "")
-		parent = id.replace(/_\w*/, "")
-		mKey = model + "[]"
-		$.ajax
-			url: "/admin/" + model + "/sort"
-			type: "POST"
-			data: "parent_id=" + parent + "&" + $ul.sortable("serialize",
-				key: mKey
+		parent_id = id.replace(/_\w*/, "")
+		data = "parent_id=" + parent_id + "&" + $ul.sortable("serialize",
+				key: model+'[]'
 			)
-			dataType: "script"
-			complete: (feedback) ->
-				console.log "Sorted OK!"
+		App.dispatcher.trigger model+':sorted', data
 
 )(jQuery,Dispatcher,Router,this.appSpace)

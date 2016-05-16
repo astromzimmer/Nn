@@ -4,6 +4,7 @@ namespace Nn\Modules\Node;
 use Nn\Modules\Nodetype\Nodetype as Nodetype;
 use Nn\Modules\Attribute\Attribute as Attribute;
 use Nn\Modules\Attributetype\Attributetype as Attributetype;
+use Nn\Modules\Publication\Section as Section;
 use Nn\Modules\User\User as User;
 use Nn;
 use Utils;
@@ -169,12 +170,12 @@ class Node extends Nn\Core\DataModel {
 	
 	public function navigation_tree() {
 		$p_node = $this;
-		$tree = array();
+		$tree = [];
 		while($p_node->parent()) {
 			$p_node = $p_node->parent();
 			$tree[] = $p_node;
 		}
-		sort($tree);
+		$tree = array_reverse($tree);
 		return $tree;
 	}
 
@@ -281,6 +282,14 @@ class Node extends Nn\Core\DataModel {
 	
 	public function nodetype() {
 		return ($this->nodetype_id != 0) ? Nodetype::find($this->nodetype_id) : Nodetype::find_all(1);
+	}
+
+	public function layout() {
+		return $this->nodetype()->layout();
+	}
+
+	public function section() {
+		return Section::find(['node_id'=>$this->id],1);
 	}
 	
 	public function parent() {

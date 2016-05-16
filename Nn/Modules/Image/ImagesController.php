@@ -44,7 +44,10 @@ class ImagesController extends Nn\Core\Controller {
 		$files = Image::fixFilesArray($_FILES['file_upload']);
 		foreach($files as $file) {
 			$image = new Image();
-			if($image->make($_POST['title'], $_POST['description'], $_POST['href'], $file)) {
+			$title = isset($_POST['title']) ? $_POST['title'] : '';
+			$description = isset($_POST['description']) ? $_POST['description'] : '';
+			$href = isset($_POST['href']) ? $_POST['href'] : '';
+			if($image->make($title, $description, $href, $file)) {
 				if($image->save()) {
 					$attribute = new Attribute($node_id,$_POST['atype_id'],$image->attr('id'));
 					if(!$attribute->save()) {
@@ -59,7 +62,7 @@ class ImagesController extends Nn\Core\Controller {
 				Utils::redirect_to(Nn::referer());
 			}
 		}
-		Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node_id);
+		Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 	}
 	
 	function update($id=null) {
@@ -74,7 +77,7 @@ class ImagesController extends Nn\Core\Controller {
 			$attributetype_id = $_POST['attributetype_id'];
 			$attribute->attr('attributetype_id',$attributetype_id);
 			$attribute->save();
-			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node_id);
+			Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 		} else {
 			die(print_r($image->errors()));
 		}

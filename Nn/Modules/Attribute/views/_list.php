@@ -1,7 +1,7 @@
 <?php $attributes = $node->attributes() ?>
 <div class="attributes">
 	<div class="maker">
-	<?php if($dtype && !$edit_attribute_id): ?>
+	<?php if(isset($dtype) && !isset($edit_attribute_id)): ?>
 		<?php Nn::partial('Attribute','_make',array('node'=>$node,'dtype'=>$dtype,'atype'=>$atype)) ?> 
 	<?php endif; ?>
 	</div>
@@ -9,7 +9,7 @@
 		<ul id="<?php echo $node->attr('id') ?>_attributes" class="sortable">
 		<?php foreach($attributes as $attribute): ?>
 		<?php if($data = $attribute->data()): ?>
-			<?php $editing = ($edit_attribute_id == $attribute->attr('id')) ?>
+			<?php $editing = (isset($edit_attribute_id) && $edit_attribute_id == $attribute->attr('id')) ?>
 			<?php if($editing) : ?>
 				<?php Nn::partial('Attribute','_edit',array('node'=>$node,'attribute'=>$attribute)) ?> 
 			<?php else : ?>

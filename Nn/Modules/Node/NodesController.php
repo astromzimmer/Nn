@@ -4,6 +4,8 @@ namespace Nn\Modules\Node;
 use Nn\Modules\Node\Node as Node;
 use Nn\Modules\Attributetype\Attributetype as Attributetype;
 use Nn\Modules\Nodetype\Nodetype as Nodetype;
+use Nn\Modules\Publication\Publication as Publication;
+use Nn\Modules\Publication\Section as Section;
 use Nn;
 use Utils;
 
@@ -34,21 +36,86 @@ class NodesController extends Nn\Core\Controller {
 			]);
 	}
 	
-	function view($id=null,$atype_id=null,$edit_attribute_id=null) {
+	function view($id=null,$atype_id=null,$attr_id=null) {
 		$nodes = Node::find(array('parent_id'=>0),null,'position');
-		$dtype = false;
-		$atype = false;
-		if(isset($atype_id)) {
+		$dtype = null;
+		$atype = null;
+		if(isset($atype_id) && is_int($atype_id)) {
 			$atype = Attributetype::find($atype_id);
 			$dtype = $atype->attr('datatype');
-			$edit_attribute_id = (isset($edit_attribute_id)) ? $edit_attribute_id : false;
+			$attr_id = (isset($attr_id) && is_int($attr_id)) ? $attr_id : null;
 		}
 		$this->tree($id);
 		$this->setTemplateVars([
 				'dtype'=> $dtype,
 				'atype'=> $atype,
-				'edit_attribute_id'=> $edit_attribute_id
+				'attr_id'=> $attr_id
 			]);
+	}
+
+	function layout($id=null,$atype_id=null,$attr_id=null,$mode=null) {
+		$node = Node::find($id);
+		$section = Section::find(['node_id'=>(int)$id],1);
+		if(Utils::is('POST')) {
+			$this->renderMode('raw');
+			$markup = isset($_POST['markup']) ? $_POST['markup'] : false;
+			if($section && $markup) {
+				$section->attr('markup',$markup);
+				if($section->save()) {
+					Utils::sendResponseCode('200');
+				} else {
+					Utils::sendResponseCode('500');
+				}
+			} else {
+				Utils::sendResponseCode('404');
+			}
+		} else {
+			$dtype = null;
+			$atype = null;
+			if(!isset($mode)) {
+				if(isset($attr_id) && !is_int($attr_id)) {
+					$mode = $attr_id;
+				} elseif(isset($atype_id) && !is_int($atype_id)) {
+					$mode = $atype_id;
+				} else {
+					$mode = 'content';
+				}
+			}
+			if(isset($atype_id) && is_int($atype_id)) {
+				$atype = Attributetype::find($atype_id);
+				$dtype = $atype->attr('datatype');
+				$attr_id = (isset($attr_id) && is_int($attr_id)) ? $attr_id : null;
+			}
+			$this->tree($node);
+			if(!$section) {
+				$layout_id = $node->layout()->attr('id');
+				$section = new Section($id,$layout_id);
+			}
+			# This should go
+			$publication = Publication::find(1);
+			if(!$publication) {
+				 $publication = new Publication();
+				 $publication->save();
+			}
+			$this->setTemplateVars([
+					'publication' => $publication
+				]);
+			# ---
+			$this->setTemplateVars([
+					'page_cls'=> $mode,
+					'dtype'=> $dtype,
+					'atype'=> $atype,
+					'attr_id'=> $attr_id,
+					'section'=> $section
+				]);
+		}
+	}
+
+	function reset($id) {
+		$section = Section::find(['node_id'=>$id],1);
+		if($section->delete()) {
+			Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$id);
+		}
 	}
 
 	function toggle() {
@@ -114,7 +181,7 @@ class NodesController extends Nn\Core\Controller {
 	function create() {
 		$node = new Node($_POST['title'],Nn::session()->user_id(),$_POST['parent_id'],$_POST['nodetype_id']);
 		if($node->save()) {
-			Utils::redirect_to(DOMAIN.'/admin/nodes/view/'.$node->attr('id'));
+			Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node->attr('id'));
 		} else {
 			Utils::redirect_to(DOMAIN.'/admin/nodes/make');
 		}
@@ -125,7 +192,7 @@ class NodesController extends Nn\Core\Controller {
 		$parent_id = isset($_POST['parent_id']) ? $_POST['parent_id'] : null;
 		$node->fill($_POST['title'],$_POST['slug'],$parent_id,$_POST['nodetype_id']);
 		if($node->save()) {
-			Utils::redirect_to(DOMAIN.'/admin/nodes/view/'.$id);
+			Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$id);
 		} else {
 			Utils::redirect_to(DOMAIN.'/admin/nodes/edit/'.$id);
 		}
@@ -134,7 +201,7 @@ class NodesController extends Nn\Core\Controller {
 	function delete($id=null) {
 		$node = Node::find($id);
 		$parent_id = $node->attr('parent_id');
-		$redirect_path = ($parent_id != 0) ? '/admin/nodes/view/'.$parent_id : '/admin/nodes';
+		$redirect_path = ($parent_id != 0) ? '/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$parent_id : '/admin/nodes';
 		if($node->recursive_delete()) {
 			Utils::redirect_to(DOMAIN.$redirect_path);
 		} else {

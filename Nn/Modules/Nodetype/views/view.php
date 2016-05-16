@@ -1,7 +1,7 @@
 <div id="left">
 	<?php Nn::partial('Nodetype'.DS.'_list',array('nodetypes'=>$nodetypes)) ?>
 </div>
-<div id="right">
+<div id="center">
 	<div class="view">
 		<div id="<?php echo htmlentities($image->id); ?>" class="service">
 			<div><h3><?php echo htmlentities($image->alt); ?></h3></div>

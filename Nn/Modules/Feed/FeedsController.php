@@ -18,7 +18,7 @@ class FeedsController extends Nn\Core\Controller {
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 		}
-		Utils::redirect_to(DOMAIN.'/admin/nodes/view/'.$feed->node()->attr('id'));
+		Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$feed->node()->attr('id'));
 	}
 
 	function create() {
@@ -40,7 +40,7 @@ class FeedsController extends Nn\Core\Controller {
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 		}
-		Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node_id);
+		Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 	}
 	
 	function update($id=null) {
@@ -64,7 +64,7 @@ class FeedsController extends Nn\Core\Controller {
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 		}
-		Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node_id);
+		Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 	}
 
 	function toggle() {

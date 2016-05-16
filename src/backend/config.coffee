@@ -1,5 +1,8 @@
 exports.config =
 
+	npm:
+		enabled: false
+
 	modules:
 		definition: false
 		wrapper: false
@@ -16,7 +19,8 @@ exports.config =
 
 		stylesheets:
 			joinTo:
-				'css/main.css': /^(bower_components|app\/styles)/
+				'css/main.css': /^(bower_components\/(?!aPRINT)|app\/styles)/
+				'css/print.css': /^(bower_components\/aPRINT|app\/print)/
 
 		templates:
 			joinTo: 'js/dontUseMe'

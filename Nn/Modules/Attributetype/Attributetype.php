@@ -16,6 +16,7 @@ class Attributetype extends Nn\Core\DataModel {
 			'name' => 'short_text',
 			'datatype' => 'short_text',
 			'params' => 'text',
+			'default_value' => 'text',
 			'position' => 'integer',
 			'created_at' => 'float',
 			'updated_at' => 'float',
@@ -29,12 +30,13 @@ class Attributetype extends Nn\Core\DataModel {
 		);
 	}
 
-	public function __construct($name=null, $datatype=null, $params=null){
+	public function __construct($name=null, $datatype=null, $params=null, $default_value=null){
 		if(isset($name) && isset($datatype)){
 			$this->name = $name;
 			$this->datatype = $datatype;
 			$this->position = 2147483647;
 			if(isset($params)) $this->params = json_encode($params);
+			if(isset($default_value)) $this->default_value = $params;
 			return $this;
 		} else {
 			return false;
@@ -63,11 +65,12 @@ class Attributetype extends Nn\Core\DataModel {
 		return $this->params()[$param];
 	}
 	
-	public function fill($name, $datatype, $params){
+	public function fill($name, $datatype, $params, $default_value){
 		if(!empty($name) && !empty($datatype)){
 			$this->name = $name;
 			$this->datatype = $datatype;
 			if(isset($params)) $this->params = json_encode($params);
+			if(isset($default_value)) $this->default_value = $default_value;
 			return $this;
 		} else {
 			return false;

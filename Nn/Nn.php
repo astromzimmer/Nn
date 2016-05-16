@@ -186,11 +186,19 @@ class Nn extends Nn\Core\Singleton {
 	}
 
 	public static function get($pattern,$callback) {
-		self::instance()->router->get($pattern,$callback);
+		self::instance()->router->set($pattern,'get',$callback);
 	}
 
 	public static function post($pattern,$callback) {
-		self::instance()->router->post($pattern,$callback);
+		self::instance()->router->set($pattern,'post',$callback);
+	}
+
+	public static function put($pattern,$callback) {
+		self::instance()->router->set($pattern,'put',$callback);
+	}
+
+	public static function delete($pattern,$callback) {
+		self::instance()->router->set($pattern,'delete',$callback);
 	}
 
 	public static function session() {
@@ -239,6 +247,7 @@ class Nn extends Nn\Core\Singleton {
 		if(!isset($key)) return false;
 		$key = strtoupper($key);
 		$soft_setting = isset(self::instance()->SETTINGS[$key]) ? self::instance()->SETTINGS[$key] : false;
+		if($soft_setting == 'false') $soft_setting = false;
 		$hard_setting = (defined($key)) ? constant($key) : false;
 		return ($soft_setting) ? $soft_setting : $hard_setting;
 	}

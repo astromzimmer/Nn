@@ -9,6 +9,7 @@ use Utils;
 class Datatype extends Nn\Core\DataModel {
 
 	public static $PARAMS = false;
+	public static $DEFAULT = false;
 	protected $_attribute;
 	protected $_attributetype;
 

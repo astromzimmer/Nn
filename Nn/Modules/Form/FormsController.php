@@ -18,7 +18,7 @@ class FormsController extends Nn\Core\Controller {
 		if($form->save()) {
 			$attribute = new Attribute($node_id,$_POST['atype_id'],$form->attr('id'));
 			if($attribute->save()) {
-				Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node_id);
+				Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 			} else {
 				$form->delete();
 				Nn::flash(['error'=>Nn::babel("Failed to register attribute")]);
@@ -40,7 +40,7 @@ class FormsController extends Nn\Core\Controller {
 			$attributetype_id = $_POST['attributetype_id'];
 			$attribute->attr('attributetype_id',$attributetype_id);
 			$attribute->save();
-			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node_id);
+			Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 		} else {
 			die("failed to update form");
 		}

@@ -1,6 +1,6 @@
-<div class="main menu">
+<div class="left main menu">
 	<ul>
-		<li class="main btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Nodes') echo ' active"' ?>">
+		<li class="main btn<?php if(in_array(str_replace('Controller','',Nn::getCurrentController()), ['Nodes','Publications'])) echo ' active"' ?>">
 			<a href="<?php echo '/admin/nodes' ?>"><?php echo Nn::babel('Nodes') ?></a>
 		</li>
 		<?php if(Nn::authenticated('admins')): ?>
@@ -10,6 +10,11 @@
 		<li class="super btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Attributetypes') echo ' active"' ?>">
 			<a href="<?php echo '/admin/attributetypes' ?>"><?php echo Nn::babel('Attributetypes') ?></a>
 		</li>
+		<?php if(Nn::settings('PRINT')): ?>
+		<li class="super btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Layouts') echo ' active"' ?>">
+			<a href="<?php echo '/admin/layouts' ?>"><?php echo Nn::babel('Print Layouts') ?></a>
+		</li>
+		<?php endif ?>
 		<li class="super btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Settings') echo ' active"' ?>">
 			<a href="<?php echo '/admin/settings' ?>"><?php echo Nn::babel('Settings') ?></a>
 		</li>

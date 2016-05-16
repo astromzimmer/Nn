@@ -3,11 +3,6 @@
 namespace Nn\Core;
 use Nn;
 use Utils;
-use Everzet\Jade\Jade,
-	Everzet\Jade\Dumper\PHPDumper,
-	Everzet\Jade\Parser,
-	Everzet\Jade\Lexer\Lexer,
-	Everzet\Jade\Filter\PHPFilter;
 
 class Template extends Basic {
 
@@ -74,11 +69,7 @@ class Template extends Basic {
 			extract($vars);
 			$extension = pathinfo($path,PATHINFO_EXTENSION);
 			if($extension == 'jade') {
-				$dumper = new PHPDumper();
-				$dumper->registerFilter('php',new PHPFilter());
-				$parser = new Parser(new Lexer());
-				$jade = new Jade($parser,$dumper);
-				$php_content = $jade->render($path);
+				$php_content = Utils::renderJade($path);
 				$path = str_replace('.jade', '.php', $path);
 				file_put_contents($path, $php_content);
 			}
@@ -102,7 +93,11 @@ class Template extends Basic {
 		if($header = $this->getTemplatePath($this->_dir.DS.'header')) {
 			$this->output($header,$this->vars);
 		} else {
-			$this->output($this->getTemplatePath('Def'.DS.'views'.DS.Nn::settings('SESSION_HEADER')),$this->vars);
+			if(Nn::authenticated()) {
+				$this->output($this->getTemplatePath('Admin'.DS.'views'.DS.'header'),$this->vars);
+			} else {
+				$this->output($this->getTemplatePath('Def'.DS.'views'.DS.'header'),$this->vars);
+			}
 		}
 	}
 
@@ -110,7 +105,11 @@ class Template extends Basic {
 		if($footer = $this->getTemplatePath($this->_dir.DS.'footer')) {
 			$this->output($footer,$this->vars);
 		} else {
-			$this->output($this->getTemplatePath('Def'.DS.'views'.DS.Nn::settings('SESSION_FOOTER')),$this->vars);
+			if(Nn::authenticated()) {
+				$this->output($this->getTemplatePath('Admin'.DS.'views'.DS.'footer'),$this->vars);
+			} else {
+				$this->output($this->getTemplatePath('Def'.DS.'views'.DS.'footer'),$this->vars);
+			}
 		}
 	}
 	

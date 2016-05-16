@@ -45,15 +45,7 @@ class Router {
 		return $this->action;
 	}
 
-	public function get($pattern,$callback) {
-		self::set($pattern,'get',$callback);
-	}
-
-	public function post($pattern,$callback) {
-		self::set($pattern,'post',$callback);
-	}
-
-	private function set($pattern,$method,$callback) {
+	public function set($pattern,$method,$callback) {
 		$this->routes[] = new Route($pattern,$method,$callback);
 	}
 
@@ -100,7 +92,7 @@ class Router {
 		$this->action = $this->default_action;
 		$query = array();
 		if(isset($target_path)) {
-			$target_path_array = explode("/", $target_path);
+			$target_path_array = preg_split("/[\/:]/", $target_path);
 			$plural = ucwords(array_shift($target_path_array));
 			$this->module = Utils::singularise($plural);
 			$potential_controller_name = $plural.'Controller';
@@ -114,11 +106,14 @@ class Router {
 			$found_it = method_exists($controllerClass, $this->action);
 		}
 		if(!$found_it && file_exists(ROOT.DS.'Nn'.DS.'Modules'.DS.$this->module.DS.$this->controller.'.php')) {
-			$controllerClass = 'Nn\\Modules\\'.$this->module.'\\'.$this->controller;
+			if(!isset($controllerClass)) $controllerClass = 'Nn\\Modules\\'.$this->module.'\\'.$this->controller;
 			$found_it = method_exists($controllerClass, $this->action);
 		}
 		if(!$found_it) {
-			$controllerClass = 'Nn\\Modules\\'.$this->module.'\\DefController';
+			$this->action = $this->default_action;
+			$found_it = method_exists($controllerClass, $this->action);
+		}
+		if(!$found_it) {
 			$this->action = 'notFound';
 		}
 		if($this->controller == 'PublikController' || $this->controller == 'ApiController') {

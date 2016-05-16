@@ -21,7 +21,8 @@
     "aMD": "https://github.com/anthon/aMD.git",
     "retinaFix": "https://github.com/anthon/retinaFix.git",
     "aVIDEO": "https://github.com/anthon/aVIDEO.git",
-    "aROUTER": "https://github.com/anthon/aROUTER.git"
+    "aROUTER": "https://github.com/anthon/aROUTER.git",
+    "aPRINT": "https://github.com/anthon/aPRINT.git"
   },
   "overrides": {
     "ace-builds": {

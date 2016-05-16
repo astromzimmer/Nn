@@ -8,6 +8,8 @@ use Nn;
 use Utils;
 
 class AttributesController extends Nn\Core\Controller {
+
+	protected $view;
 	
 	function before() {
 		Nn::authenticate();
@@ -27,6 +29,14 @@ class AttributesController extends Nn\Core\Controller {
 	function view($id=null) {
 		$this->setTemplateVars([
 				'attribute'=> Attribute::find($id)
+			]);
+	}
+
+	function _list($node_id) {
+		$node = Node::find($node_id);
+		$this->renderMode('partial');
+		$this->setTemplateVars([
+				'node' => $node
 			]);
 	}
 	
@@ -77,7 +87,7 @@ class AttributesController extends Nn\Core\Controller {
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 		}
-		Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$attribute->node()->id);
+		Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$attribute->node()->id);
 	}
 	
 	function edit($id=null) {
@@ -97,7 +107,7 @@ class AttributesController extends Nn\Core\Controller {
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 		}
-		Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodes'.DS.'view'.DS.$node_id);
+		Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 	}
 }
 

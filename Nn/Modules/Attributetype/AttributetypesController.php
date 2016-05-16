@@ -21,6 +21,15 @@ class AttributetypesController extends Nn\Core\Controller {
 				'params'=> $params
 			]);
 	}
+
+	function _default($datatype) {
+		$this->renderMode('partial');
+		$datatype_class = 'Nn\\Modules\\'.$datatype.'\\'.$datatype;
+		$default = $datatype_class::$DEFAULT;
+		$this->setTemplateVars([
+				'default'=> $default
+			]);
+	}
 	
 	function index() {
 		$this->setTemplateVars([
@@ -69,7 +78,8 @@ class AttributetypesController extends Nn\Core\Controller {
 	
 	function create() {
 		$params = (isset($_POST['params'])) ? $_POST['params'] : null;
-		$attributetype = new Attributetype($_POST['name'],$_POST['datatype'],$params);
+		$default_value = (isset($_POST['default_value'])) ? $_POST['default_value'] : null;
+		$attributetype = new Attributetype($_POST['name'],$_POST['datatype'],$params,$default_value);
 		if($attributetype->save()) {
 			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'attributetypes');
 		} else {
@@ -92,18 +102,21 @@ class AttributetypesController extends Nn\Core\Controller {
 		$datatype = $attributetype->attr('datatype');
 		$datatype_class = 'Nn\\Modules\\'.$datatype.'\\'.$datatype;
 		$datatype_params = $datatype_class::$PARAMS;
+		$datatype_default = $datatype_class::$DEFAULT;
 		$this->setTemplateVars([
 				'attributetypes'=> Attributetype::find_all(null,'position'),
 				'attributetype'=> $attributetype,
 				'datatypes'=> Utils::getSubclassesOf('Nn\Modules\Datatype\Datatype',true),
-				'datatype_params'=> $datatype_params
+				'datatype_params'=> $datatype_params,
+				'datatype_default'=> $datatype_default
 			]);
 	}
 	
 	function update($id=null) {
 		$params = (isset($_POST['params'])) ? $_POST['params'] : null;
+		$default_value = (isset($_POST['default_value'])) ? $_POST['default_value'] : null;
 		$attributetype = Attributetype::find($id);
-		$attributetype->fill($_POST['name'],$_POST['datatype'],$params);
+		$attributetype->fill($_POST['name'],$_POST['datatype'],$params,$default_value);
 		if($attributetype->save()) {
 			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'attributetypes');
 		} else {

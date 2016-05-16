@@ -11,14 +11,9 @@ class ApiController extends Nn\Core\Controller {
 		header('Access-Control-Allow-Origin: *');
 	}
 
-	function nodes($slug=null) {
-		// $this->cache('application/json');
-		if(!isset($slug)) Utils::sendResponseCode(500);
-		$node = Node::find(['slug'=>$slug],1);
-		$data = $node->export();
-		$json_data = json_encode($data);
-		$this->renderMode('json');
-		$this->setTemplateVars(['data'=>$json_data]);
+	function info() {
+		phpinfo();
+		die;
 	}
 
 	function search() {

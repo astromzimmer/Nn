@@ -2,6 +2,7 @@
 
 namespace Nn\Modules\Nodetype;
 use Nn\Modules\Attributetype\Attributetype as Attributetype;
+use Nn\Modules\Layout\Layout as Layout;
 use Nn;
 use Utils;
 
@@ -13,6 +14,7 @@ class Nodetype extends Nn\Core\DataModel {
 	protected $attributetypes;
 	protected $can_be_root;
 	protected $nodetypes;
+	protected $layout_id;
 	protected $position;
 
 	public static $SCHEMA = array(
@@ -20,20 +22,22 @@ class Nodetype extends Nn\Core\DataModel {
 			'icon' => 'short_text',
 			'attributetypes' => 'text',
 			'nodetypes' => 'text',
+			'layout_id' => 'integer',
 			'can_be_root' => 'integer',
 			'position' => 'integer',
 			'created_at' => 'float',
 			'updated_at' => 'float'
 		);
 	
-	public function __construct($name=null, $icon=null, $can_be_root=null, $attributetypes=null, $nodetypes=null){
+	public function __construct($name=null, $icon=null, $can_be_root=null, $attributetypes=null, $nodetypes=null, $layout_id=null){
 		if(isset($name)){
 			$this->name = $name;
 			$this->icon = $icon;
 			$this->position = 2147483647;
 			$this->attributetypes = (!empty($attributetypes)) ? implode(",",$attributetypes) : "";
 			$this->nodetypes = (!empty($nodetypes)) ? implode(",",$nodetypes) : "";
-			$this->can_be_root = isset($can_be_root) ? true : false;
+			$this->layout_id = $layout_id;
+			$this->can_be_root = $can_be_root;
 			return $this;
 		} else {
 			return false;
@@ -77,6 +81,10 @@ class Nodetype extends Nn\Core\DataModel {
 			$result = self::find($query,null,'position');
 		}
 		return $result;
+	}
+
+	public function layout() {
+		return Layout::find($this->layout_id);
 	}
 
 	public function canBeRoot() {

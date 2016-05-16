@@ -4,18 +4,20 @@
 @import '_scrollbars'
 @import '_overrides'
 
+$active_menu_bg = #444
+
 $bodyBG = #FFF
 // $bodyBG = #CC4640
 // $bodyBG2 = #D86B62
-$topBG = clouds
+$topBG = #DDD
 // $itemBG = lighten(#EEE,24%)
-$itemBG = clouds
-$rightBG = white
+$itemBG = #CCC
+$rightBG = #F2F2F2
 $hintBG = #E1E478
 
 $spacerBG = darken($itemBG,6%)
 
-$leftWidth = 372px
+$leftWidth = 324px
 // $listWidth = 378px
 $liHeight = 42px
 
@@ -171,29 +173,21 @@ body
 			fieldset
 			button
 				width 100%
-
+	
 	#admin
-		box-sizing content-box
-		background-color $topBG
-		// background-linear-gradient top, $topBG, 0%, darken($topBG,2%), 100%
-		position absolute
-		top 0px
-		left 0px
-		width $leftWidth
-		// border 1px solid $spacerBG
-		text-align left
-		z-index 3
-		overflow hidden
-		
 		.menu
 			muli()
+			background-color $topBG
+			position absolute
+			text-align center
 			text-transform uppercase
+			width $leftWidth
 			ul
 				position relative
 				padding-top $admin_height
 				li
 					display none
-					clickable(none,wet_asphalt,wet_asphalt,white)
+					clickable($topBG,$active_menu_bg,$active_menu_bg,white)
 					width 100%
 					height $admin_height
 					line-height $admin_height + 4
@@ -209,6 +203,26 @@ body
 					&.main
 						font-size 1.2em
 						font-weight 700
+			&.right
+				// display none
+				right 0
+			&.expanded
+				height 100%
+				ul
+					li
+						display block
+	
+	#admin
+		box-sizing content-box
+		// background-linear-gradient top, $topBG, 0%, darken($topBG,2%), 100%
+		position absolute
+		top 0px
+		left 0px
+		right 0
+		// border 1px solid $spacerBG
+		text-align left
+		z-index 3
+		transition height .2s
 
 		.impressum
 			display none
@@ -222,15 +236,10 @@ body
 			a
 				color grey
 
-		&.expanded
-			height 100%
-			.menu
-				ul
-					li
-						display block
 		&.root
 			height 100%
 			.menu
+				height 100%
 				ul
 					padding-top 0
 					li
@@ -257,6 +266,7 @@ body
 		left 0
 		right 0
 		bottom 0
+		font-size 0
 		text-align left
 		border-radius 2px
 		// box-shadow 1px 1px 6px #AAA
@@ -346,8 +356,7 @@ body
 				background $itemBG
 				width 100%
 				padding 10px 24px
-				border-color $spacerBG
-				border-width 0 1px 0 0
+				border-width 0
 				font-family Roboto
 				font-size 1em
 				letter-spacing .1em
@@ -367,11 +376,12 @@ body
 				width $leftWidth
 				height 100%
 				// border-right 1px solid $spacerBG
-
+		#left
+		#right
 			.menu
 				width $leftWidth
 				height 100%
-				border-right 1px solid $spacerBG
+				// border-right 1px solid $spacerBG
 				.add
 					a
 						img
@@ -384,71 +394,90 @@ body
 						border-top 1px solid $spacerBG
 						white-space nowrap
 						font-size 0
+						overflow hidden
 						&:last-child
 							border-bottom 1px solid $spacerBG
-						.expander
-						.handle
-						.link
-							background-repeat no-repeat
-							background-position center
-							background-size 66%
-							top 0
-							width 24px
-							height $liHeight
-							cursor pointer
-							z-index 1
-							opacity .4
-						.expander
-							// position absolute
-							display inline-block
-							clickable(none,$rightBG)
-							background-image url(../imgs/static/ui/collapsed.gif)
-							left 0
-							border-right 1px solid $spacerBG
-						.handle
-						.link
-							position relative
-							display none
-							float right
-						.handle
-							background-image url(../imgs/static/ui/sort.gif)
-							cursor ns-resize
-						.link
-							background-image url(../imgs/static/ui/public_link.gif)
-						.label
-							position relative
-							display inline-block
-							height $liHeight
-							width 100%
-							vertical-align top
-							padding 0 72px 0 12px
-							font-size 13px
-							font-weight 300
-							line-height $liHeight +3
-							a
+						.grouper
+							.expander
+							.tool
+								background-repeat no-repeat
+								background-position center
+								background-size 66%
+								top 0
+								width 24px
+								height $liHeight
+								font-size 1.8rem
+								line-height $liHeight
+								text-align center
+								cursor pointer
+								z-index 1
+								opacity .4
+								img
+									center()
+							.expander
+								// position absolute
 								display inline-block
-								width 100%
-								span
-									padding 0 3px 0 0
-						.add
-						.expander
-							a
-								display block
-						&:hover
+								clickable(none,$rightBG)
+								background-image url(../imgs/static/ui/collapsed.gif)
+								left 0
+								border-right 1px solid $spacerBG
+							.tools
+								background $rightBG
+								position absolute
+								top 0
+								right -72px
+								bottom 0
+								box-shadow inset 1px 0px 1px 0px rgba(0,0,0,.24)
+								transition right .2s
+								.tool
+									position relative
+									float right
+									&:hover
+										background-color transparent
+										opacity 1
 							.handle
+								background-image url(../imgs/static/ui/sort.gif)
+								cursor ns-resize
 							.link
-								display block
+								background-image url(../imgs/static/ui/public_link.gif)
+							.pub
+								background-image url(../imgs/static/ui/paper_plane.svg)
+							.label
+								position relative
+								display inline-block
+								height $liHeight
+								width 100%
+								vertical-align top
+								padding 0 72px 0 12px
+								font-size 13px
+								font-weight 300
+								line-height $liHeight +3
+								a
+									display inline-block
+									width 100%
+									span
+										padding 0 3px 0 0
+							.add
+							.expander
+								a
+									display block
+							&:hover
+								> .tools
+									right 0
 						&.active
-							.submenu
-								border-color belize_hole
+							.grouper
+								.submenu
+									border-color belize_hole
 						&.active
 						&:hover
-							// background-color white
+							.grouper
+								// background-color white
 						&.focus
-							background-color $rightBG
-							.label
-								border-color $rightBG
-								font-weight 700
+							> .grouper
+								background-color $rightBG
+								.label
+									border-color $rightBG
+									font-weight 700
 							li
 								.label
 									border-color $spacerBG
@@ -461,20 +490,20 @@ body
 								&:last-child
 									border-bottom none
 						&.expanded
-							> .expander
-								background-image url(../imgs/static/ui/expanded.gif)
+							> .grouper
+								> .expander
+									background-image url(../imgs/static/ui/expanded.gif)
 							> ul
 								display block
 		
-		#right
+		#center
 			background-color $rightBG
 			position absolute
 			left $leftWidth
-			top 0
 			right 0
-			bottom 0
+			height 100%
 			overflow hidden
-			overflow-y auto
+			// overflow-y auto
 			a
 				//
 
@@ -534,206 +563,11 @@ body
 				a
 					color grey
 			
-			.node
-				.header
-					background-color $rightBG
-					position fixed
-					top 0
-					left $leftWidth + 54
-					right 54px
-					padding 0
-					margin 0
-					border-bottom 1px solid $shadowColour
-					font-size 13px
-					text-align center
-					z-index 999
-					transition padding .2s
-					ul
-						margin -26px 0 0
-						color grey
-						font-weight 300
-						line-height 24px
-						transition margin .2s
-						border-bottom 1px solid $spacerBG
-						li
-							display inline-block
-							margin 0
-							&.meta
-								margin 0 12px 0 0
-					.title
-						ellipsis()
-						display block
-						margin 12px
-						font-weight 600
-						font-size 1.8em
-						cursor pointer
-						transition font-size .2s
-					.tools
-						// display none
-						&.new
-						&.right
-							height 24px
-							margin 0 auto -24px
-							white-space nowrap
-							a
-								background $rightBG
-								padding 4px 8px 8px
-								border 0px solid $shadowColour
-								border-width 0 0 1px 0
-								transition padding .2s
-								&:first-child
-									border-left-width 1px
-									padding-left 16px
-								&:last-child
-									border-right-width 1px
-									padding-right 16px
-						&.new
-							position relative
-						&.right
-							top auto
-							bottom 0
-							transition bottom .2s
-
-					&.maximised
-						padding 0 0 24px
-						border none
-						ul
-							margin 0 0 24px
-							li
-								font-size 13px
-								line-height 1.4em
-						.title
-							display block
-							font-size 48px
-							cursor inherit
-						.tools
-							&.new
-							&.right
-								a
-									margin 6px
-									padding 16px
-									border-width 1px
-									border-color $spacerBG
-									border-radius 50%
-									img
-										opacity 1
-									&:hover
-										border-color $shadowColour
-							&.right
-								bottom 24px
-
-				.menu
-					width $rightMenuWidth
-				
-				.attribute
-					overflow hidden
-					margin 24px 0
-					padding 32px 24px 24px
-					border 1px solid $spacerBG
-					border-color $spacerBG $rightBG $rightBG
-					text-align left
-					a.anchor
-						position absolute
-						top -112px
-					label
-						position absolute
-						text-transform uppercase
-						top 0
-						left 0
-						right 0
-						padding 4px 5px
-					.note
-						padding 6px 12px 0
-						font-size .8em
-						color $shadowColour
-					.tools
-						display none
-						background-color $rightBG
-						top 0
-						right 0
-						height 23px
-					
-					.feed
-						position relative
-						.posts
-							padding 10px 0 0
-							li
-								border-top 1px solid #CCC
-								padding 4px
-								&:first-child
-									border-top none
-							.uid
-								sans-serif()
-								font-size .8em
-					
-					.text
-						a
-							text-decoration underline
-
-					&:hover
-					&.new
-					&.editing
-						border 1px solid $shadowColour
-						// label
-						// 	border-bottom 1px solid $shadowColour
-						.tools
-							display block
-					&:hover
-						border-color $spacerBG
-						label
-							border-color $spacerBG
-					&.new
-					&.editing
-						padding 0
-						border-color $shadowColour
-						.handle
-							select
-								margin 0
-						label
-							border-color $shadowColour
-						form
-							padding 27px 0 0
-							.aMD_container
-								border none
-							.submit
-								border-top 1px solid $shadowColour
-
-				.attributes
-					position relative
-					margin-top 198px
-
-					&.collapsed .attribute
-					.attribute.collapsed
-						height $collapsedHeight
-						padding 0
-						.image
-							display inline-block
-							img
-								position absolute
-								top 0
-						label
-							position relative
-							float left
-							min-width 124px
-						&:hover
-							label
-								border none
-						.text
-							*
-								max-width 50%
-								margin 4px 0 0
-								padding 0
-								display inline-block
-								font-size 11px !important
-								color lighten(black,54%)
-								text-overflow ellipsis
-								white-space nowrap
-								overflow hidden
-			
 			.manage
 				// background-color white
 				height 100%
 				padding 24px 72px 24px
+				font-size 1.4rem
 				overflow-y auto
 				
 				#optionsContainer
@@ -756,7 +590,12 @@ body
 					right 24px
 				#code-editor
 					bottom 72px
-									
+		
+		#right
+			// display none
+			background $itemBG
+			right 0
+
 
 ul
 	position relative
@@ -775,10 +614,6 @@ ul
 
 ul.submenu span.edit img
 	margin-bottom -3px
-
-.attributes ul .image img
-	max-width 100%
-	height auto
 
 .menu
 .submenu
@@ -808,3 +643,7 @@ ul.submenu span.edit img
 #response_form textarea
 	height 75px
 
+
+@import '_node'
+@import '_print'
+@import '_publication'

@@ -1,7 +1,7 @@
 <div id="left">
 	<?php Nn::partial('Setting','_list',array('settings'=>$settings)) ?>
 </div>
-<div id="right">
+<div id="center">
 	<div class="manage">
 		<div id="setting_form" class="edit_bg">
 			<form name="form1" method="post" action="<?php echo DOMAIN,DS,'admin',DS,'settings',DS,'create' ?>">

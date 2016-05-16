@@ -19,6 +19,8 @@ class Text extends Nn\Modules\Datatype\Datatype {
 			'size' => array('short','long')
 		);
 
+	public static $DEFAULT = 'textarea';
+
 	public function exportProperties($excludes=array()) {
 		return array(
 			'id'			=>	$this->id,

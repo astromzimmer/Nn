@@ -1,7 +1,7 @@
 <div id="left">
 	<?php Nn::partial('Attributetype','_list',array('attributetypes'=>$attributetypes,'attributetype'=>$attributetype)) ?>
 </div>
-<div id="right">
+<div id="center">
 	<div class="manage">
 		<div id="attributetype_form" class="edit_bg">
 			<form name="form1" method="post" action="<?php echo DOMAIN,DS,'admin',DS,'attributetypes',DS,'update',DS,$attributetype->attr('id') ?>">
@@ -20,6 +20,16 @@
 			    	<?php Nn::partial('Attributetype','_params',array('params'=>$datatype_params)); ?>
 			    </span>
 			  </fieldset>
+			  <div id="defaultContainer">
+			  <?php if($datatype_default): ?>
+			  	<fieldset>
+					<legend><?php echo Nn::babel('Default') ?></legend>
+					<?php if($datatype_default == 'textarea'): ?>
+						<textarea type="text" name="default_value"><?php echo $attributetype->attr('default_value'); ?></textarea>
+					<?php endif ?>
+				</fieldset>
+			  <?php endif ?>
+			  </div>
 			  <div class="submit">
 			  <a href="<?php echo DOMAIN,DS,'admin',DS,'attributetypes',DS,'delete',DS,$attributetype->attr('id') ?>" class="delete button half float"><?php echo Nn::babel('Delete') ?></a>
 			    <button type="submit" name="submit" id="submit" class="half float"><?php echo Nn::babel('Save') ?></button>

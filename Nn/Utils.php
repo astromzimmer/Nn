@@ -21,6 +21,10 @@ class Utils {
 		}
 		return false;
 	}
+
+	public static function is($type) {
+		return $_SERVER['REQUEST_METHOD'] === strtoupper($type);
+	}
 		
 	public static function redirect_to($location,$include_params=true){
 		if($include_params) {
@@ -39,7 +43,7 @@ class Utils {
 		}
 	}
 
-	public static function sendResponseCode($code,$exit=false) {
+	public static function sendResponseCode($code,$exit=true) {
 		# Consider adding support for > 5.4
 		http_response_code($code);
 		if($exit) exit;
@@ -221,7 +225,15 @@ class Utils {
 	}
 
 	public static function explode($delimiter, $string) {
+		if(!is_string($string) || strlen($string) == 0) return [];
 		return array_map('trim',explode($delimiter, $string));
+	}
+
+	public static function removeFromArray($array,$val) {
+		if(($key = array_search($val, $array)) !== false) {
+			unset($array[$key]);
+		}
+		return $array;
 	}
 
 	// function sort_by_date(&$array){
@@ -414,6 +426,14 @@ class Utils {
 		}
 		$strOut = rtrim($strOut,',');
 		return $strOut;
+	}
+
+	public static function renderJade($tpl) {
+		$dumper = new Everzet\Jade\Dumper\PHPDumper();
+		$dumper->registerFilter('php',new Everzet\Jade\Filter\PHPFilter());
+		$parser = new Everzet\Jade\Parser(new Everzet\Jade\Lexer\Lexer());
+		$jade = new Everzet\Jade\Jade($parser,$dumper);
+		return $jade->render($tpl);
 	}
 
 	public static function generate_image($str=null, $font=null) {

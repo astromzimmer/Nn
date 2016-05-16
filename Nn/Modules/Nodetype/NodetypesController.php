@@ -4,6 +4,7 @@ namespace Nn\Modules\Nodetype;
 use Nn\Modules\Node\Node as Node;
 use Nn\Modules\Nodetype\Nodetype as Nodetype;
 use Nn\Modules\Attributetype\Attributetype as Attributetype;
+use Nn\Modules\Layout\Layout as Layout;
 use Nn;
 use Utils;
 
@@ -59,6 +60,7 @@ class NodetypesController extends Nn\Core\Controller {
 		$this->setTemplateVars([
 				'nodetypes'=> Nodetype::find_all(null,'position'),
 				'attributetypes'=> Attributetype::find_all(null,'position'),
+				'layouts'=> Layout::find_all(null,'position'),
 				'icons'=> $this->icons
 			]);
 	}
@@ -68,12 +70,14 @@ class NodetypesController extends Nn\Core\Controller {
 		$icon = isset($_POST['icon']) && $_POST['icon'] != 'null' ? $_POST['icon'] : false;
 		$attributetypes = isset($_POST['attributetypes']) ? $_POST['attributetypes'] : null;
 		$nodetypes = isset($_POST['nodetypes']) ? $_POST['nodetypes'] : null;
+		$layout_id = isset($_POST['layout_id']) ? $_POST['layout_id'] : null;
 		$can_be_root = isset($_POST['can_be_root']) ? $_POST['can_be_root'] : 0;
-		$nodetype = new Nodetype($name,$icon,$can_be_root,$attributetypes,$nodetypes);
-		if($nodetype->save()) {
+		$nodetype = new Nodetype($name,$icon,$can_be_root,$attributetypes,$nodetypes,$layout_id);
+		if($nodetype && $nodetype->save()) {
 			Utils::redirect_to(DOMAIN.'/admin/nodetypes');
 		} else {
-			die("failed to create nodetype");
+			Nn::flash(['error'=>Nn::babel('Please fill in all fields')]);
+			Utils::redirect_to(DOMAIN.'/admin/nodetypes/make');
 		}
 	}
 	
@@ -81,6 +85,7 @@ class NodetypesController extends Nn\Core\Controller {
 		$this->setTemplateVars([
 				'nodetypes'=> Nodetype::find_all(null,'position'),
 				'attributetypes'=> Attributetype::find_all(null,'position'),
+				'layouts'=> Layout::find_all(null,'position'),
 				'nodetype'=> Nodetype::find($id),
 				'icons'=> $this->icons
 			]);
@@ -91,6 +96,7 @@ class NodetypesController extends Nn\Core\Controller {
 		$icon = isset($_POST['icon']) && $_POST['icon'] != 'null' ? $_POST['icon'] : false;
 		$attributetypes = isset($_POST['attributetypes']) ? $_POST['attributetypes'] : array();
 		$nodetypes = isset($_POST['nodetypes']) ? $_POST['nodetypes'] : array();
+		$layout_id = isset($_POST['layout_id']) ? $_POST['layout_id'] : null;
 		$can_be_root = isset($_POST['can_be_root']) ? $_POST['can_be_root'] : 0;
 		$nodetype = Nodetype::find($id);
 		$nodetype->attr('name',$name);
@@ -98,10 +104,12 @@ class NodetypesController extends Nn\Core\Controller {
 		$nodetype->attr('can_be_root',$can_be_root);
 		$nodetype->attr('attributetypes',implode(",",$attributetypes));
 		$nodetype->attr('nodetypes',implode(",",$nodetypes));
+		$nodetype->attr('layout_id',$layout_id);
 		if($nodetype->save()) {
 			Utils::redirect_to(DOMAIN.'/admin/nodetypes');
 		} else {
-			die("failed to update attribute type");
+			Nn::flash(['error'=>Nn::babel("Oups! Error. We'll have a look.")]);
+			Utils::redirect_to(DOMAIN.'/admin/nodetypes/edit/'.$nodetype->attr('id'));
 		}
 	}
 	
@@ -110,7 +118,8 @@ class NodetypesController extends Nn\Core\Controller {
 		if($nodetype->delete()) {
 			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodetypes');
 		} else {
-			die("failed to remove nodetype registration");
+			Nn::flash(['error'=>Nn::babel("Oups! Error. We'll have a look.")]);
+			Utils::redirect_to(DOMAIN.'/admin/nodetypes/edit/'.$nodetype->attr('id'));
 		}
 	}
 }

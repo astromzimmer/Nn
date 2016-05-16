@@ -5,19 +5,24 @@
 	id="node_<?php echo $n->attr('id') ?>"
 	data-id="<?php echo $n->attr('id') ?>"
 	data-label="<?php echo $n->attr('title') ?>">
-	<?php if($n->nodetype()->nodetypes()): ?>
-	<div class="expander<?php if($is_active) echo ' expanded' ?>"></div>
-	<?php endif; ?>
-	<div class="handle" data-tooltip="<?php echo Nn::babel('Sort') ?>"></div>
-	<a class="link" href="<?php echo $n->permalink() ?>" target="_blank" data-tooltip="<?php echo Nn::babel('Public link') ?>"></a>
-	<div class="label">
-		<a
-			href="<?php echo DOMAIN.'/admin/nodes/view/'.$n->attr('id') ?>"
-			data-target="right"
-			data-ajax
-			><span
-				class="fa <?php echo $n->nodetype()->attr('icon') ?>"
-				></span><?php echo Utils::ellipsis($n->attr('title'),30); ?></a>
+	<div class="grouper">
+		<?php if($n->nodetype()->nodetypes()): ?>
+		<div class="expander<?php if($is_active) echo ' expanded' ?>"></div>
+		<?php endif; ?>
+		<div class="label">
+			<a
+				href="<?php echo DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$n->attr('id') ?>"
+				data-target="center"
+				data-ajax
+				><span
+					class="fa <?php echo $n->nodetype()->attr('icon') ?>"
+					></span><?php echo Utils::ellipsis($n->attr('title'),30); ?></a>
+		</div>
+		<div class="tools">
+			<div class="tool handle" data-tooltip="<?php echo Nn::babel('Sort') ?>"></div>
+			<a class="tool link" href="<?php echo $n->permalink() ?>" target="_blank" data-tooltip="<?php echo Nn::babel('Public link') ?>"></a>
+			<div class="tool pub" data-tooltip="<?php echo Nn::babel('Add to publication') ?>"></div>
+		</div>
 	</div>
 	<?php if($n->nodetype()->nodetypes()): ?>
 	<ul id="<?php echo $n->attr('id') ?>_nodes" class="submenu sortable<?php if($is_active) echo ' expanded' ?>">
@@ -30,9 +35,9 @@
 			<div class="add"><a
 				href="<?php echo DOMAIN.'/admin/nodes/make/in/'.$n->attr('id') ?>"
 				data-tooltip="<?php echo Nn::babel('New node in'); ?> <?php echo $n->attr('title'); ?>"
-				data-target="right"
+				data-target="center"
 				data-ajax
-				><?php echo Utils::UIIcon('plus'); ?></a></span>
+				><?php echo Utils::UIIcon('plus'); ?></a></div>
 		</li>
 	</ul>
 	<?php endif; ?>

@@ -21,6 +21,8 @@ class Form extends Nn\Modules\Text\Text {
 
 	public static $PARAMS = array();
 
+	public static $DEFAULT = false;
+
 	
 	public function mailto() {
 		return $this->mailto;

@@ -30,7 +30,11 @@ class AdminController extends Nn\Core\Controller {
 			} else {
 				Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 			}
-			Utils::redirect_to(Nn::settings('DOMAIN').'/admin/index');
+			if(Nn::authenticated('admins')) {
+				Utils::redirect_to(Nn::settings('DOMAIN').'/admin/index');
+			} else {
+				Utils::redirect_to(Nn::settings('DOMAIN').'/admin/nodes');
+			}
 			// }
 		} else {
 			Nn::flash(['error'=>Nn::babel('Wrong username/password – please try again')]);

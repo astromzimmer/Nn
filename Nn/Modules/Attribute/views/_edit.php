@@ -4,7 +4,7 @@
 		name="form1"
 		method="post"
 		action="<?php echo '/admin/'.$attribute->data()->collectionName().'/update/'.$attribute->data()->attr('id') ?>"
-		data-target="right"
+		data-target="node"
 		enctype="multipart/form-data">
 		<?php if($attributetypes = $node->nodetype()->attributetypes()) : ?>
 		<label class="handle">
@@ -24,9 +24,9 @@
 		<?php Nn::partial($attribute->datatype(),'_edit',array('attributetype'=>$attribute->attributetype(),'node'=>$node,'attribute'=>$attribute,strtolower($attribute->datatype())=>$attribute->data())); ?>
 		<div class="submit">
 			<a
-				href="<?php echo '/admin/nodes/view/'.$node->attr('id') ?>"
+				href="<?php echo '/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node->attr('id') ?>"
 				class="cancel button half float"
-				data-target="right"
+				data-target="node"
 				data-ajax
 				><?php echo Nn::babel('Cancel') ?></a>
 			<button type="submit" name="submit" id="submit" class="save half float"><?php echo Nn::babel('Save') ?></button>
