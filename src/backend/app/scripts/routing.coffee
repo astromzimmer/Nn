@@ -77,7 +77,7 @@
 				App.unsetMode 'publication'
 				App.setMode mode
 				if base_path is previous_path
-					if path.indexOf('layout') then App.nodes.firePrint node_id
+					if path.indexOf('layout') isnt -1 then App.nodes.firePrint node_id
 					App.nodes.focusTree node_id
 				else
 					App.nodes.fetch path, node_id

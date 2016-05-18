@@ -13,7 +13,7 @@
 				success: (result,status,jqXHR)->
 					App.$center[0].innerHTML = result
 					App.fireScrollWatcher()
-					if path.indexOf('layout')
+					if path.indexOf('layout') isnt -1
 						_print = null
 						firePrint node_id
 					focusTree node_id
