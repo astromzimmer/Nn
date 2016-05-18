@@ -225,7 +225,7 @@ class Nn extends Nn\Core\Singleton {
 	}
 
 	public static function storage($name=null,$storage=null) {
-		if(isset($name)) {
+		if(isset($name) && !is_string($name)) {
 			$name = 'default';
 		} else {
 			$name = self::instance()->storage_name;
@@ -233,7 +233,8 @@ class Nn extends Nn\Core\Singleton {
 		if(isset($storage)) {
 			return self::instance()->storages[$name] = $storage;
 		} else {
-			return self::instance()->storages[$name];
+			$storage = self::instance()->storages[$name];
+			return isset($storage) ? $storage : false;
 		}
 	}
 

@@ -54,16 +54,8 @@ class PDOStorage implements StorageInterface {
 			case "sqlite" :
 				try {
 					$this->dbc = new PDO('sqlite:'.$this->backup_path.DS.'database.sqlite3');
-					$this->dbc->setAttribute(
-							PDO::ATTR_ERRMODE,
-							PDO::ERRMODE_EXCEPTION
-						);
-					$this->dbc->setAttribute(
-							PDO::ATTR_ORACLE_NULLS,
-							PDO::NULL_NATURAL
-						);
 				} catch(\PDOException $e) {
-					trigger_error($e);
+					return trigger_error($e);
 				}
 			break;
 			case "mysql" :
@@ -83,16 +75,8 @@ class PDOStorage implements StorageInterface {
 						$user,
 						$password,
 						array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
-					$this->dbc->setAttribute(
-							PDO::ATTR_ERRMODE,
-							PDO::ERRMODE_EXCEPTION
-						);
-					$this->dbc->setAttribute(
-							PDO::ATTR_ORACLE_NULLS,
-							PDO::NULL_NATURAL
-						);
 				} catch(\PDOException $e) {
-					trigger_error($e);
+					return trigger_error($e);
 				}
 			break;
 			case "pgsql" :
@@ -111,24 +95,24 @@ class PDOStorage implements StorageInterface {
 					$this->dbc = new PDO("pgsql:host=$host;port=$port;dbname=$name",
 						$user,
 						$password);
-					$this->dbc->setAttribute(
-							PDO::ATTR_ERRMODE,
-							PDO::ERRMODE_EXCEPTION
-						);
-					$this->dbc->setAttribute(
-							PDO::ATTR_ORACLE_NULLS,
-							PDO::NULL_NATURAL
-						);
 				} catch(\PDOException $e) {
 					// die($e->getMessage());
 					// Utils::throwError();
-					trigger_error($e);
+					return trigger_error($e);
 				}
 			break;
 			default:
-				trigger_error("Please set up your database correctly.");
+				return trigger_error("Please set up your database correctly.");
 			break;
 		}
+		$this->dbc->setAttribute(
+				PDO::ATTR_ERRMODE,
+				PDO::ERRMODE_EXCEPTION
+			);
+		$this->dbc->setAttribute(
+				PDO::ATTR_ORACLE_NULLS,
+				PDO::NULL_NATURAL
+			);
 	}
 
 	public function dbc() {
@@ -206,7 +190,7 @@ class PDOStorage implements StorageInterface {
 		}
 		if(isset($limit)) $sql .= " LIMIT ".$limit;
 		if(isset($offset)) $sql .= " OFFSET ".$offset;
-		$result = $this->find_by_sql($sql,array(),$table_name,$model,true);
+		$result = $this->find_by_sql($sql,array(),$table_name,$model);
 		return $result;
 	}
 
@@ -254,12 +238,12 @@ class PDOStorage implements StorageInterface {
 		if(isset($limit)) $sql .= ' LIMIT '.$limit;
 		if(isset($offset)) $sql .= ' OFFSET '.$offset;
 		$values = Utils::flatten(array_values($query));
-		$result_array = $this->find_by_sql($sql,$values,$table_name,$model,true);
+		$result_array = $this->find_by_sql($sql,$values,$table_name,$model);
 		$result = !empty($result_array) ? $result_array : false;
 		return $result;
 	}
 	
-	public function find_by_sql($sql="",$vals=array(),$table_name,$model=null,$fetch_class=false) {
+	public function find_by_sql($sql="",$vals=array(),$table_name=null,$model=null) {
 		$id = $table_name.'_'.md5($sql.implode("-",$vals));
 		$cache = Nn::cache();
 		if($cache->valid($id)) {
@@ -272,12 +256,12 @@ class PDOStorage implements StorageInterface {
 				}
 				$vals = (count($vals) > 0) ? $vals : null;
 				$exec = $statement->execute($vals);
-				$rows = ($fetch_class) ? $statement->fetchALL(PDO::FETCH_CLASS,$model) : $statement->fetchALL();
+				$rows = (isset($model)) ? $statement->fetchALL(PDO::FETCH_CLASS,$model) : $statement->fetchALL(PDO::FETCH_ASSOC);
 				$result = (count($rows > 0)) ? $rows : false;
 				$cache->set($id,$result);
 				return $result;
 			} catch(\PDOException $e) {
-				if($e->getCode() == '42S02' || $e->getCode() == '42P01' || $e->getMessage() == 'SQLSTATE[HY000]: General error: 1 no such table: '.$table_name) {
+				if((isset($table_name)) && ($e->getCode() == '42S02' || $e->getCode() == '42P01' || $e->getMessage() == 'SQLSTATE[HY000]: General error: 1 no such table: '.$table_name)) {
 					if($this->createTable($table_name,($model::$SCHEMA))) {
 						return $this->find_by_sql($sql,$vals,$table_name,$model);
 					}
