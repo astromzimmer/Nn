@@ -87,7 +87,7 @@ class NodesController extends Nn\Core\Controller {
 				$attr_id = (isset($attr_id) && is_int($attr_id)) ? $attr_id : null;
 			}
 			$this->tree($node);
-			if(!$section) {
+			if(!$section && $node->layout()) {
 				$layout_id = $node->layout()->attr('id');
 				$section = new Section($id,$layout_id);
 			}

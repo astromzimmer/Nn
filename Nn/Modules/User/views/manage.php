@@ -1,7 +1,7 @@
 <div id="left">
 	<?php Nn::partial('User','_tree',array('roles'=>$roles,'focus'=>$user,'role'=>$role)) ?>
 </div>
-<div id="right">
+<div id="center">
 	<div class="manage">
 		<div id="user_form" class="view">
 		<?php if($user->attr('id')) : ?>

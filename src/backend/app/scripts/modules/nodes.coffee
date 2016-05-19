@@ -45,21 +45,22 @@
 					styles: '/backnn/css/print.css'
 				settings.template = $section.data 'template'
 				data_rules = $section.data 'rules'
-				settings.rules = if data_rules.rules then data_rules.rules else data_rules
-				_print = aPRINT '#section .section', settings
-				if _print
-					_print.on 'update', ->
-						node_id = $('#node .node').data 'id'
-						data =
-							markup: _print.get()
-						$.ajax
-							url: '/admin/nodes/layout/'+node_id
-							method: 'post'
-							data: data
-							success: (response)->
-								#
+				if data_rules
+					settings.rules = if data_rules.rules then data_rules.rules else data_rules
+					_print = aPRINT '#section .section', settings
+					if _print
+						_print.on 'update', ->
+							node_id = $('#node .node').data 'id'
+							data =
+								markup: _print.get()
+							$.ajax
+								url: '/admin/nodes/layout/'+node_id
+								method: 'post'
+								data: data
+								success: (response)->
+									#
 			setTimeout ->
-				_print.frameResize()
+				if _print then _print.frameResize()
 			,200
 
 		return {

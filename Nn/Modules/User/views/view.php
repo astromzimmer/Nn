@@ -1,7 +1,7 @@
 <div id="left">
 	<?php Nn::partial('User'.DS.'_tree',array('roles'=>$roles,'role'=>$user->role())) ?>
 </div>
-<div id="right">
+<div id="center">
 	<div class="manage">
 		<div id="<?php echo htmlentities($user->id); ?>" class>
 			<div>
