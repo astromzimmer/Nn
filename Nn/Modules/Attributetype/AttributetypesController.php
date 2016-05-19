@@ -2,7 +2,7 @@
 
 namespace Nn\Modules\Attributetype;
 use Nn\Modules\Node\Node as Node;
-use Nn\Modules\Attributetype\Attributetype;
+use Nn\Modules\Attribute\Attribute as Attribute;
 use Nn\Modules\Datatype\Datatype as Datatype;
 use Nn;
 use Utils;
@@ -81,7 +81,7 @@ class AttributetypesController extends Nn\Core\Controller {
 		$default_value = (isset($_POST['default_value'])) ? $_POST['default_value'] : null;
 		$attributetype = new Attributetype($_POST['name'],$_POST['datatype'],$params,$default_value);
 		if($attributetype->save()) {
-			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'attributetypes');
+			Utils::redirect_to(DOMAIN.'/admin/attributetypes');
 		} else {
 			die("failed to create attributetype");
 		}
@@ -118,18 +118,24 @@ class AttributetypesController extends Nn\Core\Controller {
 		$attributetype = Attributetype::find($id);
 		$attributetype->fill($_POST['name'],$_POST['datatype'],$params,$default_value);
 		if($attributetype->save()) {
-			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'attributetypes');
+			Utils::redirect_to(DOMAIN.'/admin/attributetypes');
 		} else {
 			die("failed to update attribute type");
 		}
 	}
 	
 	function delete($id=null) {
-		$attributetype = Attributetype::find($id);
-		if($attributetype->delete()) {
-			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'attributetypes');
+		$attributes = Attribute::find(['attributetype_id'=>$id]);
+		if($attributes) {
+			Nn::flash(['error'=>Nn::babel('There are '.count($attributes).' attribute(s) of this type. Please remove before continuing.')]);
+			Utils::redirect_to(DOMAIN.'/admin/attributetypes/edit/'.$id);
 		} else {
-			die("failed to remove attributetype registration");
+			$attributetype = Attributetype::find($id);
+			if(!$attributetype->delete()) {
+				Nn::flash(['error'=>Nn::babel('Something went wrong. Please contact site admin.')]);
+				Utils::redirect_to(DOMAIN.'/admin/attributetypes/edit/'.$id);
+			}
+			Utils::redirect_to(DOMAIN.'/admin/attributetypes');
 		}
 	}
 }

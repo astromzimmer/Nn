@@ -114,12 +114,17 @@ class NodetypesController extends Nn\Core\Controller {
 	}
 	
 	function delete($id=null) {
-		$nodetype = Nodetype::find($id);
-		if($nodetype->delete()) {
-			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodetypes');
+		$nodes = Node::find(['nodetype_id'=>$id]);
+		if($nodes) {
+			Nn::flash(['error'=>Nn::babel('There are '.count($nodes).' node(s) of this type. Please remove before continuing.')]);
+			Utils::redirect_to(DOMAIN.'/admin/nodetypes/edit/'.$id);
 		} else {
-			Nn::flash(['error'=>Nn::babel("Oups! Error. We'll have a look.")]);
-			Utils::redirect_to(DOMAIN.'/admin/nodetypes/edit/'.$nodetype->attr('id'));
+			$nodetype = Nodetype::find($id);
+			if(!$nodetype->delete()) {
+				Nn::flash(['error'=>Nn::babel("Oups! Error. We'll have a look.")]);
+				Utils::redirect_to(DOMAIN.'/admin/nodetypes/edit/'.$id);
+			}
+			Utils::redirect_to(DOMAIN.DS.'admin'.DS.'nodetypes');
 		}
 	}
 }

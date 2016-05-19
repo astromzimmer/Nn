@@ -46,12 +46,10 @@
 				</span>
 			</fieldset>
 			<div class="submit">
-			    <button type="submit" name="submit" id="submit" class="half"><?php echo Nn::babel('Save') ?></button>  
+			    <a href="<?php echo DOMAIN,DS,'admin',DS,'nodetypes',DS,'delete',DS,$nodetype->attr('id') ?>" class="delete button half float"><?php echo Nn::babel('Delete') ?></a>
+			    <button type="submit" name="submit" id="submit" class="half float"><?php echo Nn::babel('Save') ?></button>
 			</div>
 			</form>
-			<div class="tools">
-				<a class="trash" href="<?php echo DOMAIN.DS.'admin'.DS.'nodetypes'.DS.'delete'.DS.$nodetype->attr('id') ?>" data-tooltip="<?php echo Nn::babel('Trash') ?>"><?php Utils::UIIcon('trash'); ?></a>
-			</div>
 		</div>
 	</div>
 </div>
