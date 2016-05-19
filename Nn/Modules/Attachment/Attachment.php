@@ -117,7 +117,7 @@ class Attachment extends Nn\Modules\Datatype\Datatype {
 	}
 	
 	public function save() {
-		if(isset($this->id)) {
+		if(!isset($this->_tmp_path)) {
 			return parent::save();
 		} else {
 			if(!empty($this->_errors)) {
@@ -127,11 +127,9 @@ class Attachment extends Nn\Modules\Datatype\Datatype {
 				$this->_errors[] = "no file location available";
 				return false;
 			}
-			
-			if(parent::save()) {				
-				if(file_exists($this->path())) {
-					$this->_errors[] = "file already exists";
-					return false;
+			if(parent::save()) {
+				if(file_exists($this->dir())) {
+					Utils::recursiveRemove($this->dir());
 				}
 				if(move_uploaded_file($this->_tmp_path, $this->path())) {
 					// success!

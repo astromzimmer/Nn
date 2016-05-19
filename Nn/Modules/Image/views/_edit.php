@@ -10,3 +10,7 @@
 	<legend><?php echo Nn::babel('Link') ?></legend>
 	<input name="href" type="text" class="formfield" id="hrefField" value="<?php echo $image->attr('href') ?>" placeholder="<?php echo Nn::babel('http://...') ?>" />
 </fieldset>
+<fieldset>
+	<legend><?php echo Nn::babel('File') ?></legend>
+	<input type="file" name="file_upload" />
+</fieldset>

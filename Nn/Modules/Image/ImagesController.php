@@ -70,6 +70,7 @@ class ImagesController extends Nn\Core\Controller {
 		$image->attr('title',$_POST['title']);
 		$image->attr('description',$_POST['description']);
 		$image->attr('href',$_POST['href']);
+		if($_FILES['file_upload']) $image->attach_file($_FILES['file_upload']);
 		$node_id = $_POST['node_id'];
 		if($image->save()) {
 			# Attribute save needs error handling - yawn
