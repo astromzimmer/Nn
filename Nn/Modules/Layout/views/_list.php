@@ -15,7 +15,7 @@
 		<?php endif ?>
 			<li>
 				<div class="add">
-					<a href="<?php echo DOMAIN.DS.'admin'.DS.'layouts'.DS.'make' ?>"><?php echo Utils::UIIcon('plus'); ?></a>
+					<a href="<?php echo DOMAIN.DS.'admin'.DS.'layouts'.DS.'make' ?>">+</a>
 				</div>
 			</li>
 		</ul>

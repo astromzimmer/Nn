@@ -19,7 +19,7 @@
 		<?php endforeach ?>
 			<li>
 				<div class="add">
-					<a href="<?php echo DOMAIN.DS.'admin'.DS.'nodetypes'.DS.'make' ?>"><?php echo Utils::UIIcon('plus'); ?></a>
+					<a href="<?php echo DOMAIN.DS.'admin'.DS.'nodetypes'.DS.'make' ?>">+</a>
 				</div>
 			</li>
 		</ul>

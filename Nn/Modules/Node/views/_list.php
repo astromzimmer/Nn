@@ -37,7 +37,7 @@
 				data-tooltip="<?php echo Nn::babel('New node in'); ?> <?php echo $n->attr('title'); ?>"
 				data-target="center"
 				data-ajax
-				><?php echo Utils::UIIcon('plus'); ?></a></div>
+				>+</a></div>
 		</li>
 	</ul>
 	<?php endif; ?>

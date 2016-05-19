@@ -23,7 +23,7 @@
 					<?php endforeach ?>
 					<?php endif; ?>
 					<li>
-						<div class="add"><a href="<?php echo DOMAIN.'/admin/users/manage/in/'.$r->attr('id') ?>"><?php echo Utils::UIIcon('plus'); ?></a></div>
+						<div class="add"><a href="<?php echo DOMAIN.'/admin/users/manage/in/'.$r->attr('id') ?>">+</a></div>
 					</li>
 				</ul>
 			</li>
@@ -32,7 +32,7 @@
 		<?php if(Nn::authenticated('super')): ?>
 			<li>
 				<div class="add">
-					<a href="<?php echo DOMAIN.'/admin/users/manage_role' ?>"><?php echo Utils::UIIcon('plus'); ?></a>
+					<a href="<?php echo DOMAIN.'/admin/users/manage_role' ?>">+</a>
 				</div>
 			</li>
 		<?php endif; ?>

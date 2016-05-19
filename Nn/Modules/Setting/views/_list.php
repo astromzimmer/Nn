@@ -11,7 +11,7 @@
 			</li>
 		<?php endforeach ?>
 			<li>
-				<div class="add"><a href="<?php echo DOMAIN,DS,'admin',DS,'settings',DS,'make' ?>"><?php echo Utils::UIIcon('plus'); ?></a></div>
+				<div class="add"><a href="<?php echo DOMAIN,DS,'admin',DS,'settings',DS,'make' ?>">+</a></div>
 			</li>
 		</ul>
 	</div>
