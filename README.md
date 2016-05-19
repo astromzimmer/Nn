@@ -3,6 +3,7 @@
 ##Requirements
 PHP:
 - Composer
+
 Global npm packages (for development):
 - brunch
 - bower
