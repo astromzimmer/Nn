@@ -16,7 +16,7 @@ cp App/Publik/views/index.jade.dist App/Publik/views/index.jade
 cp App/Publik/views/footer.php.dist App/Publik/views/footer.php
 printf "\n\n${GREEN}Distribution files cloned successfully${BLANK}"
 printf "\n\nBuilding backend...\n\n\n"
-cd src/backend && npm install && bower install && brunch build -P
+cd src/backend && npm install && bower install && brunch build --production
 printf "\n\n${GREEN}Backend built successfully${BLANK}\n\n\n"
 
 echo -e "${YELLOW}Do you want to fetch and initialise a basic Brunch-driven frontend (y/n)?${BLANK} "
