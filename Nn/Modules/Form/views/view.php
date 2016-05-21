@@ -1,7 +1,7 @@
 <div id="left">
 	<?php Nn::partial('Form','_list',array('forms'=>$forms,'form'=>$form)) ?>
 </div>
-<div id="right">
+<div id="center">
 	<div id="forms" class="manage">
 	<?php if($entries): ?>
 		<div class="header">
