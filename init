@@ -19,12 +19,12 @@ printf "\n\nBuilding backend...\n\n\n"
 cd src/backend && npm install && bower install && brunch build --production
 printf "\n\n${GREEN}Backend built successfully${BLANK}\n\n\n"
 
-echo "${YELLOW}Do you want to fetch and initialise a frontend?${BLANK} "
+echo -e "${YELLOW}Do you want to fetch and initialise a frontend?${BLANK} "
 PS3="Please enter your flavour: "
 options=("Basic (Brunch)" "React+Redux (Brunch+Babel)" "None")
 select opt in "${options[@]}"
 do
-	case $opt in
+	case $REPLY in
 		1)
 			printf "\n\nFetching default frontend...\n\n\n"
 			cd .. && git clone https://github.com/anthon/FrontNn.git frontend
