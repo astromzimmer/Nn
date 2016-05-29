@@ -21,7 +21,8 @@ printf "\n\n${GREEN}Backend built successfully${BLANK}\n\n\n"
 
 echo -e "${YELLOW}Do you want to fetch and initialise a basic Brunch-driven frontend (y/n)?${BLANK} "
 read answer
-if echo "$answer" | grep -iq "^y" ;then
+if echo "$answer" | grep -iq "^y"
+then
 	printf "\n\nFetching default frontend...\n\n\n"
 	cd .. && git clone https://github.com/anthon/FrontNn.git frontend
 	printf "\n\n${GREEN}Frontend fetched successfully${BLANK}"
@@ -31,3 +32,39 @@ if echo "$answer" | grep -iq "^y" ;then
 	printf "\n\nStarting up Brunch for frontend...\n\n\n"
 	brunch w
 fi
+
+PS3="Please enter your flavour of front-end: "
+options=("Basic (Brunch)" "React+Redux (Brunch+Babel)" "None")
+select opt in "${options[@]}"
+do
+	case $opt in
+		1)
+			printf "\n\nFetching default frontend...\n\n\n"
+			cd .. && git clone https://github.com/anthon/FrontNn.git frontend
+			printf "\n\n${GREEN}Frontend fetched successfully${BLANK}"
+			printf "\n\nBuilding frontend...\n\n\n"
+			cd frontend && npm install && bower install
+			printf "\n\n${GREEN}Frontend built successfully${BLANK}"
+			printf "\n\nStarting up Brunch for frontend...\n\n\n"
+			brunch w
+			break
+			;;
+		2)
+			printf "\n\nFetching default frontend...\n\n\n"
+			cd .. && git clone https://github.com/anthon/react-redux-babel-brunch.git frontend
+			printf "\n\n${GREEN}Frontend fetched successfully${BLANK}"
+			printf "\n\nBuilding frontend...\n\n\n"
+			cd frontend && npm install
+			printf "\n\n${GREEN}Frontend built successfully${BLANK}"
+			printf "\n\nStarting up Brunch for frontend...\n\n\n"
+			npm start
+			break
+			;;
+		3)
+			break
+			;;
+		*)
+			echo invalid option
+			;;
+	esac
+done
