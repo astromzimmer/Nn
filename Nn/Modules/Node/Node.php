@@ -91,8 +91,8 @@ class Node extends Nn\Core\DataModel {
 	}
 
 	public function save() {
-		parent::save();
-		return Nn::cache()->flush('api_getPosts_');
+		if(!isset($this->nodetype_id)) return false;
+		return parent::save();
 	}
 	
 	public function title($raw=false) {
