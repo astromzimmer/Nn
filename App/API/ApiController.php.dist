@@ -25,18 +25,16 @@ class ApiController extends Nn\Core\Controller {
 	function observations() {
 		$observations = Node::find_by_type('observation');
 		$voice = Utils::exportAll($observations);
-		$json_data = json_encode($voice);
 		$this->renderMode('json');
-		$this->setTemplateVars(['data'=>$json_data]);
+		$this->setTemplateVars(['data'=>$voice]);
 	}
 
 	function diary() {
 		// $this->cache('application/json');
 		$days = Node::find_by_type('day, period');
 		$diary = Utils::exportAll($days);
-		$json_data = json_encode($diary);
 		$this->renderMode('json');
-		$this->setTemplateVars(['data'=>$json_data]);
+		$this->setTemplateVars(['data'=>$diary]);
 	}
 
 	function radio() {
@@ -47,9 +45,8 @@ class ApiController extends Nn\Core\Controller {
 		foreach($radio as $key=>$show) {
 			$radio_array[$key]['posts'] = Utils::exportAll($this->getPosts($show,0,9999));
 		}
-		$json_data = json_encode($radio_array);
 		$this->renderMode('json');
-		$this->setTemplateVars(['data'=>$json_data]);
+		$this->setTemplateVars(['data'=>$radio_array]);
 	}
 
 	function radio_info() {
@@ -125,8 +122,7 @@ class ApiController extends Nn\Core\Controller {
 		}
 		Nn::cache()->flush('Feeds');
 		$this->renderMode('json');
-		$json_data = json_encode($results);
-		$this->setTemplateVars(['data'=>$json_data]);
+		$this->setTemplateVars(['data'=>$results]);
 	}
 	
 	function after() {

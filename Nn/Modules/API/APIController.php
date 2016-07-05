@@ -24,10 +24,9 @@ class ApiController extends Nn\Core\Controller {
 		} else {
 			$data = ['error'=>'No ref in query'];
 		}
-		$json_data = json_encode($data);
 		$this->renderMode('json');
 		$this->setTemplateVars([
-				'data'=>$json_data
+				'data'=>$data
 			]);
 	}
 	
