@@ -9,6 +9,12 @@ class PDOStorage implements StorageInterface {
 
 	private $backup_path;
 	private $dbc;
+	private $errors = [];
+
+	public function errors($err=null) {
+		if(isset($err)) $this->errors[] = $err;
+		return $this->errors;
+	}
 
 	private function schematics() {
 		$dbtype = strtolower(Nn::settings('DB_TYPE'));
@@ -43,9 +49,7 @@ class PDOStorage implements StorageInterface {
 		}
 	}
 
-	public function init($type=null,$host=null,$port=null,$name=null,$user=null,$password=null) {
-		$type = (isset($type)) ? $type : Nn::settings('DB_TYPE');
-		if(!isset($type)) trigger_error('No DB type defined');
+	public function __construct($type='sqlite',$host='127.0.0.1',$port='3306',$name=null,$user=null,$password=null) {
 		$this->backup_path = ROOT.DS.'db';
 		if(!is_dir($this->backup_path)) {
 			mkdir($this->backup_path);
@@ -60,15 +64,7 @@ class PDOStorage implements StorageInterface {
 			break;
 			case "mysql" :
 				if(!isset($host) || !isset($port) || !isset($name) || !isset($user) || !isset($password)) {
-					if(Nn::settings('DB_HOST') && Nn::settings('DB_PORT') && Nn::settings('DB_NAME') && Nn::settings('DB_USER') && Nn::settings('DB_PASSWORD')) {
-						$host = Nn::settings('DB_HOST');
-						$port = Nn::settings('DB_PORT');
-						$name = Nn::settings('DB_NAME');
-						$user = Nn::settings('DB_USER');
-						$password = Nn::settings('DB_PASSWORD');
-					} else {
-						trigger_error('DB config error');
-					}
+					if(count($this->errors > 0)) return trigger_error('DB config error: '.implode(',', $this->errors));
 				}
 				try {
 					$this->dbc = new PDO("mysql:host=$host;port=$port;dbname=$name",
@@ -88,7 +84,7 @@ class PDOStorage implements StorageInterface {
 						$user = Nn::settings('DB_USER');
 						$password = Nn::settings('DB_PASSWORD');
 					} else {
-						trigger_error('DB config error');
+						return trigger_error('DB config error');
 					}
 				}
 				try {
@@ -243,7 +239,7 @@ class PDOStorage implements StorageInterface {
 		return $result;
 	}
 	
-	public function find_by_sql($sql="",$vals=array(),$table_name=null,$model=null) {
+	public function find_by_sql($sql="",$vals=[],$table_name=null,$model=null) {
 		$id = $table_name.'_'.md5($sql.implode("-",$vals));
 		$cache = Nn::cache();
 		if($cache->valid($id)) {
@@ -451,7 +447,13 @@ class PDOStorage implements StorageInterface {
 				break;
 
 			case 'sqlite':
-				return copy($this->backup_path.DS.'database.sqlite3',$this->backup_path.DS.$filename.'.sqlite3');
+				$file_path = $this->backup_path.DS.$filename.'.sqlite3';
+				if(copy($this->backup_path.DS.'database.sqlite3',$file_path)) {
+					return $file_path;
+				} else {
+					$this->errors('Unable to copy SQLite file');
+					return false;
+				}
 				break;
 			
 			default:
@@ -463,16 +465,17 @@ class PDOStorage implements StorageInterface {
 	private function backup_mysql($filename=null) {
 		$tables = array();
 		$compression = false;
+		$file_path = false;
 		$numtypes = array('tinyint','smallint','mediumint','int','bigint','float','double','decimal','real');
 
 		if($compression) {
-			$path = $this->backup_path.DS.$filename.'.sql.gz';
-			if(file_exists($path)) unlink($path);
-			$zp = gzopen($path,'a9');
+			$file_path = $this->backup_path.DS.$filename.'.sql.gz';
+			if(file_exists($file_path)) unlink($file_path);
+			$zp = gzopen($file_path,'a9');
 		} else {
-			$path = $this->backup_path.DS.$filename.'.sql';
-			if(file_exists($path)) unlink($path);
-			$handle = fopen($path,'a+');
+			$file_path = $this->backup_path.DS.$filename.'.sql';
+			if(file_exists($file_path)) unlink($file_path);
+			$handle = fopen($file_path,'a+');
 		}
 
 		if(empty($location)) {
@@ -583,7 +586,7 @@ class PDOStorage implements StorageInterface {
 		} else {
 			fclose($handle);
 		}
-		return true;
+		return $file_path;
 	}
 
 	public function __sleep() {

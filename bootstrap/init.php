@@ -26,7 +26,7 @@ $minify = new Nn\Core\Minify();
 $cache = new Nn\Core\Cache();
 $mailer = new Nn\Core\Mailer();
 $router = new Nn\Core\Router();
-$storage = new Nn\Storage\PDOStorage();
+$storage = new Nn\Storage\PDOStorage(Nn::settings('DB_TYPE'),Nn::settings('DB_HOST'),Nn::settings('DB_PORT'),Nn::settings('DB_NAME'),Nn::settings('DB_USER'),Nn::settings('DB_PASSWORD'));
 $language = new Nn\Babel\Dictionary();
 $tracker = new Nn\Trackers\Navajo();
 

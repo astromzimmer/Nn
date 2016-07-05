@@ -62,15 +62,14 @@ class AdminController extends Nn\Core\Controller {
 		Nn::authenticate();
 		$backup_return = Nn::storage()->backup();
 		if($backup_return) {
-			if(is_string($backup_return)) {
-				Nn::flash(['error'=>Nn::babel($backup_return)]);
-			} else {
-				Nn::flash(['success'=>Nn::babel('Database backed up successfully')]);
-			}
+			$this->renderMode('binary');
+			$this->setTemplateVars([
+				'data'=>$backup_return
+			]);
 		} else {
-			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
+			Nn::flash(['error'=>implode(', ',Nn::storage()->errors())]);
+			Utils::redirect_to(Nn::referer());
 		}
-		Utils::redirect_to(Nn::referer());
 	}
 
 	function flush_cache() {

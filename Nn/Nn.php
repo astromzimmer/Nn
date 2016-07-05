@@ -121,7 +121,6 @@ class Nn extends Nn\Core\Singleton {
 		self::instance()->mailer = $mailer;
 		self::instance()->router = $router;
 		self::instance()->storage(null,$storage);
-		self::instance()->storage()->init();
 		self::instance()->dictionary = $dictionary;
 		self::instance()->tracker = $tracker;
 

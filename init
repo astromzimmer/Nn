@@ -4,10 +4,10 @@ GREEN='\033[32m'
 YELLOW='\033[33m'
 BLANK='\033[0m'
 
-printf "\n\nInstalling Composer dependencies...!\n\n\n"
+printf "\nInstalling Composer dependencies...!\n\n"
 composer install
 printf "\n\n${GREEN}Composer dependencies installed successfully${BLANK}"
-printf "\n\nCloning distribution files...\n\n\n"
+printf "\nCloning distribution files...\n\n"
 cp bootstrap/config.php.dist bootstrap/config.php
 cp bootstrap/routes.php.dist bootstrap/routes.php
 cp App/Publik/PublikController.php.dist App/Publik/PublikController.php
@@ -15,19 +15,43 @@ cp App/Publik/views/header.php.dist App/Publik/views/header.php
 cp App/Publik/views/index.jade.dist App/Publik/views/index.jade
 cp App/Publik/views/footer.php.dist App/Publik/views/footer.php
 printf "\n\n${GREEN}Distribution files cloned successfully${BLANK}"
-printf "\n\nBuilding backend...\n\n\n"
+printf "\nBuilding backend...\n\n"
 cd src/backend && npm install && bower install && brunch build --production
-printf "\n\n${GREEN}Backend built successfully${BLANK}\n\n\n"
+printf "\n${GREEN}Backend built successfully${BLANK}\n\n"
 
-echo -e "${YELLOW}Do you want to fetch and initialise a basic Brunch-driven frontend (y/n)?${BLANK} "
-read answer
-if echo "$answer" | grep -iq "^y" ;then
-	printf "\n\nFetching default frontend...\n\n\n"
-	cd .. && git clone https://github.com/anthon/FrontNn.git frontend
-	printf "\n\n${GREEN}Frontend fetched successfully${BLANK}"
-	printf "\n\nBuilding frontend...\n\n\n"
-	cd frontend && npm install && bower install
-	printf "\n\n${GREEN}Frontend built successfully${BLANK}"
-	printf "\n\nStarting up Brunch for frontend...\n\n\n"
-	brunch w
-fi
+echo -e "${YELLOW}Do you want to fetch and initialise a frontend?${BLANK} "
+PS3="Please enter your flavour: "
+options=("Basic (Brunch)" "React+Redux (Brunch+Babel)" "None")
+select opt in "${options[@]}"
+do
+	case $REPLY in
+		1)
+			printf "\nFetching default frontend...\n\n"
+			cd .. && git clone https://github.com/anthon/FrontNn.git frontend
+			printf "\n\n${GREEN}Frontend fetched successfully${BLANK}"
+			printf "\nBuilding frontend...\n\n"
+			cd frontend && npm install && bower install
+			printf "\n\n${GREEN}Frontend built successfully${BLANK}"
+			printf "\nStarting up Brunch for frontend...\n\n"
+			brunch w
+			break
+			;;
+		2)
+			printf "\nFetching default frontend...\n\n"
+			cd .. && git clone https://github.com/anthon/react-redux-babel-brunch.git frontend
+			printf "\n\n${GREEN}Frontend fetched successfully${BLANK}"
+			printf "\nBuilding frontend...\n\n"
+			cd frontend && npm install
+			printf "\n\n${GREEN}Frontend built successfully${BLANK}"
+			printf "\nStarting up Brunch for frontend...\n\n"
+			npm start
+			break
+			;;
+		3)
+			break
+			;;
+		*)
+			echo invalid option
+			;;
+	esac
+done

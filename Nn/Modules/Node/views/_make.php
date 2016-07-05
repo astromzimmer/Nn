@@ -9,7 +9,7 @@
 				</fieldset>
 				<fieldset>
 					<legend><?php echo Nn::babel('Type') ?>:</legend>
-					<?php if(count($nodetypes) > 0): ?>
+					<?php if($nodetypes): ?>
 						<select name="nodetype_id" class="formfield" id="nodetypeField" >
 						<?php foreach($nodetypes as $nodetype): ?>
 							<option value="<?php echo $nodetype->attr('id'); ?>" ><?php echo $nodetype->attr('name') ?></option>
@@ -21,7 +21,7 @@
 				</fieldset>
 				<div class="submit">
 					<a href="<?php echo DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node->attr('parent_id') ?>" class="cancel button half float" data-target="center" data-ajax><?php echo Nn::babel('Cancel') ?></a>
-					<button type="submit" name="submit" id="submit" class="half float save"><?php echo Nn::babel('Save') ?></button>
+					<button type="submit" <?php if(!$nodetypes) echo 'disabled="disabled"' ?> name="submit" id="submit" class="half float save"><?php echo Nn::babel('Save') ?></button>
 				</div>
 			</form>
 		</div>

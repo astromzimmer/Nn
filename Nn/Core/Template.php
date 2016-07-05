@@ -156,7 +156,10 @@ class Template extends Basic {
 			case 'raw':
 			case 'json':
 				extract($this->vars);
-				if(isset($data)) echo($data);
+				if(isset($data)) {
+					$json_data = json_encode($data,JSON_PRETTY_PRINT);
+					echo $json_data;
+				}
 				break;
 			default:
 				$this->renderHeader();

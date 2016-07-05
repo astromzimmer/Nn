@@ -195,6 +195,7 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 			case "image/jpg":
 			case "image/jpeg":
 			case "image/pjpeg":
+				imageinterlace($new_img,true);
 				imagejpeg($new_img, $target_path, $compression);
 				break;
 			case "image/png":
