@@ -16,7 +16,7 @@ class Text extends Nn\Modules\Datatype\Datatype {
 		);
 
 	public static $PARAMS = array(
-			'size' => array('short','long')
+			'size' => ['short','long']
 		);
 
 	public static $DEFAULT = 'textarea';

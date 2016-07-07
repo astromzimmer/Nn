@@ -8,6 +8,7 @@ use Utils;
 class ApiController extends Nn\Core\Controller {
 	
 	function before() {
+		$this->renderMode('json');
 		header('Access-Control-Allow-Origin: *');
 	}
 
@@ -17,6 +18,7 @@ class ApiController extends Nn\Core\Controller {
 	}
 
 	function search() {
+		Nn::settings('HIDE_INVISIBLE',0);
 		if(isset($_GET['query'])) {
 			$query = $_GET['query'];
 			$nodes = Node::find(['*slug'=>$query],6);
@@ -24,10 +26,8 @@ class ApiController extends Nn\Core\Controller {
 		} else {
 			$data = ['error'=>'No ref in query'];
 		}
-		$json_data = json_encode($data);
-		$this->renderMode('json');
 		$this->setTemplateVars([
-				'data'=>$json_data
+				'data'=>$data
 			]);
 	}
 	

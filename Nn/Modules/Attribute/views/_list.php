@@ -2,7 +2,7 @@
 <div class="attributes">
 	<div class="maker">
 	<?php if(isset($dtype) && !isset($edit_attribute_id)): ?>
-		<?php Nn::partial('Attribute','_make',array('node'=>$node,'dtype'=>$dtype,'atype'=>$atype)) ?> 
+		<?php Nn::partial('Attribute','_make',array('node'=>$node,'dtype'=>$dtype,'atype'=>$atype)) ?>
 	<?php endif; ?>
 	</div>
 	<?php if($attributes) : ?>

@@ -76,20 +76,6 @@ class AttributesController extends Nn\Core\Controller {
 			]);
 	}
 	
-	function create() {
-		$attribute = Attribute::make($_POST['content']);
-		if($attribute->save()) {
-			if($attribute->register_as_attribute($_POST['node_id'])) {
-				Nn::flash(['success'=>Nn::babel('Attribute created successfully')]);
-			} else {
-				Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
-			}
-		} else {
-			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
-		}
-		Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$attribute->node()->id);
-	}
-	
 	function edit($id=null) {
 		$attribute = Attribute::find($id);
 		$node = $attribute->node();

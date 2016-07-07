@@ -36,7 +36,7 @@ class Attributetype extends Nn\Core\DataModel {
 			$this->datatype = $datatype;
 			$this->position = 2147483647;
 			if(isset($params)) $this->params = json_encode($params);
-			if(isset($default_value)) $this->default_value = $params;
+			if(isset($default_value)) $this->default_value = $default_value;
 			return $this;
 		} else {
 			return false;

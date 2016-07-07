@@ -43,7 +43,7 @@
 			fireAMD = ->
 				$("textarea.md").aMD
 					imgPath: "/backnn/imgs/static/aMD"
-					refEndpoint: '/api/nodes'
+					refEndpoint: '/api/search'
 					extStyles: [
 						"/backnn/css/fonts.css"
 						"/backnn/css/editor.css"

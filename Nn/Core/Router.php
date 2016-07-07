@@ -102,18 +102,20 @@ class Router {
 			$query = $target_path_array;
 		}
 		$controllerClass = false;
-		if(file_exists(ROOT.DS.'App'.DS.$this->module.DS.$this->controller.'.php')) {
-			$controllerClass = 'App\\'.$this->module.'\\'.$this->controller;
-		} else if(file_exists(ROOT.DS.'Nn'.DS.'Modules'.DS.$this->module.DS.$this->controller.'.php')) {
-			$controllerClass = 'Nn\\Modules\\'.$this->module.'\\'.$this->controller;
-		}
-		if(!$controllerClass || !method_exists($controllerClass, $this->action)) {
+		$app_path = ROOT.DS.'App'.DS.$this->module.DS.$this->controller.'.php';
+		$nn_path = ROOT.DS.'Nn'.DS.'Modules'.DS.$this->module.DS.$this->controller.'.php';
+		$appControllerClass = (file_exists($app_path)) ? 'App\\'.$this->module.'\\'.$this->controller : false;
+		$nnControllerClass = (file_exists($nn_path)) ? 'Nn\\Modules\\'.$this->module.'\\'.$this->controller : false;
+		if($appControllerClass && method_exists($appControllerClass, $this->action)) {
+			$controller = new $appControllerClass($this->action,$query);
+		} else if($nnControllerClass && method_exists($nnControllerClass, $this->action)) {
+			$controller = new $nnControllerClass($this->action,$query);
+		} else {
 			Utils::redirect_to('/404');
 		}
 		if(Nn::authenticated() && isset($_GET['preview'])) {
 			Nn::settings('HIDE_INVISIBLE', false);
 		}
-		$controller = new $controllerClass($this->action,$query);
 		call_user_func_array(array($controller, 'before'), $query);
 		call_user_func_array(array($controller, $this->action), $query);
 		call_user_func_array(array($controller, 'after'), $query);
