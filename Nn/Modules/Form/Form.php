@@ -12,7 +12,6 @@ class Form extends Nn\Modules\Text\Text {
 	protected $mailto;
 	
 	public static $SCHEMA = array(
-			'attribute_id' => 'integer',
 			'name' => 'short_text',
 			'mailto' => 'text',
 			'content' => 'long_text',

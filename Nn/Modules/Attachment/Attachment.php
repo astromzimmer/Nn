@@ -27,7 +27,6 @@ class Attachment extends Nn\Modules\Datatype\Datatype {
 	);
 
 	public static $SCHEMA = array(
-			'attribute_id' => 'integer',
 			'title' => 'short_text',
 			'description' => 'text',
 			'filename' => 'short_text',

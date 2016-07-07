@@ -299,8 +299,7 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 		//$api_secret = '9ce6edc92e5f8777e86eb6339c51cbf7';
 		$url = "http://api.soundcloud.com/users/{$this->handle}/tracks.json?client_id={$api_key}";
 		$result = json_decode(Utils::getURL($url),true);
-		$items = array();
-		if(!isset($result['errors'])){
+		if(!isset($result['errors']) && is_array($result)){
 			foreach ($result as $key => $value) {
 				// if(isset($value['tag_list'])){
 					// if(empty($this->hashtag) || strpos(strtolower($value['tag_list']),$this->hashtag) !== false){
