@@ -17,7 +17,7 @@ class PublikController extends Nn\Core\Controller {
 
 	function index($section=null) {
 		if(Utils::is_mobile()){
-			Utils::redirect_to('/mobile');
+			Utils::redirect('/mobile');
 		} else {
 			$this->setTemplateVars([
 				'target'=> 'World'

@@ -13,7 +13,7 @@ class Node extends Nn\Core\DataModel {
 	
 	# Practice: always set init values, for class property casting
 	protected $id;
-	protected $slug;
+	protected $permalink;
 	protected $position;
 	protected $visible;
 	protected $title;
@@ -24,7 +24,7 @@ class Node extends Nn\Core\DataModel {
 	protected $parent_id;
 
 	public static $SCHEMA = array(
-			'slug' => 'short_text',
+			'permalink' => 'text',
 			'position' => 'integer',
 			'visible' => 'integer',
 			'title' => 'short_text',
@@ -39,17 +39,18 @@ class Node extends Nn\Core\DataModel {
 		return array(
 			'id'			=>	$this->id,
 			'uid'			=>	'N_'.$this->id,
-			'slug'			=>	$this->slug(),
 			'position'		=>	$this->position,
 			'raw_title'		=>	$this->title(true),
 			'source'		=>	'node',
 			'title'			=>	$this->title(),
 			'path'			=>	$this->path(),
+			'tree'			=>	$this->navigation_tree(),
 			'thumbnail'		=>	($thumb = $this->thumb()) ? [
 										'id' => $thumb->attr('id'),
 										'filename' => $thumb->attr('filename')
 									] : false,
 			'ingress'		=>	($ingress = $this->ingress()) ? $ingress->content() : false,
+			'slug'		=>	$this->slug(),
 			'permalink'		=>	$this->permalink(),
 			'nodetype'		=>	$this->type(),
 			'author'		=>	$this->author(),
@@ -61,10 +62,10 @@ class Node extends Nn\Core\DataModel {
 			'node'			=>	($parent = $this->parent()) ? [
 										'id'=>$this->parent_id,
 										'title'=>$parent->title(),
-										'slug'=>$parent->slug()
-									] : false,
-			'ownAttribute'	=>	$this->attributes_except('Date'),
-			'ownNode'		=>	($children = $this->children_by_type('container,person,city')) ? $children : []
+										'permalink'=>$parent->permalink()
+									] : [false],
+			'ownAttribute'	=>	$this->attributes_except(['Date','Title']),
+			'ownNode'		=>	($children = $this->children()) ? $children : []
 		);
 	}
 
@@ -82,9 +83,9 @@ class Node extends Nn\Core\DataModel {
 		}
 	}
 
-	public function fill($title=null, $slug=null, $parent_id=null, $nodetype_id=null){
+	public function fill($title=null, $permalink=null, $parent_id=null, $nodetype_id=null){
 		if(isset($title)) $this->title = (string)$title;
-		if(isset($slug)) $this->slug = (string)$slug;
+		$this->permalink = isset($permalink) ? (string)$permalink : $this->permalink();
 		if(isset($parent_id)) $this->parent_id = (int)$parent_id;
 		if(isset($nodetype_id)) $this->nodetype_id = (int)$nodetype_id;
 		return $this;
@@ -145,42 +146,42 @@ class Node extends Nn\Core\DataModel {
 		}
 		return $timestamp;
 	}
-	
+
 	public function slug() {
-		if(!isset($this->slug) || empty($this->slug)) {
-			$this->slug = $this->id."-".preg_replace("/[^a-zA-Z0-9s-]/","_",$this->title);
-			$this->save();
-		}
-		return $this->slug;
+		return Utils::slugify($this->title);
 	}
 
 	public function permalink($abs=false) {
-		$navigation_tree = $this->navigation_tree();
-		$permalink = $abs ? DOMAIN : '';
-		foreach($navigation_tree as $parent) {
-			$permalink .= '/'.$parent->slug();
+		if(!isset($this->permalink) || empty($this->permalink)) {
+			$navigation_tree = $this->navigation_tree(true);
+			$permalink = $abs ? DOMAIN : '';
+			foreach($navigation_tree as $parent) {
+				$permalink .= '/'.$parent->slug();
+			}
+			$permalink .= '/'.$this->slug();
+			$this->permalink = $permalink;
+			$this->save();
 		}
-		$permalink .= '/'.$this->slug();
-		return $permalink;
+		return $this->permalink;
 	}
 	
 	public function type() {
 		return $this->nodetype()->attr('name');
 	}
 	
-	public function navigation_tree() {
+	public function navigation_tree($full=false) {
 		$p_node = $this;
 		$tree = [];
 		while($p_node->parent()) {
 			$p_node = $p_node->parent();
-			$tree[] = $p_node;
+			$tree[] = $full ? $p_node : $p_node->id;
 		}
 		$tree = array_reverse($tree);
 		return $tree;
 	}
 
 	public function path() {
-		$tree = $this->navigation_tree();
+		$tree = $this->navigation_tree(true);
 		$path = '';
 		foreach ($tree as $branch) {
 			$path .= Utils::ellipsis($branch->title(),24).'/';

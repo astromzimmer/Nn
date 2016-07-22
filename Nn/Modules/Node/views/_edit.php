@@ -7,8 +7,8 @@
 					<input name="title" type="text" class="formfield" id="titleField" value="<?php echo $node->attr('title') ?>" autofocus />
 				</fieldset>
 				<fieldset>
-					<legend><?php echo Nn::babel('Slug') ?>:</legend>
-					<input name="slug" type="text" class="formfield" id="slugField" value="<?php echo $node->slug() ?>" />
+					<legend><?php echo Nn::babel('Permalink') ?>:</legend>
+					<input name="permalink" type="text" class="formfield" id="permalinkField" value="<?php echo $node->permalink() ?>" />
 				</fieldset>
 				<fieldset>
 					<legend><?php echo Nn::babel('Type') ?>:</legend>

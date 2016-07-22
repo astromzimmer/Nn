@@ -11,6 +11,7 @@ class Nodetype extends Nn\Core\DataModel {
 	protected $id;
 	protected $name;
 	protected $icon;
+	protected $colour;
 	protected $attributetypes;
 	protected $can_be_root;
 	protected $nodetypes;
@@ -20,6 +21,7 @@ class Nodetype extends Nn\Core\DataModel {
 	public static $SCHEMA = array(
 			'name' => 'short_text',
 			'icon' => 'short_text',
+			'colour' => 'short_text',
 			'attributetypes' => 'text',
 			'nodetypes' => 'text',
 			'layout_id' => 'integer',
@@ -29,10 +31,11 @@ class Nodetype extends Nn\Core\DataModel {
 			'updated_at' => 'float'
 		);
 	
-	public function __construct($name=null, $icon=null, $can_be_root=null, $attributetypes=null, $nodetypes=null, $layout_id=null){
+	public function __construct($name=null, $icon=null, $colour=null, $can_be_root=null, $attributetypes=null, $nodetypes=null, $layout_id=null){
 		if(isset($name)){
 			$this->name = $name;
 			$this->icon = $icon;
+			$this->colour = $colour;
 			$this->position = 2147483647;
 			$this->attributetypes = (!empty($attributetypes)) ? implode(",",$attributetypes) : "";
 			$this->nodetypes = (!empty($nodetypes)) ? implode(",",$nodetypes) : "";

@@ -53,16 +53,16 @@ class ImagesController extends Nn\Core\Controller {
 					if(!$attribute->save()) {
 						$image->delete();
 						Nn::flash(['error'=>Nn::babel("Failed to register attribute")]);
-						Utils::redirect_to(Nn::referer());
+						Utils::redirect(Nn::referer());
 					}
 				}
 			} else {
 				$attribute->delete();
 				Nn::flash(['error'=>$image->errors()[0]]);
-				Utils::redirect_to(Nn::referer());
+				Utils::redirect(Nn::referer());
 			}
 		}
-		Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
+		Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 	}
 	
 	function update($id=null) {
@@ -78,7 +78,7 @@ class ImagesController extends Nn\Core\Controller {
 			$attributetype_id = $_POST['attributetype_id'];
 			$attribute->attr('attributetype_id',$attributetype_id);
 			$attribute->save();
-			Utils::redirect_to(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
+			Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 		} else {
 			die(print_r($image->errors()));
 		}

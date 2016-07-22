@@ -41,10 +41,10 @@ class LayoutsController extends Nn\Core\Controller {
 		$template = !empty($_POST['template']) ? $_POST['template'] : null;
 		$layout = new Layout($name,$rules,$template);
 		if($layout->save()) {
-			Utils::redirect_to(DOMAIN.'/admin/layouts');
+			Utils::redirect(DOMAIN.'/admin/layouts');
 		} else {
 			Nn::flash(['error'=>Nn::babel('Please fill in all fields')]);
-			Utils::redirect_to(DOMAIN.'/admin/layouts/make');
+			Utils::redirect(DOMAIN.'/admin/layouts/make');
 		}
 	}
 	
@@ -61,20 +61,20 @@ class LayoutsController extends Nn\Core\Controller {
 		if(!empty($_POST['rules'])) $layout->attr('rules', $_POST['rules']);
 		if(!empty($_POST['template'])) $layout->attr('template', $_POST['template']);
 		if($layout->save()) {
-			Utils::redirect_to(DOMAIN.'/admin/layouts');
+			Utils::redirect(DOMAIN.'/admin/layouts');
 		} else {
 			Nn::flash(['error'=>Nn::babel("Oups! Error. We'll have a look.")]);
-			Utils::redirect_to(DOMAIN.'/admin/layouts/edit/'.$layout->attr('id'));
+			Utils::redirect(DOMAIN.'/admin/layouts/edit/'.$layout->attr('id'));
 		}
 	}
 	
 	function delete($id=null) {
 		$layout = Layout::find($id);
 		if($layout->delete()) {
-			Utils::redirect_to(DOMAIN.'/admin/layouts');
+			Utils::redirect(DOMAIN.'/admin/layouts');
 		} else {
 			Nn::flash(['error'=>Nn::babel("Oups! Error. We'll have a look.")]);
-			Utils::redirect_to(DOMAIN.'/admin/layouts/edit/'.$layout->attr('id'));
+			Utils::redirect(DOMAIN.'/admin/layouts/edit/'.$layout->attr('id'));
 		}
 	}
 }

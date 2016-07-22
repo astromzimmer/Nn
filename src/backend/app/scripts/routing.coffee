@@ -111,6 +111,7 @@
 					url: '/'+path+'?render_as=partial'
 					success: (result,status,jqXHR)->
 						App.$center.html result
+						App.$center.find('input')[0].focus()
 						App.$center.removeClass 'loading'
 
 			App.router.add /admin\/nodes\/delete\/(\d+)$/, (path,node_id)->
@@ -248,18 +249,22 @@
 					App.publication.setSection node_id, 0
 
 			App.$doc.on 'keydown', (e)->
-				switch e.keyCode
-					when 16
-						# Shift
-						$handle = $('#section .handle')
-						$handle.addClass 'shift'
+				if e.metaKey
+					switch e.keyCode
+						when 69
+							e.preventDefault()
+							node_id = $('#center .node').data('id')
+							App.router.navigate('/admin/nodes/edit/'+node_id)
+				if e.shiftKey
+					# Shift
+					$handle = $('#section .handle')
+					$handle.addClass 'shift'
 
 			App.$doc.on 'keyup', (e)->
-				switch e.keyCode
-					when 16
-						# Shift
-						$handle = $('#section .handle')
-						$handle.removeClass 'shift'
+				if e.shiftKey
+					# Shift
+					$handle = $('#section .handle')
+					$handle.removeClass 'shift'
 
 			fireAMD()
 			App.fireScrollWatcher()

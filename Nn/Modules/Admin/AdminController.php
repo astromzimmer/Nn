@@ -23,7 +23,7 @@ class AdminController extends Nn\Core\Controller {
 			Nn::flash(['info'=>Nn::babel('Welcome').$suffix]);
 			# TODO
 			// if(Nn::referer() != '') {
-			// 	Utils::redirect_to(Nn::referer());
+			// 	Utils::redirect(Nn::referer());
 			// } else {
 			if(Nn::storage()->backup('automatic_backup')) {
 				Nn::flash(['success'=>Nn::babel('Database backed up successfully')]);
@@ -31,14 +31,14 @@ class AdminController extends Nn\Core\Controller {
 				Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 			}
 			if(Nn::authenticated('admins')) {
-				Utils::redirect_to(Nn::settings('DOMAIN').'/admin/index');
+				Utils::redirect(Nn::settings('DOMAIN').'/admin/index');
 			} else {
-				Utils::redirect_to(Nn::settings('DOMAIN').'/admin/nodes');
+				Utils::redirect(Nn::settings('DOMAIN').'/admin/nodes');
 			}
 			// }
 		} else {
 			Nn::flash(['error'=>Nn::babel('Wrong username/password – please try again')]);
-			Utils::redirect_to(Nn::settings('DOMAIN').'/admin/login');
+			Utils::redirect(Nn::settings('DOMAIN').'/admin/login');
 		}
 	}
 	
@@ -68,7 +68,7 @@ class AdminController extends Nn\Core\Controller {
 			]);
 		} else {
 			Nn::flash(['error'=>implode(', ',Nn::storage()->errors())]);
-			Utils::redirect_to(Nn::referer());
+			Utils::redirect(Nn::referer());
 		}
 	}
 
@@ -80,14 +80,14 @@ class AdminController extends Nn\Core\Controller {
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 		}
-		Utils::redirect_to(Nn::referer());
+		Utils::redirect(Nn::referer());
 	}
 	
 	function logout() {
 		$this->renderMode(false);
 		Nn::session()->logout();
 		Nn::flash(['success'=>Nn::babel('Successfully logged out')]);
-		Utils::redirect_to('/');
+		Utils::redirect('/');
 	}
 
 	function reset_password() {
@@ -117,10 +117,10 @@ class AdminController extends Nn\Core\Controller {
 			$mailer->ClearAttachments();
 
 			Nn::flash(['success'=>Nn::babel('New password send to').' '.$email]);
-			Utils::redirect_to('/admin/login');
+			Utils::redirect('/admin/login');
 		} else {
 			Nn::flash(['error'=>Nn::babel('No valid account found for that email')]);
-			Utils::redirect_to('/admin/forgot');
+			Utils::redirect('/admin/forgot');
 		}
 	}
 	

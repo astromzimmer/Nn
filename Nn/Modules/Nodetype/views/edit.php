@@ -37,6 +37,10 @@
 				</fieldset>
 			<?php endif ?>
 			<fieldset>
+				<legend><?php echo Nn::babel('Colour') ?></legend>
+				<input type="color" name="colour" value="<?php echo $nodetype->attr('colour') ?>" class="formfield" id="colourField" /><br/>
+			</fieldset>
+			<fieldset>
 				<legend><?php echo Nn::babel('Icon') ?>:</legend>
 				<input type="radio" name="icon" value="null" <?php if(empty($nodetype->attr('icon'))) { echo "checked=\"checked\""; } ?>><?php echo Nn::babel('None') ?>&nbsp;
 				<span class="fontawesome">

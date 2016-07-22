@@ -31,6 +31,7 @@ class Nn extends Nn\Core\Singleton {
 	/* setup environment specific attributes */
 	private static function setEnvironmentSpecifics() {
 		error_reporting(E_ALL);
+		setlocale(LC_CTYPE,'en_GB');
 		if(DEVELOPMENT_ENV == true) {
 			ini_set('display_startup_errors','On');
 			ini_set('display_errors','On');
@@ -106,7 +107,7 @@ class Nn extends Nn\Core\Singleton {
 		$log .= "\r\n".'••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••'."\r\n";
 		error_log($log);
 		if($level == 'FATAL ERROR') {
-			Utils::redirect_to('/500.php');
+			Utils::redirect('/500.php');
 		}
 	}
 
@@ -169,7 +170,7 @@ class Nn extends Nn\Core\Singleton {
 
 	public static function authenticate() {
 		if(!self::instance()->session->is_logged_in()) {
-			Utils::redirect_to(Nn::settings('DOMAIN').DS.'admin'.DS.'login');
+			Utils::redirect(Nn::settings('DOMAIN').DS.'admin'.DS.'login');
 		}
 	}
 

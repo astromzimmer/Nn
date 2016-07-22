@@ -361,9 +361,10 @@ class PDOStorage implements StorageInterface {
 			return true;
 		} catch(\PDOException $e) {
 			$message = $e->getMessage();
-			if(strpos($message,'no such column: ') !== false) {
-				// We find the column name at char 50 of the MySQL error message
-				$column_name = substr($message,50);
+			if($e->getCode() == '42S22' || $e->getCode() == '42703') {
+				// TODO: FIX! SUPER HEIKEL!
+				// We find the column name at char 56 of the MySQL error message
+				$column_name = substr($message,56);
 				if($this->addColumn($table_name,($obj::$SCHEMA),$column_name)) {
 					return $this->update($table_name,$obj);
 				}

@@ -111,7 +111,7 @@ class Router {
 		} else if($nnControllerClass && method_exists($nnControllerClass, $this->action)) {
 			$controller = new $nnControllerClass($this->action,$query);
 		} else {
-			Utils::redirect_to('/404');
+			Utils::redirect('/404');
 		}
 		if(Nn::authenticated() && isset($_GET['preview'])) {
 			Nn::settings('HIDE_INVISIBLE', false);

@@ -2,7 +2,9 @@
 	<div id="nodetypes" class="menu">
 		<ul id="0_nodetypes" class="sortable">
 		<?php foreach($nodetypes as $nt): ?>
-			<li class="nodetype<?php if(isset($nodetype) && $nt == $nodetype) echo ' focus' ?>" id="nodetype_<?php echo $nt->attr('id') ?>">
+			<li
+				style="background-color:<?php echo $nt->attr('colour') ?>;"
+				class="nodetype<?php if(isset($nodetype) && $nt == $nodetype) echo ' focus' ?>" id="nodetype_<?php echo $nt->attr('id') ?>">
 				<div class="grouper">
 					<div class="label">
 						<a href="<?php echo DOMAIN.DS.'admin'.DS.'nodetypes'.DS.'edit'.DS.$nt->attr('id') ?>">

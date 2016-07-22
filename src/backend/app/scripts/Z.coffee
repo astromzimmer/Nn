@@ -175,6 +175,7 @@ this.appSpace = {}
 		.on 'mouseover', 'ul.sortable', (e)->
 			$this = $(this)
 			$this.sortable
+				connectWith: '.tree .sortable'
 				handle: '.handle'
 				axis: 'y'
 				update: (e,ui) ->

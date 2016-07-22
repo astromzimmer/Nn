@@ -13,8 +13,8 @@
 
     <title> <?php echo PAGE_NAME ?> - admin </title>
     
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,700,900|Average|Hind:300,400,500,600,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href='//fonts.googleapis.com/css?family=Roboto:400,100,300,700,900|Average|Hind:300,400,500,600,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <?php
       $style_files = [
         'backnn/css/main.css'

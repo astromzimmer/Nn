@@ -64,7 +64,7 @@ class PublicationsController extends Nn\Core\Controller {
 			$publication = Publication::find($publication_id);
 			$publication->addNode($_PUT['node_id'],$bubbling);
 			if($publication->save()) {
-				Utils::redirect_to(DOMAIN.'/admin/publications/cart/'.$publication->attr('id'));
+				Utils::redirect(DOMAIN.'/admin/publications/cart/'.$publication->attr('id'));
 			}
 		}
 		Utils::sendResponseCode(500,"Something went wrong");
@@ -78,7 +78,7 @@ class PublicationsController extends Nn\Core\Controller {
 			$publication = Publication::find($publication_id);
 			$publication->removeNode($_PUT['node_id']);
 			if($publication->save()) {
-				Utils::redirect_to(DOMAIN.'/admin/publications/cart/'.$publication->attr('id'));
+				Utils::redirect(DOMAIN.'/admin/publications/cart/'.$publication->attr('id'));
 			}
 		}
 		Utils::sendResponseCode(500,"Something went wrong");
@@ -110,7 +110,7 @@ class PublicationsController extends Nn\Core\Controller {
 		$nodes = isset($_POST['nodes']) ? $_POST['nodes'] : null;
 		$publication = new Publication($title,$nodes);
 		if($publication->save()) {
-			Utils::redirect_to(DOMAIN.'/admin/publication');
+			Utils::redirect(DOMAIN.'/admin/publication');
 		} else {
 			die("failed to create publication");
 		}
@@ -127,7 +127,7 @@ class PublicationsController extends Nn\Core\Controller {
 		$publication->attr('title',$title);
 		$publication->attr('nodes',$nodes);
 		if($publication->save()) {
-			Utils::redirect_to(DOMAIN.'/admin/publication');
+			Utils::redirect(DOMAIN.'/admin/publication');
 		} else {
 			die("failed to update publication");
 		}
@@ -136,7 +136,7 @@ class PublicationsController extends Nn\Core\Controller {
 	function delete($id=null) {
 		$publication = Publication::find($id);
 		if($publication->delete()) {
-			Utils::redirect_to(DOMAIN.'/admin/publication');
+			Utils::redirect(DOMAIN.'/admin/publication');
 		} else {
 			die("failed to remove publication");
 		}

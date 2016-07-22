@@ -1,6 +1,7 @@
 <?php $is_active = ($node && (in_array($n,$node->navigation_tree()))) ?>
 <?php $is_in_focus = ($node && ($n == $node)) ?>
 <li
+	style="background-color:<?php echo $n->nodetype()->attr('colour') ?>;"
 	class="node<?php if($is_active) echo ' active expanded'; if($is_in_focus) echo ' focus' ?>"
 	id="node_<?php echo $n->attr('id') ?>"
 	data-id="<?php echo $n->attr('id') ?>"
@@ -14,9 +15,9 @@
 				href="<?php echo DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$n->attr('id') ?>"
 				data-target="center"
 				data-ajax
-				><span
-					class="fa <?php echo $n->nodetype()->attr('icon') ?>"
-					></span><?php echo Utils::ellipsis($n->attr('title'),30); ?></a>
+				><?php if($icon = $n->nodetype()->attr('icon')): ?><span
+					class="fa <?php echo $icon ?>"
+					></span><?php endif ?><?php echo Utils::ellipsis($n->attr('title'),30); ?></a>
 		</div>
 		<div class="tools">
 			<div class="tool handle" data-tooltip="<?php echo Nn::babel('Sort') ?>"></div>

@@ -2,6 +2,11 @@
 
 class Utils {
 
+	public static function debug($data) {
+		if(is_array($data) || is_object($data)) $data = json_encode($data);
+		file_put_contents(ROOT.DS.'tmp'.DS.'console', $data.PHP_EOL);
+	}
+
 	public static function getURL($url) {
 		$ch = curl_init();
 		$timeout = 5;
@@ -26,7 +31,7 @@ class Utils {
 		return $_SERVER['REQUEST_METHOD'] === strtoupper($type);
 	}
 		
-	public static function redirect_to($location,$include_params=true){
+	public static function redirect($location,$include_params=true){
 		if($include_params) {
 			unset($_GET['route']);
 			$params = http_build_query($_GET);
@@ -39,7 +44,7 @@ class Utils {
 	public static function throwError($code=500) {
 		switch($code) {
 			case 500:
-				self::redirect_to('500.php');
+				self::redirect('500.php');
 		}
 	}
 
@@ -151,6 +156,13 @@ class Utils {
 			$text = trim($text).'...';
 		}
 		return $text;
+	}
+
+	public static function slugify($string) {
+		$string = iconv('UTF-8','ASCII//TRANSLIT//IGNORE',$string);
+		$string = preg_replace('/[\s]/','_',$string);
+		$string = preg_replace('/[^a-zA-Z0-9_s-]/','',$string);
+		return $string;
 	}
 
 	public static function mb_str_split($string) {

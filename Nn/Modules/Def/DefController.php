@@ -30,9 +30,9 @@ class DefController extends Nn\Core\Controller {
 		$alpha = (strpos($filename, 'a-') !== false) ? true : false;
 		$image = Image::find($id);
 		if($src = $image->src($bound,$h,$bw,$alpha)) {
-			Utils::redirect_to($src);
+			Utils::redirect($src);
 		} else {
-			Utils::redirect_to('/404');
+			Utils::redirect('/404');
 		}
 	}
 
@@ -49,7 +49,11 @@ class DefController extends Nn\Core\Controller {
 			$font_colour = imagecolorallocate($image, 0xAA, 0xCC, 0xDD);
 		}
 		imagefilledrectangle($image, 0, 0, $width, $height, $background_colour);
-		imagestring($image, 8, $width/2, $height/2, 'hejhej', $font_colour);
+		$font = 3;
+		$string = "{$width}x{$height}px";
+		$text_width = imagefontwidth($font) * strlen($string);
+		$x = ($width - $text_width) / 2;
+		imagestring($image, $font, $x, $height/2, $string, $font_colour);
 		$this->renderMode('image','image/gif');
 		$this->setTemplateVars([
 				'data'=>$image
