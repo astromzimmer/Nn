@@ -13,6 +13,7 @@ class Node extends Nn\Core\DataModel {
 	
 	# Practice: always set init values, for class property casting
 	protected $id;
+	protected $slug;
 	protected $permalink;
 	protected $position;
 	protected $visible;
@@ -24,6 +25,7 @@ class Node extends Nn\Core\DataModel {
 	protected $parent_id;
 
 	public static $SCHEMA = array(
+			'slug' => 'short_text',
 			'permalink' => 'text',
 			'position' => 'integer',
 			'visible' => 'integer',
@@ -50,7 +52,7 @@ class Node extends Nn\Core\DataModel {
 										'filename' => $thumb->attr('filename')
 									] : false,
 			'ingress'		=>	($ingress = $this->ingress()) ? $ingress->content() : false,
-			'slug'		=>	$this->slug(),
+			'slug'			=>	$this->slug(),
 			'permalink'		=>	$this->permalink(),
 			'nodetype'		=>	$this->type(),
 			'author'		=>	$this->author(),
@@ -93,6 +95,7 @@ class Node extends Nn\Core\DataModel {
 
 	public function save() {
 		if(!isset($this->nodetype_id)) return false;
+		if(!isset($this->slug)) $this->slug = Utils::slugify($this->title);
 		return parent::save();
 	}
 	
@@ -212,7 +215,7 @@ class Node extends Nn\Core\DataModel {
 	}
 
 	public function first_child() {
-		return static::find('parent_id',$this->id,1,'position');
+		return static::find(['parent_id'=>$this->id],1,'position');
 	}
 	
 	public function children_by_type($nodetypes=null) {
