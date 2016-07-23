@@ -95,7 +95,7 @@ class Node extends Nn\Core\DataModel {
 
 	public function save() {
 		if(!isset($this->nodetype_id)) return false;
-		if(!isset($this->slug)) $this->slug = Utils::slugify($this->title);
+		$this->slug = Utils::slugify($this->title);
 		return parent::save();
 	}
 	

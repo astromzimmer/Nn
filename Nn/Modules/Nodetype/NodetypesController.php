@@ -68,7 +68,8 @@ class NodetypesController extends Nn\Core\Controller {
 	function create() {
 		$name = isset($_POST['name']) ? $_POST['name'] : null;
 		$icon = isset($_POST['icon']) && $_POST['icon'] != 'null' ? $_POST['icon'] : false;
-		$colour = isset($_POST['colour']) ? $_POST['colour'] : null;
+		$colour = isset($_POST['colour']) && isset($_POST['has_colour']) ?
+			$_POST['colour'] : false;
 		$attributetypes = isset($_POST['attributetypes']) ? $_POST['attributetypes'] : null;
 		$nodetypes = isset($_POST['nodetypes']) ? $_POST['nodetypes'] : null;
 		$layout_id = isset($_POST['layout_id']) ? $_POST['layout_id'] : null;
@@ -95,7 +96,8 @@ class NodetypesController extends Nn\Core\Controller {
 	function update($id=null) {
 		$name = isset($_POST['name']) ? $_POST['name'] : null;
 		$icon = isset($_POST['icon']) && $_POST['icon'] != 'null' ? $_POST['icon'] : false;
-		$colour = isset($_POST['colour']) ? $_POST['colour'] : null;
+		$colour = isset($_POST['colour']) && isset($_POST['has_colour']) ?
+			$_POST['colour'] : false;
 		$attributetypes = isset($_POST['attributetypes']) ? $_POST['attributetypes'] : array();
 		$nodetypes = isset($_POST['nodetypes']) ? $_POST['nodetypes'] : array();
 		$layout_id = isset($_POST['layout_id']) ? $_POST['layout_id'] : null;

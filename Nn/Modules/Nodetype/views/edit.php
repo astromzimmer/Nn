@@ -16,7 +16,7 @@
 			<fieldset>
 				<legend><?php echo Nn::babel('Supported Attributetypes') ?></legend>
 				<?php foreach($attributetypes as $attributetype): ?>
-				  <input type="checkbox" name="attributetypes[]" value="<?php echo $attributetype->attr('id') ?>" class="formfield" id="peopleBox" <?php if($nodetype->has_attributetype($attributetype->attr('id'))) { echo "checked=\"yes\""; } ?> /><?php echo $attributetype->attr('name'); ?><br/>
+				  <input type="checkbox" name="attributetypes[]" value="<?php echo $attributetype->attr('id') ?>" class="formfield" id="attributetypesBox" <?php if($nodetype->has_attributetype($attributetype->attr('id'))) { echo "checked=\"yes\""; } ?> /><?php echo $attributetype->attr('name'); ?><br/>
 				<?php endforeach; ?>
 			</fieldset>
 			<fieldset>
@@ -38,6 +38,7 @@
 			<?php endif ?>
 			<fieldset>
 				<legend><?php echo Nn::babel('Colour') ?></legend>
+				<input type="checkbox" name="has_colour" class="formfield" id="colourBox" <?php if($nodetype->attr('colour')) { echo "checked=\"yes\""; } ?> />
 				<input type="color" name="colour" value="<?php echo $nodetype->attr('colour') ?>" class="formfield" id="colourField" /><br/>
 			</fieldset>
 			<fieldset>

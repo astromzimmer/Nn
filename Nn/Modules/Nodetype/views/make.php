@@ -41,6 +41,11 @@
 					</fieldset>
 				<?php endif ?>
 				<fieldset>
+					<legend><?php echo Nn::babel('Colour') ?></legend>
+					<input type="checkbox" name="has_colour" class="formfield" id="colourBox" />
+					<input type="color" name="colour" value="" class="formfield" id="colourField" /><br/>
+				</fieldset>
+				<fieldset>
 					<legend><?php echo Nn::babel('Icon') ?>:</legend>
 					<input type="radio" name="icon" value="null" checked="checked"><?php echo Nn::babel('None') ?>&nbsp;
 					<span class="fontawesome">
