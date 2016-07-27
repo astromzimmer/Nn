@@ -23,22 +23,21 @@ class Minify {
 		}
 	}
 
-	public function cssTags($files=array(),$output='concat.css',$media='all') {
-		if(!Nn::settings('DEVELOPMENT_ENV')) {
+	public function cssTags($files=array(),$output=false,$media='all') {
+		if(!Nn::settings('DEVELOPMENT_ENV') && $output) {
 			$last_modified = $this->getLastModified($files);
 			$output_path = ROOT.DS.'public'.DS.$output;
 			$concat_modified = (file_exists($output_path)) ? filemtime($output_path) : 0;
 			if($last_modified > $concat_modified) $this->buildCSS($files,$output);
 			// $this->buildCSS($files,$output);
 			return '<link href="/'.$output.'?'.$last_modified.'" rel="stylesheet" type="text/css" media="'.$media.'">';
-		} else {
-			$tag = '';
-			foreach ($files as $file) {
-				$modified = $this->getLastModified($file);
-				$tag .= '<link href="/'.$file.'?'.$modified.'" rel="stylesheet" type="text/css" media="'.$media.'">';
-			}
-			return $tag;
 		}
+		$tags = '';
+		foreach ($files as $file) {
+			$modified = $this->getLastModified($file);
+			$tags .= '<link href="/'.$file.'?'.$modified.'" rel="stylesheet" type="text/css" media="'.$media.'">';
+		}
+		return $tags;
 	}
 
 	private function getLastModified($files) {
