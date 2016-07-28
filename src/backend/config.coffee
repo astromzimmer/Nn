@@ -44,6 +44,9 @@ exports.config =
 			includeCss: true
 			plugins: ['autoprefixer-stylus']
 
+	server:
+		port: 1234
+
 	overrides:
 		production:
 			optimize: false

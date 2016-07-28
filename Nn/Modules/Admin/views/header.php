@@ -25,7 +25,7 @@
 	
   </head>
 
-  <body class="<?php if(Nn::settings('PRINT')) echo 'print ' ?>">
+  <body id="body" class="<?php if(Nn::settings('PRINT')) echo 'print ' ?>">
     <?php Nn::partial('Def','_flash') ?>
   	<div class="BG">
   		<!-- <img src="<?php echo DOMAIN,DS,'imgs',DS,'static',DS,'admin_bg.jpg' ?>" /> -->
