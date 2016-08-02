@@ -59,6 +59,10 @@ class DefController extends Nn\Core\Controller {
 				'data'=>$image
 			]);
 	}
+
+	function privacy() {
+		
+	}
 	
 	function after() {
 	

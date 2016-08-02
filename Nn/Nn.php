@@ -40,6 +40,7 @@ class Nn extends Nn\Core\Singleton {
 			ini_set('log_errors','Off');
 			// ini_set('error_log',ROOT.DS.'logs'.DS.'development.log');
 			set_error_handler(NULL);
+			set_time_limit(240);
 		} else {
 			ini_set('display_startup_errors','Off');
 			ini_set('display_errors','On');
@@ -50,6 +51,7 @@ class Nn extends Nn\Core\Singleton {
 			}
 			ini_set('error_log',self::settings('LOG_DIR').DS.'production.log');
 			set_error_handler(['Nn','handleServerErrors']);
+			set_time_limit(240);
 		}
 	}
 

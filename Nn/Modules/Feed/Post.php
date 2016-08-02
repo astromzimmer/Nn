@@ -25,7 +25,7 @@ class Post extends Nn\Core\DataModel {
 			'source'		=>	$this->service(),
 			'node'			=>	[
 									'id'	=> $this->node()->attr('id'),
-									'slug'	=> $this->node()->slug(),
+									'slug'	=> $this->node()->attr('id').'-'.$this->node()->slug(),
 									'title'	=> $this->node()->title()
 								],
 			'content'		=>	$this->content(),
@@ -55,12 +55,16 @@ class Post extends Nn\Core\DataModel {
 		}
 	}
 
+	public function feed() {
+		return Feed::find($this->feed_id,1);
+	}
+
 	public function node() {
-		return Feed::find($this->feed_id,1)->attribute()->node();
+		return $this->feed()->attribute()->node();
 	}
 
 	public function service() {
-		return Feed::find($this->feed_id,1)->attributetype()->params()['service'];
+		return $this->feed()->attributetype()->params()['service'];
 	}
 
 }

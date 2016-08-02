@@ -7,12 +7,29 @@ class Utils {
 		file_put_contents(ROOT.DS.'tmp'.DS.'console', $data.PHP_EOL);
 	}
 
-	public static function getURL($url) {
+	public static function getURL($url,$method='GET',$fields=null) {
 		$ch = curl_init();
-		$timeout = 5;
+		if(isset($fields)) {
+			$params = '';
+			foreach($fields as $key => $val) {
+				$params .= "{$key}={$val}&";
+			}
+			rtrim($params,'&');
+		}
+		switch ($method) {
+			case 'POST':
+				curl_setopt($ch, CURLOPT_POST, count($fields));
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+			
+			default:
+				if(isset($params)) {
+					$url .= '?'.$params;
+				}
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+				break;
+		}
 		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 		$data = curl_exec($ch);
 		curl_close($ch);
 		return $data;

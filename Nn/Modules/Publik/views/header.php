@@ -4,14 +4,16 @@
 
   <head>
   	
-    <meta name="robots" content="noindex,nofollow">
+    <?php if (Nn::settings('DEVELOPMENT_ENV')): ?>
+      <meta name="robots" content="noindex,nofollow">
+    <?php endif ?>
 
   	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- <base target="_blank" /> -->
 
-    <title> <?php echo PAGE_NAME ?> </title>
+    <title> <?php echo Nn::settings('PAGE_NAME') ?> </title>
 
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <?php

@@ -5,6 +5,8 @@
   <!--[if (gte IE 8)|!(IE)]><!--><html class="no-js" lang="en" ng-app="avocado"> <!--<![endif]-->
   <head>
   	
+    <meta name="robots" content="noindex, nofollow" />
+
     <!-- CHROME AND VIEWPORT SETTINGS -->
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">

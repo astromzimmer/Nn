@@ -4,6 +4,8 @@
 
   <head>
 
+    <meta name="robots" content="noindex, nofollow" />
+
     <title> <?php echo PAGE_NAME ?> </title>
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo DOMAIN; ?>/favicon.ico" />
 
@@ -11,13 +13,13 @@
       $style_files = [
         'backnn/css/main.css'
       ];
-      echo Nn::minify()->cssTags($style_files,'concat_backnn.css');
+      echo Nn::minify()->cssTags($style_files);
     ?>
 	
 	<base href="<?php echo DOMAIN; ?>"></base>
 
   </head>
 
-  <body>
+  <body id="body">
     <?php Nn::partial('Def','_flash') ?>
   	<div id="page">

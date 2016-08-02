@@ -23,7 +23,13 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 			'title'			=>	$this->title,
 			'description'	=>	$this->description,
 			'filename'		=>	$this->filename,
-			'url'			=>	$this->src(),
+			'sizes'			=>	[
+				'thumb'			=>	$this->src(172),
+				'thumb2x'		=>	$this->src(344),
+				'medium'		=>	$this->src(720),
+				'medium2x'		=>	$this->src(1440),
+				'original'		=>	$this->src(),
+			],
 			'type'			=>	$this->type,
 			'size'			=>	$this->size(),
 			'created_at'	=>	$this->created_at,
@@ -140,22 +146,25 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 
 	private function rotate() {
 		# Here we adjust orientation
-		$path = $this->path();
-		$exif = exif_read_data($path);
-		if(isset($exif['Orientation'])){
-			$deg = 0;
-			switch($exif['Orientation']) {
-				case 3:
-					# Rotate 180deg
-					$deg = 180;
-				case 6:
-					# Rotate 90deg clockwise
-					$deg = 90;
-				case 8:
-					# Rotate 90deg counter clockwise
-					$deg = -90;
+		try {
+			$path = $this->path();
+			if(($exif = exif_read_data($path)) && isset($exif['Orientation'])){
+				$deg = 0;
+				switch($exif['Orientation']) {
+					case 3:
+						# Rotate 180deg
+						$deg = 180;
+					case 6:
+						# Rotate 90deg clockwise
+						$deg = 90;
+					case 8:
+						# Rotate 90deg counter clockwise
+						$deg = -90;
+				}
+				$this->_img = imagerotate($this->_img,$deg,0);
 			}
-			$this->_img = imagerotate($this->_img,$deg,0);
+		} catch(\Exception $e) {
+			// nah
 		}
 	}
 	

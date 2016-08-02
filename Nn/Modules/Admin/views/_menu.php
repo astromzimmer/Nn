@@ -28,14 +28,14 @@
 		<li class="btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Users') echo ' active"' ?>">
 			<a href="<?php echo '/admin/users' ?>"><?php echo Nn::babel('Users') ?></a>
 		</li>
-		<li>
-			<a class="btn" href="<?php echo '/admin/backup_db' ?>"><?php echo Nn::babel('Backup db') ?></a>
+		<li class="btn">
+			<a href="<?php echo '/admin/backup_db' ?>"><?php echo Nn::babel('Backup db') ?></a>
 		</li>
-		<li>
-			<a class="btn" href="<?php echo '/admin/flush_cache' ?>"><?php echo Nn::babel('Flush cache') ?></a>
+		<li class="btn">
+			<a href="<?php echo '/admin/flush_cache' ?>"><?php echo Nn::babel('Flush cache') ?></a>
 		</li>
-		<li>
-			<a class="btn" href="<?php echo '/admin/logout' ?>"><?php echo Nn::babel('Log out') ?></a>
+		<li class="btn">
+			<a href="<?php echo '/admin/logout' ?>"><?php echo Nn::babel('Log out') ?></a>
 		</li>
 	</ul>
 </div>

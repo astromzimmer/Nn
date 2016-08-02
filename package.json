@@ -1,0 +1,9 @@
+{
+  "name": "Nn",
+  "version": "0.1.0",
+  "description": "",
+  "author": "Astrom / Zimmer",
+  "scripts": {
+    "watch": "touch tmp/console && tail -f tmp/console"
+  }
+}

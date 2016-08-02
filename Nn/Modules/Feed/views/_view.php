@@ -1,5 +1,14 @@
 <div id="feed<?php echo htmlentities($feed->attr('id')); ?>-content" class="feed">
 	<div class="title"><?php echo $feed->attr('handle'); ?></div>
+	<?php if ($feed->attr('auth') == 'AUTH'): ?>
+	<div class="note">
+		Please have the user authorise this page for access.
+	</div>
+	<div class="tools">
+		<?php $feed_slug = strtolower($feed->service()) ?>
+		<a target="_blank" href="<?php echo DOMAIN,"/feeds/authorise/{$feed_slug}/{$feed->attr('id')}" ?>">Authorise</a>
+	</div>
+	<?php else: ?>
 	<div class="tools">
 		<a href="<?php echo DOMAIN,'/admin/feeds/fetch/',$feed->attr('id') ?>">Fetch #<?php echo $feed->attr('hashtag') ?></a>
 	</div>
@@ -23,4 +32,5 @@
 		<div class="note"><?php echo Nn::babel('No posts') ?></div>
 		<?php endif; ?>
 	</div>
+	<?php endif ?>
 </div>

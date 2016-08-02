@@ -49,8 +49,13 @@ class Router {
 		$this->routes[] = new Route($pattern,$method,$callback);
 	}
 
-	public function route($route_param) {
-		header("Redirect: {$route_param}");
+	public function route() {
+		$params = $_GET;
+		$route_param = isset($params['route']) ? $params['route'] : null;
+		unset($params['route']);
+		$params = http_build_query($params);
+		Utils::debug($params);
+		header("Redirect: {$route_param}?{$params}");
 		$method = $_SERVER['REQUEST_METHOD'];
 		if($route = $this->reRoute($route_param,$method)) {
 			$this->execute($route->callback);

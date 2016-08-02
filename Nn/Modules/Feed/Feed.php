@@ -6,16 +6,19 @@ use Nn;
 use Utils;
 use Facebook\Facebook as Facebook;
 use Abraham\TwitterOAuth\TwitterOAuth as TwitterOAuth;
+use Vimeo\Vimeo as Vimeo;
 
 class Feed extends Nn\Modules\Datatype\Datatype {
 	
 	protected $handle;
+	protected $auth;
 	protected $hashtag;
 	protected $since;
 	protected $until;
 
 	public static $SCHEMA = array(
 			'handle' => 'short_text',
+			'auth' => 'text',
 			'hashtag' => 'short_text',
 			'since' => 'integer',
 			'until' => 'integer',
@@ -26,6 +29,7 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 	public static $PARAMS = array(
 			'service' => [
 					'Facebook',
+					'Instagram',
 					'Twitter',
 					'Tumblr',
 					'Vimeo',
@@ -60,6 +64,10 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 		}
 	}
 
+	public function service() {
+		return $this->attributetype()->params()['service'];
+	}
+
 	public function since() {
 		return strftime(Nn::settings('DATE_FORMAT'),$this->since);
 	}
@@ -78,13 +86,16 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 		if($result) {
 			Nn::cache()->flush('api_getPosts_');
 			return $this->save();
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	public function posts() {
 		return Post::find(['feed_id'=>$this->id]);
+	}
+
+	private function auth() {
+		return json_decode($this->auth,true);
 	}
 
 	private function facebook() {
@@ -93,14 +104,32 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 		$fb = new Facebook([
 				'app_id' => $appId,
 				'app_secret' => $secret,
-				'default_graph_version' => 'v2.4'
+				'default_graph_version' => 'v2.7'
 			]);
-		$fb->setDefaultAccessToken($appId.'|'.$secret);
 		$params = '?limit=100&fields=type,source,place,picture,object_id,message,link,caption,created_time,attachments';
 		if($this->since) $params .= '&since='.$this->since;
 		if($this->until) $params .= '&until='.$this->until;
-		// $result = $facebook->api($this->handle.'/feed','GET',array('limit'=>200,'since'=>$since));
-		$response = $fb->get('/'.$this->handle.'/posts'.$params);
+		// CHECK IF PAGE OF USER
+		$auth = $this->auth();
+		if($auth == 'AUTH') {
+			Nn::cache()->flush('feeds');
+			return false;
+		}
+		if(isset($auth['user_id']) && isset($auth['token'])) {
+			$handle = $auth['user_id'];
+			$fb->setDefaultAccessToken($auth['token']);
+		} else {
+			$handle = $this->handle;
+			$fb->setDefaultAccessToken($appId.'|'.$secret);
+		}
+		try {
+			$response = $fb->get('/'.$handle.'/posts'.$params);
+		} catch(Exception $e) {
+			$this->attr('auth','AUTH');
+			$this->save();
+			return false;
+		}
+		$body = $response->getBody();
 		$edge = $response->getGraphEdge();
 		if(isset($edge)) {
 			// $items = array();
@@ -114,7 +143,7 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 	private function parseFacebookResults($fb,$edge) {
 		foreach ($edge as $graphNode) {
 			$json_obj = $graphNode->asJson();
-			if(strpos(strtolower($json_obj),'#'.$this->hashtag) !== false) {
+			if(strpos($json_obj,'#'.$this->hashtag) !== false) {
 				$obj = $graphNode->asArray();
 				if(isset($obj['message']) || isset($obj['name'])) {
 					switch($obj['type']) {
@@ -156,17 +185,19 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 							break;
 					}
 					$uid = $obj['id'];
-					$post = Post::find(['uid'=>$uid,'feed_id'=>$this->id],1,null,false,null,false);
+					$post = Post::find(['uid'=>$uid,'feed_id'=>$this->id],1,null,false);
+					$created_at = is_object($obj['created_time']) ? $obj['created_time']->getTimestamp() : strtotime($obj['created_time']);
 					if(!$post){
 						$post = new Post();
 						$post->attr('uid',$uid);
 						$post->attr('visible',true);
 						$post->attr('feed_id',$this->id);
-						$post->attr('created_at',strtotime($obj['created_time']->date));
+						$post->attr('created_at',$created_at);
 					}
 					$json_obj = json_encode($obj);
 					if($post->attr('content') != $json_obj) {
 						$post->attr('content',$json_obj);
+						$post->attr('created_at',$created_at);
 						$post->save();
 					}
 				}
@@ -174,6 +205,43 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 		}
 		$next = $fb->next($edge);
 		if($next) $this->parseFacebookResults($fb,$next);
+	}
+
+	private function instagram() {
+		$client_id = '88527677285c4d148741b17e346109df';
+		$client_secret = '56b2b8beecfa40cb9f25038d1665405a';
+		$auth = $this->auth();
+		if(isset($auth['token'])) {
+			$user_id = $auth['user_id'];
+			$token = $auth['token'];
+			$url = "https://api.instagram.com/v1/users/{$user_id}/media/recent?access_token={$token}";
+			$raw_result = Utils::getURL($url);
+			$result = json_decode($raw_result,true);
+			if(isset($result['data'])) {
+				$medias = $result['data'];
+				foreach($medias as $media) {
+					$json_media = json_encode($media);
+					if(strpos($json_media,'#'.$this->hashtag) !== false) {
+						$uid = $media['id'];
+						$post = Post::find(['uid'=>$uid,'feed_id'=>$this->id],1,null,false);
+						if(!$post){
+							$post = new Post();
+							$post->attr('uid',$uid);
+							$post->attr('visible',true);
+							$post->attr('feed_id',$this->id);
+							$post->attr('created_at',$media['created_time']);
+						}
+						$post->attr('content',$json_media);
+						$post->save();
+					}
+				}
+				return true;
+			}
+		} else {
+			$this->attr('auth','AUTH');
+			$this->save();
+		}
+		return false;
 	}
 
 	private function twitter() {
@@ -187,7 +255,6 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 			];
 		$twitter = new TwitterOAuth($consumer_key,$consumer_secret,$access_token,$access_token_secret);
 		$result = $twitter->get('search/tweets',$params);
-		// die(print_r($result));
 		if(isset($result->statuses)) {
 			foreach ($result->statuses as $value) {
 				$uid = $value->id;
@@ -213,32 +280,30 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 	}
 
 	private function vimeo() {
-		require_once ROOT.DS.'vendor'.DS.'vimeo'.DS.'vimeo.php';
 		$api_key = '67103ea122ffdf4b60d4d451ccbd13738e126e9a';
 		$api_secret = 'f7f0fca1058b53c4d5e36561a945d7282e327f38';
-		$vimeo = new \phpVimeo($api_key,$api_secret);
-		$raw_result = $vimeo->call('vimeo.videos.getAll',array(
-			'user_id' => $this->handle,
-			'full_response' => 1
-		));
-		if(isset($raw_result->videos)) {
-			$result = $raw_result->videos->video;
-			$items = array();
-			foreach ($result as $key => $value) {
-				if(isset($value->tags)){
+		$vimeo = new Vimeo($api_key,$api_secret);
+		$token = $vimeo->clientCredentials();
+		$vimeo->setToken($token['body']['access_token']);
+		$result = $vimeo->request("/users/{$this->handle}/videos",[],'GET');
+		if($result['status'] == 200) {
+			$data = $result['body']['data'];
+			$items = [];
+			foreach ($data as $video) {
+				if(count($video['tags']) > 0){
 					$tagged = false;
 					if(empty($this->hashtag)) {
 						$tagged = true;
 					} else {
-						foreach($value->tags->tag as $tag) {
-							if($tag->_content == $this->hashtag){
+						foreach($video['tags'] as $tag) {
+							if($tag['tag'] == $this->hashtag){
 								$tagged = true;
 								break;
 							}
 						}
 					}
 					if($tagged) {
-						$uri_array = explode('/',$value->id);
+						$uri_array = explode('/',$video['uri']);
 						$uid = array_pop($uri_array);
 						$post = Post::find(['uid'=>$uid,'feed_id'=>$this->id],1,null,false);
 						if(!$post){
@@ -246,9 +311,9 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 							$post->attr('uid',$uid);
 							$post->attr('visible',true);
 							$post->attr('feed_id',$this->id);
-							$post->attr('created_at',strtotime($value->upload_date));
+							$post->attr('created_at',strtotime($video['created_time']));
 						}
-						$post->attr('content',json_encode($value));
+						$post->attr('content',json_encode($video));
 						$post->save();
 					}
 				}
@@ -274,7 +339,8 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 		$result = json_decode(Utils::getURL($url),true);
 		if($items = $result['items']) {
 			foreach ($items as $key => $value) {
-				if(strpos(strtolower(serialize($value)),'#'.$this->hashtag) !== false) {
+				$json_item = json_encode($value);
+				if(strpos(strtolower($json_item),'#'.$this->hashtag) !== false) {
 					$uid = $value['id'];
 					$post = Post::find(['uid'=>$uid,'feed_id'=>$this->id],1,null,false);
 					if(!$post){
@@ -284,7 +350,7 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 						$post->attr('feed_id',$this->id);
 						$post->attr('created_at',strtotime($value['snippet']['publishedAt']));
 					}
-					$post->attr('content',json_encode($value));
+					$post->attr('content',$json_item);
 					$post->save();
 				}
 			}
@@ -303,7 +369,8 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 			foreach ($result as $key => $value) {
 				// if(isset($value['tag_list'])){
 					// if(empty($this->hashtag) || strpos(strtolower($value['tag_list']),$this->hashtag) !== false){
-					if(strpos(strtolower(serialize($value)),$this->hashtag) !== false) {
+					$json_item = json_encode($value);
+					if(strpos(strtolower($json_item),$this->hashtag) !== false) {
 						$uid = $value['id'];
 						$post = Post::find(['uid'=>$uid,'feed_id'=>$this->id],1,null,false);
 						if(!$post){
@@ -313,7 +380,7 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 							$post->attr('feed_id',$this->id);
 							$post->attr('created_at',strtotime($value['created_at']));
 						}
-						$post->attr('content',json_encode($value));
+						$post->attr('content',$json_item);
 						$post->save();
 					}
 				// }

@@ -49,6 +49,9 @@ sans-serif()
 	text-align center
 	position absolute
 	
+	p
+		font-size 1.5rem
+	
 	ul
 		list-style none
 		li
@@ -68,6 +71,7 @@ sans-serif()
 		font-style normal
 		font-weight normal
 		font-size 24px
+		line-height 3em
 
 	h4
 		font-style normal
@@ -105,13 +109,6 @@ sans-serif()
 	form
 		// padding 12px
 		overflow hidden
-
-		textarea
-			width 100%
-
-		button
-		.button
-			width 100%
 
 	.fullscreen
 		position fixed !important
@@ -159,14 +156,19 @@ sans-serif()
 			&.error
 				background alizarin
 
-	#login
+	.middle
 		center()
+		width 50vw
+		height 72vh
+		max-width 640px
+		margin auto
+		text-align left
+	
+	#login
 		width 320px
 		height 320px
-		margin auto
 		text-align center
 		font-size 1rem
-
 		form
 			margin 72px auto
 			overflow visible
@@ -185,7 +187,6 @@ sans-serif()
 			width $leftWidth
 			ul
 				position relative
-				padding-top $admin_height
 				li
 					display none
 					clickable($topBG,$active_menu_bg,$active_menu_bg,white)
@@ -210,6 +211,7 @@ sans-serif()
 			&.expanded
 				height 100%
 				ul
+					padding-top $admin_height
 					li
 						display block
 	
@@ -652,3 +654,4 @@ ul.submenu span.edit img
 @import '_publication'
 @import '_forms'
 @import '_table'
+@import '_feeds'

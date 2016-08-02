@@ -47,12 +47,9 @@ class Node extends Nn\Core\DataModel {
 			'title'			=>	$this->title(),
 			'path'			=>	$this->path(),
 			'tree'			=>	$this->navigation_tree(),
-			'thumbnail'		=>	($thumb = $this->thumb()) ? [
-										'id' => $thumb->attr('id'),
-										'filename' => $thumb->attr('filename')
-									] : false,
+			'thumbnail'		=>	$this->thumb(),
 			'ingress'		=>	($ingress = $this->ingress()) ? $ingress->content() : false,
-			'slug'			=>	$this->slug(),
+			'slug'			=>	$this->attr('id').'-'.$this->slug(),
 			'permalink'		=>	$this->permalink(),
 			'nodetype'		=>	$this->type(),
 			'author'		=>	$this->author(),
@@ -64,7 +61,7 @@ class Node extends Nn\Core\DataModel {
 			'node'			=>	($parent = $this->parent()) ? [
 										'id'=>$this->parent_id,
 										'title'=>$parent->title(),
-										'permalink'=>$parent->permalink()
+										'slug'=>$parent->attr('id').'-'.$parent->slug()
 									] : [false],
 			'ownAttribute'	=>	$this->attributes_except(['Date','Title']),
 			'ownNode'		=>	($children = $this->children()) ? $children : []
@@ -187,9 +184,9 @@ class Node extends Nn\Core\DataModel {
 		$tree = $this->navigation_tree(true);
 		$path = '';
 		foreach ($tree as $branch) {
-			$path .= Utils::ellipsis($branch->title(),24).'/';
+			$path .= Utils::ellipsis($branch->slug(),24).'/';
 		}
-		$path .= Utils::ellipsis($this->title(),24);
+		$path .= Utils::ellipsis($this->slug(),24);
 		return $path;
 	}
 
@@ -208,7 +205,7 @@ class Node extends Nn\Core\DataModel {
 		$nodetypes = Nodetype::find(['name'=>$nodetypes_array]);
 		if($nodetypes) {
 			$nodetype_ids = static::getIDs($nodetypes);
-			$nodes = static::find(array('nodetype_id'=>$nodetype_ids),$limit,'position');
+			$nodes = static::find(['nodetype_id'=>$nodetype_ids],$limit,'position');
 			return $nodes;
 		}
 		return false;
@@ -235,7 +232,7 @@ class Node extends Nn\Core\DataModel {
 		$children = (isset($nodetypes)) ? static::find_by_type($nodetypes) : static::find_all();
 		if($children) {
 			foreach($children as $child) {
-				if($child->attributes() && in_array($this,$child->navigation_tree())) {
+				if($child->attributes() && in_array($this->id,$child->navigation_tree())) {
 					$valid_children[] = $child;
 				}
 			}

@@ -269,6 +269,6 @@
 			fireAMD()
 			App.fireScrollWatcher()
 
-			App.router.start()
+			# App.router.start()
 
 )(this.appSpace)
