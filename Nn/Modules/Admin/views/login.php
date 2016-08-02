@@ -1,4 +1,4 @@
-<div id="login" class="centered">
+<div id="login" class="middle">
 	<div id="login_form">
 	<?php if(isset($logo)): ?>
 		<div class="loginLogo">
