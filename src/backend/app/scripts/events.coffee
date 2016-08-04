@@ -11,6 +11,15 @@
 				complete: (feedback) ->
 					console.log "Sorted OK!"
 
+		App.dispatcher.on 'attributetypes:sorted', (data)->
+			$.ajax
+				url: "/admin/attributetypes/sort"
+				type: "POST"
+				data: data
+				dataType: "script"
+				complete: (feedback) ->
+					console.log "Sorted OK!"
+
 		App.dispatcher.on 'nodes:sorted', (data)->
 			$.ajax
 				url: "/admin/nodes/sort"

@@ -90,6 +90,7 @@ bower_components
 *.ft
 /tmp
 /form_data
+/src/backend/app/assets/fonts/
 /src/frontend/
 /public/*.txt
 /public/js
