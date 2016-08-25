@@ -124,7 +124,7 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 		}
 		try {
 			$response = $fb->get('/'.$handle.'/posts'.$params);
-		} catch(Exception $e) {
+		} catch(\Exception $e) {
 			$this->attr('auth','AUTH');
 			$this->save();
 			return false;
@@ -208,10 +208,14 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 	}
 
 	private function instagram() {
-		$client_id = '88527677285c4d148741b17e346109df';
-		$client_secret = '56b2b8beecfa40cb9f25038d1665405a';
 		$auth = $this->auth();
+		if($auth == 'AUTH') {
+			Nn::cache()->flush('feeds');
+			return false;
+		}
 		if(isset($auth['token'])) {
+			$client_id = '88527677285c4d148741b17e346109df';
+			$client_secret = '56b2b8beecfa40cb9f25038d1665405a';
 			$user_id = $auth['user_id'];
 			$token = $auth['token'];
 			$url = "https://api.instagram.com/v1/users/{$user_id}/media/recent?access_token={$token}";
@@ -331,7 +335,7 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 		// $result = $youtube->playlistItems->listPlaylistItems('snippet',array('playlistId'=>$this->handle));
 		$key = 'AIzaSyCTRZXXDHR7lXIZYww_NCZYjd6WNemJ3SA';
 		// $channels_url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername={$this->handle}&key={$key}";
-		$channels_url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id={$this->handle}&key={$key}";
+		$channels_url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername={$this->handle}&key={$key}";
 		$channels = json_decode(Utils::getURL($channels_url),true);
 		if(!isset($channels['items']) || count($channels['items']) == 0) return false;
 		$uploads_id = $channels['items'][0]['contentDetails']['relatedPlaylists']['uploads'];
@@ -492,6 +496,15 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 		} else {
 			return false;
 		}
+	}
+
+	public function delete() {
+		if($posts = $this->posts()) {
+			foreach($posts as $post) {
+				$post->delete();
+			}
+		}
+		parent::delete();
 	}
 
 }

@@ -11,6 +11,10 @@
 					<div class="tools">
 						<div class="tool handle"></div>
 					</div>
+					<div class="tools">
+						<div class="tool handle"></div>
+						<a class="tool trash" href="<?php echo DOMAIN.DS.'admin'.DS.'attributetypes'.DS.'delete'.DS.$at->attr('id') ?>" data-tooltip="<?php echo Nn::babel('trash') ?>"><?php echo Utils::UIIcon('trash'); ?></a>
+					</div>
 				</div>
 			</li>
 		<?php endforeach ?>
