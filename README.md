@@ -1,5 +1,10 @@
 #This is the *brilliant* Nn CMS.
 
+---
+#OBS – breaking changes!
+The config is now an associative array.
+---
+
 ##Requirements
 PHP:
 - Composer
