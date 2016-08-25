@@ -18,9 +18,7 @@ class NodesController extends Nn\Core\Controller {
 	function index() {
 		$nodes = Node::find(array('parent_id'=>0),null,'position');
 		$this->setTemplateVars([
-				'node'=> false
-			]);
-		$this->setTemplateVars([
+				'node'=> false,
 				'nodes'=> $nodes
 			]);
 	}

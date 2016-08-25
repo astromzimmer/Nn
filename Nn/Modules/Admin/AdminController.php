@@ -30,11 +30,7 @@ class AdminController extends Nn\Core\Controller {
 			} else {
 				Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 			}
-			if(Nn::authenticated('admins')) {
-				Utils::redirect(Nn::settings('DOMAIN').'/admin/index');
-			} else {
-				Utils::redirect(Nn::settings('DOMAIN').'/admin/nodes');
-			}
+			Utils::redirect(Nn::settings('DOMAIN').'/admin/index');
 			// }
 		} else {
 			Nn::flash(['error'=>Nn::babel('Wrong username/password – please try again')]);
@@ -62,14 +58,15 @@ class AdminController extends Nn\Core\Controller {
 		Nn::authenticate();
 		$backup_return = Nn::storage()->backup();
 		if($backup_return) {
-			$this->renderMode('binary');
-			$this->setTemplateVars([
-				'data'=>$backup_return
-			]);
+			if(is_string($backup_return)) {
+				Nn::flash(['error'=>Nn::babel($backup_return)]);
+			} else {
+				Nn::flash(['success'=>Nn::babel('Database backed up successfully')]);
+			}
 		} else {
-			Nn::flash(['error'=>implode(', ',Nn::storage()->errors())]);
-			Utils::redirect(Nn::referer());
+			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 		}
+		Utils::redirect(Nn::referer());
 	}
 
 	function flush_cache() {

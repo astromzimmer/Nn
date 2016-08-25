@@ -335,7 +335,7 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 		// $result = $youtube->playlistItems->listPlaylistItems('snippet',array('playlistId'=>$this->handle));
 		$key = 'AIzaSyCTRZXXDHR7lXIZYww_NCZYjd6WNemJ3SA';
 		// $channels_url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername={$this->handle}&key={$key}";
-		$channels_url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id={$this->handle}&key={$key}";
+		$channels_url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername={$this->handle}&key={$key}";
 		$channels = json_decode(Utils::getURL($channels_url),true);
 		if(!isset($channels['items']) || count($channels['items']) == 0) return false;
 		$uploads_id = $channels['items'][0]['contentDetails']['relatedPlaylists']['uploads'];
