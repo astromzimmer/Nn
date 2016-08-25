@@ -16,8 +16,8 @@ class Layout extends Nn\Core\DataModel {
 			'rules' => 'long_text',
 			'template' => 'long_text',
 			'position' => 'integer',
-			'created_at' => 'float',
-			'updated_at' => 'float'
+			'created_at' => 'double',
+			'updated_at' => 'double'
 		);
 	
 	public function __construct($name=null,$rules=null,$template=null){

@@ -15,17 +15,17 @@ class NodetypesController extends Nn\Core\Controller {
 	function before() {
 		Nn::authenticate();
 
-		$this->icons = [
-			'fa-user'=> '&#xf007;',
-			'fa-child'=> '&#xf1ae;',
-			'fa-picture-o'=> '&#xf03e;',
-			'fa-asterisk'=> '&#xf069;',
-			'fa-star-o'=> '&#xf006;',
-			'fa-star'=> '&#xf005;',
-			'fa-folder-open'=> '&#xf07c;',
-			'fa-file-text'=> '&#xf15c;',
-			'fa-location-arrow'=> '&#xf124;',
-		];
+		// $this->icons = [
+		// 	'fa-user'=> '&#xf007;',
+		// 	'fa-child'=> '&#xf1ae;',
+		// 	'fa-picture-o'=> '&#xf03e;',
+		// 	'fa-asterisk'=> '&#xf069;',
+		// 	'fa-star-o'=> '&#xf006;',
+		// 	'fa-star'=> '&#xf005;',
+		// 	'fa-folder-open'=> '&#xf07c;',
+		// 	'fa-file-text'=> '&#xf15c;',
+		// 	'fa-location-arrow'=> '&#xf124;',
+		// ];
 	}
 	
 	function index() {
@@ -67,7 +67,7 @@ class NodetypesController extends Nn\Core\Controller {
 	
 	function create() {
 		$name = isset($_POST['name']) ? $_POST['name'] : null;
-		$icon = isset($_POST['icon']) && $_POST['icon'] != 'null' ? $_POST['icon'] : false;
+		$icon = isset($_POST['icon']) ? $_POST['icon'] : null;
 		$colour = isset($_POST['colour']) && isset($_POST['has_colour']) ?
 			$_POST['colour'] : false;
 		$attributetypes = isset($_POST['attributetypes']) ? $_POST['attributetypes'] : null;
@@ -76,10 +76,10 @@ class NodetypesController extends Nn\Core\Controller {
 		$can_be_root = isset($_POST['can_be_root']) ? $_POST['can_be_root'] : 0;
 		$nodetype = new Nodetype($name,$icon,$colour,$can_be_root,$attributetypes,$nodetypes,$layout_id);
 		if($nodetype && $nodetype->save()) {
-			Utils::redirect(DOMAIN.'/admin/nodetypes');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodetypes');
 		} else {
 			Nn::flash(['error'=>Nn::babel('Please fill in all fields')]);
-			Utils::redirect(DOMAIN.'/admin/nodetypes/make');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodetypes/make');
 		}
 	}
 	
@@ -95,7 +95,7 @@ class NodetypesController extends Nn\Core\Controller {
 	
 	function update($id=null) {
 		$name = isset($_POST['name']) ? $_POST['name'] : null;
-		$icon = isset($_POST['icon']) && $_POST['icon'] != 'null' ? $_POST['icon'] : false;
+		$icon = isset($_POST['icon']) ? $_POST['icon'] : null;
 		$colour = isset($_POST['colour']) && isset($_POST['has_colour']) ?
 			$_POST['colour'] : false;
 		$attributetypes = isset($_POST['attributetypes']) ? $_POST['attributetypes'] : array();
@@ -111,10 +111,10 @@ class NodetypesController extends Nn\Core\Controller {
 		$nodetype->attr('nodetypes',implode(",",$nodetypes));
 		$nodetype->attr('layout_id',$layout_id);
 		if($nodetype->save()) {
-			Utils::redirect(DOMAIN.'/admin/nodetypes');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodetypes');
 		} else {
 			Nn::flash(['error'=>Nn::babel("Oups! Error. We'll have a look.")]);
-			Utils::redirect(DOMAIN.'/admin/nodetypes/edit/'.$nodetype->attr('id'));
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodetypes/edit/'.$nodetype->attr('id'));
 		}
 	}
 	
@@ -122,14 +122,14 @@ class NodetypesController extends Nn\Core\Controller {
 		$nodes = Node::find(['nodetype_id'=>$id]);
 		if($nodes) {
 			Nn::flash(['error'=>Nn::babel('There are '.count($nodes).' node(s) of this type. Please remove before continuing.')]);
-			Utils::redirect(DOMAIN.'/admin/nodetypes/edit/'.$id);
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodetypes/edit/'.$id);
 		} else {
 			$nodetype = Nodetype::find($id);
 			if(!$nodetype->delete()) {
 				Nn::flash(['error'=>Nn::babel("Oups! Error. We'll have a look.")]);
-				Utils::redirect(DOMAIN.'/admin/nodetypes/edit/'.$id);
+				Utils::redirect(Nn::s('DOMAIN').'/admin/nodetypes/edit/'.$id);
 			}
-			Utils::redirect(DOMAIN.DS.'admin'.DS.'nodetypes');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodetypes');
 		}
 	}
 }

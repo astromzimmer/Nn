@@ -5,7 +5,7 @@
 		</li>
 		<?php if(Nn::authenticated('admins')): ?>
 		<li class="super btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Nodetypes') echo ' active"' ?>">
-			<a href="<?php echo DOMAIN.DS,'admin/nodetypes' ?>"><?php echo Nn::babel('Nodetypes') ?></a>
+			<a href="<?php echo Nn::settings('DOMAIN').'/admin/nodetypes' ?>"><?php echo Nn::babel('Nodetypes') ?></a>
 		</li>
 		<li class="super btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Attributetypes') echo ' active"' ?>">
 			<a href="<?php echo '/admin/attributetypes' ?>"><?php echo Nn::babel('Attributetypes') ?></a>

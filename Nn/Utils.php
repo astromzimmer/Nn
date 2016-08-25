@@ -55,7 +55,7 @@ class Utils {
 		return $_SERVER['REQUEST_METHOD'] === strtoupper($type);
 	}
 		
-	public static function redirect($location,$include_params=true){
+	public static function redirect($location,$include_params=false) {
 		if($include_params) {
 			unset($_GET['route']);
 			$params = http_build_query($_GET);
@@ -63,6 +63,12 @@ class Utils {
 		}
 		header("Location: {$location}");
 		exit;
+	}
+
+	public static function forward($from,$to,$include_params=true) {
+		if(strpos(self::currentURL(),$from) !== false) {
+			self::redirect($to,$include_params);
+		}
 	}
 
 	public static function throwError($code=500) {
@@ -154,15 +160,15 @@ class Utils {
 
 	public static function formattedDate($ts=null) {
 		$timestamp = (isset($ts)) ? $ts : time();
-		return strftime(DATE_FORMAT,$timestamp);
+		return strftime(Nn::s('DATE_FORMAT'),$timestamp);
 	}
 
 	public static function formattedTime($ts=null) {
-		return strftime(TIME_FORMAT,$timestamp);
+		return strftime(Nn::s('TIME_FORMAT'),$timestamp);
 	}
 
 	public static function formattedDateTime($ts=null) {
-		return strftime(DATETIME_FORMAT,$timestamp);
+		return strftime(Nn::s('DATETIME_FORMAT'),$timestamp);
 	}
 
 	public static function contact_form($fields=array(),$redirect_to=null,$required_fields=array()){
@@ -451,23 +457,6 @@ class Utils {
 		return $services;
 	}
 
-	public static function get_datatypes() {
-		$datatypes = explode(",",DATATYPES);
-		return $datatypes;
-	}
-
-	public static function get_image_bounds() {
-		$bound_values = (defined('IMAGE_HEIGHTS')) ? IMAGE_HEIGHTS : IMAGE_WIDTHS;
-		$bounds = explode(",",$bound_values);
-		return $bounds;
-	}
-
-	public static function get_thumb_bounds() {
-		$bound_values = (defined('THUMB_HEIGHTS')) ? THUMB_HEIGHTS : THUMB_WIDTHS;
-		$bounds = explode(",",$bound_values);
-		return $bounds;
-	}
-
 	public static function getImageColorFromHex($image,$hex) {
 		$bgc_array = str_split($hex);
 		if(count($bgc_array) == 3) {
@@ -483,7 +472,7 @@ class Utils {
 	}
 
 	public static function mailto($e=null,$lnk=null) {
-		$email = (isset($e)) ? $e : MAILER_TO;
+		$email = (isset($e)) ? $e : Nn::s('MAIL')['FROM_EMAIL'];
 		$link = (isset($lnk) ? $lnk : $email);
 		$hashed_email = self::characterise($email);
 		$hashed_link = self::characterise($link);
@@ -549,7 +538,7 @@ class Utils {
 	public static function UIIcon($type=null) {
 		$basename = str_replace(" ","_",strtolower($type));
 		$base_path = ROOT.DS.'public'.DS.'backnn'.DS.'imgs'.DS.'static'.DS.'ui'.DS.$basename;
-		$base_uri = DOMAIN.'/backnn/imgs/static/ui/'.$basename;
+		$base_uri = Nn::s('DOMAIN').'/backnn/imgs/static/ui/'.$basename;
 		if(file_exists($base_path.'.svg')) {
 			$src = $base_uri.'.svg';
 			return '<img src="'.$src.'" alt="'.$type.'" />';

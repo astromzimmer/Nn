@@ -6,7 +6,7 @@
 		<div id="user_form" class="view">
 		<?php if($user->attr('id')) : ?>
 		<div id="user_form" class="view">
-			<form name="form1" method="post" action="<?php echo DOMAIN.DS.'admin'.DS.'users'.DS.'update'.DS.$user->attr('id'); ?>" enctype="multipart/form-data">
+			<form name="form1" method="post" action="<?php echo Nn::settings('DOMAIN').'/admin/users/update/'.$user->attr('id'); ?>" enctype="multipart/form-data">
 			  <fieldset>
 				<legend><?php echo Nn::babel('First name') ?></legend>
 			    <input name="first_name" type="text" class="formfield" id="FNField" value="<?php echo $user->attr('first_name') ?>" />
@@ -24,7 +24,7 @@
 			    <input name="pwd" type="password" class="formfield" id="PWDField" value="" />
 			  </fieldset>
 		<?php else : ?>
-			<form name="form1" method="post" action="<?php echo DOMAIN.DS.'admin'.DS.'users'.DS.'create'; ?>" enctype="multipart/form-data">
+			<form name="form1" method="post" action="<?php echo Nn::settings('DOMAIN').'/admin/users/create'; ?>" enctype="multipart/form-data">
 			  <input name="role_id" type="hidden" class="formfield" id="RIDField" value="<?php echo $role->attr('id') ?>" />
 			  <fieldset>
 				<legend><?php echo Nn::babel('First name') ?></legend>

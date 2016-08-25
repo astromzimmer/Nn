@@ -14,8 +14,8 @@ class Setting extends Nn\Core\DataModel {
 			'name' => 'short_text',
 			'value' => 'text',
 			'description' => 'text',
-			'created_at' => 'float',
-			'updated_at' => 'float'
+			'created_at' => 'double',
+			'updated_at' => 'double'
 		);
 
 	public function exportProperties() {

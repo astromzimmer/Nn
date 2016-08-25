@@ -1,1 +1,1 @@
-<audio id="beat_<?php echo $audio->id ?>" src="<?php echo DOMAIN,DS,'assets',DS,'Document',DS,$audio->id,DS,$audio->filename; ?>"></audio>
+<audio id="beat_<?php echo $audio->id ?>" src="<?php echo Nn::s('DOMAIN'),'/assets/Document/',$audio->id,'/',$audio->filename; ?>"></audio>

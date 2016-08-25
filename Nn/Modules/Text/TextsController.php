@@ -27,7 +27,7 @@ class TextsController extends Nn\Core\Controller {
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 		}
-		Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
+		Utils::redirect(Nn::settings('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 	}
 	
 	function update($id=null) {
@@ -45,7 +45,7 @@ class TextsController extends Nn\Core\Controller {
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 		}
-		Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
+		Utils::redirect(Nn::settings('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 	}
 
 }

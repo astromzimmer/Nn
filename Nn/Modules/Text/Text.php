@@ -11,8 +11,8 @@ class Text extends Nn\Modules\Datatype\Datatype {
 	public static $SCHEMA = array(
 			'content' => 'long_text',
 			'markup' => 'long_text',
-			'created_at' => 'float',
-			'updated_at' => 'float'
+			'created_at' => 'double',
+			'updated_at' => 'double'
 		);
 
 	public static $PARAMS = array(

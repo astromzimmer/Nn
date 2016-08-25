@@ -38,26 +38,36 @@ class DocumentsController extends Nn\Core\Controller {
 				]);
 		}
 	}
-	
+
 	function create() {
 		$node_id = $_POST['node_id'];
-		$document = new Document();
-		if($document->make($_POST['title'], $_POST['description'], $_FILES['file_upload'])) {
-			if($document->save()) {
-				$attribute = new Attribute($node_id,$_POST['atype_id'],$document->attr('id'));
-				if($attribute->save()) {
-					Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
-				} else {
-					$document->delete();
-					Nn::flash(['error'=>Nn::babel('Failed to register attribute')]);
-					Utils::redirect(Nn::referer());
-				}
+		$files = Utils::fixFilesArray($_FILES['file_upload']);
+		usort($files,function($a,$b){
+			if($a['name'] == $b['name']){
+				return 0;
 			}
-		} else {
-			$attribute->delete();
-			Nn::flash(['error'=>$document->errors()[0]]);
-			Utils::redirect(Nn::referer());
+			return ($a['name'] > $b['name']) ? 1 : -1;
+		});
+		foreach($files as $file) {
+			$document = new Document();
+			$title = isset($_POST['title']) ? $_POST['title'] : '';
+			$description = isset($_POST['description']) ? $_POST['description'] : '';
+			if($document->make($title, $description, $file)) {
+				if($document->save()) {
+					$attribute = new Attribute($node_id,$_POST['atype_id'],$document->attr('id'));
+					if(!$attribute->save()) {
+						$document->delete();
+						Nn::flash(['error'=>Nn::babel("Failed to register attribute")]);
+						Utils::redirect(Nn::referer());
+					}
+				}
+			} else {
+				$attribute->delete();
+				Nn::flash(['error'=>$document->errors()[0]]);
+				Utils::redirect(Nn::referer());
+			}
 		}
+		Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 	}
 	
 	function update($id=null) {
@@ -71,7 +81,7 @@ class DocumentsController extends Nn\Core\Controller {
 			$attributetype_id = $_POST['attributetype_id'];
 			$attribute->attr('attributetype_id',$attributetype_id);
 			$attribute->save();
-			Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 		} else {
 			die(print_r($document->errors));
 		}

@@ -6,11 +6,11 @@
 	</div>
 	<div class="tools">
 		<?php $feed_slug = strtolower($feed->service()) ?>
-		<a target="_blank" href="<?php echo DOMAIN,"/feeds/authorise/{$feed_slug}/{$feed->attr('id')}" ?>">Authorise</a>
+		<a target="_blank" href="<?php echo Nn::s('DOMAIN'),"/feeds/authorise/{$feed_slug}/{$feed->attr('id')}" ?>">Authorise</a>
 	</div>
 	<?php else: ?>
 	<div class="tools">
-		<a href="<?php echo DOMAIN,'/admin/feeds/fetch/',$feed->attr('id') ?>">Fetch #<?php echo $feed->attr('hashtag') ?></a>
+		<a href="<?php echo Nn::s('DOMAIN'),'/admin/feeds/fetch/',$feed->attr('id') ?>">Fetch #<?php echo $feed->attr('hashtag') ?></a>
 	</div>
 	<div class="posts">
 		<?php if($posts = $feed->posts()): ?>

@@ -17,16 +17,25 @@ defined('ROOT') ? null : define('ROOT', $index_path);
 // spl_autoload_register('namespace_autoload');
 
 require ROOT.DS.'vendor'.DS.'autoload.php';
-require ROOT.DS.'bootstrap'.DS.'config.php';
 require ROOT.DS.'Nn'.DS.'Nn.php';
 require ROOT.DS.'Nn'.DS.'Utils.php';
+
+Utils::forward('/schule','/DE/Festival/Kurzfilme_im_Unterricht');
+Utils::forward('/youth-and-school','/DE/Festival/Kurzfilme_im_Unterricht');
+Utils::forward('/youth-and-school/shorts-for-kids','/DE/Festival/Kurzfilme_im_Unterricht');
+Utils::forward('/helfer','/DE/Festival/Infos_Tickets#Freiwillige_HelferInnen');
+Utils::forward('/industrylab','/DE/Festival/Industry#Industry_Lab');
+Utils::forward('/writersroom','/DE/Festival/Industry#Writers_Room');
+
+Nn::settings(require ROOT.DS.'bootstrap'.DS.'config.php');
 
 $session = new Nn\Core\Session();
 $minify = new Nn\Core\Minify();
 $cache = new Nn\Core\Cache();
 $mailer = new Nn\Core\Mailer();
 $router = new Nn\Core\Router();
-$storage = new Nn\Storage\PDOStorage(Nn::settings('DB_TYPE'),Nn::settings('DB_HOST'),Nn::settings('DB_PORT'),Nn::settings('DB_NAME'),Nn::settings('DB_USER'),Nn::settings('DB_PASSWORD'));
+$dbs = Nn::settings('NN');
+$storage = new Nn\Storage\PDOStorage($dbs['TYPE'],$dbs['HOST'],$dbs['PORT'],$dbs['NAME'],$dbs['USER'],$dbs['PASSWORD']);
 $language = new Nn\Babel\Dictionary();
 $tracker = new Nn\Trackers\Navajo();
 

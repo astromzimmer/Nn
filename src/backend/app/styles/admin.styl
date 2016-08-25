@@ -308,7 +308,6 @@ sans-serif()
 
 		.add
 			a
-				display block
 				width 100%
 				margin 0 2px
 				padding 2px
@@ -316,10 +315,13 @@ sans-serif()
 		.add
 			a
 				img
-					display block
+				.icn
 					opacity .24
+					img
+						opacity 1
 				&:hover
 					img
+					.icn
 						opacity 1
 
 		.columnHeader
@@ -580,6 +582,11 @@ sans-serif()
 						width 30%
 						padding 0
 						border-width 0 0 1px
+				
+				
+				input
+					&#iconField
+						font-family 'FontAwesome', 'Roboto'
 
 			#code-editor
 				position absolute

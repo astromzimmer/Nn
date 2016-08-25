@@ -88,6 +88,7 @@ bower_components
 *.sqlite
 *.sqlite3
 *.ft
+/files
 /tmp
 /form_data
 /src/frontend/

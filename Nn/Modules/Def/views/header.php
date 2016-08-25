@@ -6,8 +6,8 @@
 
     <meta name="robots" content="noindex, nofollow" />
 
-    <title> <?php echo PAGE_NAME ?> </title>
-    <link rel="shortcut icon" type="image/x-icon" href="<?php echo DOMAIN; ?>/favicon.ico" />
+    <title> <?php echo Nn::settings('PAGE_NAME') ?> </title>
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo Nn::settings('DOMAIN'); ?>/favicon.ico" />
 
     <?php
       $style_files = [
@@ -16,7 +16,7 @@
       echo Nn::minify()->cssTags($style_files);
     ?>
 	
-	<base href="<?php echo DOMAIN; ?>"></base>
+	<base href="<?php echo Nn::settings('DOMAIN'); ?>"></base>
 
   </head>
 

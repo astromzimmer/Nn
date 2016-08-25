@@ -42,6 +42,12 @@ class ImagesController extends Nn\Core\Controller {
 	function create() {
 		$node_id = $_POST['node_id'];
 		$files = Utils::fixFilesArray($_FILES['file_upload']);
+		usort($files,function($a,$b){
+			if($a['name'] == $b['name']){
+				return 0;
+			}
+			return ($a['name'] > $b['name']) ? 1 : -1;
+		});
 		foreach($files as $file) {
 			$image = new Image();
 			$title = isset($_POST['title']) ? $_POST['title'] : '';
@@ -62,7 +68,7 @@ class ImagesController extends Nn\Core\Controller {
 				Utils::redirect(Nn::referer());
 			}
 		}
-		Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
+		Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 	}
 	
 	function update($id=null) {
@@ -78,7 +84,7 @@ class ImagesController extends Nn\Core\Controller {
 			$attributetype_id = $_POST['attributetype_id'];
 			$attribute->attr('attributetype_id',$attributetype_id);
 			$attribute->save();
-			Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 		} else {
 			die(print_r($image->errors()));
 		}

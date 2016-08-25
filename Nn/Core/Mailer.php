@@ -22,25 +22,25 @@ class Mailer extends \PHPMailer {
 	public function __construct() {
 		parent::__construct(true);
 		$this->CharSet = 'UTF-8';
-		if(Nn::settings('SMTP_MODE')) {
+		if(Nn::settings('MAIL')['SMTP_MODE']) {
 			$this->IsSMTP();
-			$this->Host = Nn::settings('SMTP_HOST');
-			if(Nn::settings('SMTP_USERNAME')) {
+			$this->Host = Nn::settings('MAIL')['SMTP_HOST'];
+			if(Nn::settings('MAIL')['SMTP_USERNAME']) {
 				$this->SMTPAuth = true;
-				$this->Username = Nn::settings('SMTP_USERNAME');
-				$this->Password = Nn::settings('SMTP_PASSWORD');
-				if(Nn::settings('SMTP_PROTOCOL')) $this->SMTPSecure = Nn::settings('SMTP_PROTOCOL');
-				if(Nn::settings('SMTP_PORT')) $this->Port = Nn::settings('SMTP_PORT');
+				$this->Username = Nn::settings('MAIL')['SMTP_USERNAME'];
+				$this->Password = Nn::settings('MAIL')['SMTP_PASSWORD'];
+				if(Nn::settings('MAIL')['SMTP_PROTOCOL']) $this->SMTPSecure = Nn::settings('MAIL')['SMTP_PROTOCOL'];
+				if(Nn::settings('MAIL')['SMTP_PORT']) $this->Port = Nn::settings('MAIL')['SMTP_PORT'];
 			}
 		}
 		if(!isset($this->From)) {
-			$this->From = Nn::settings('FROM_EMAIL');
+			$this->From = Nn::settings('MAIL')['FROM_EMAIL'];
 		}
 		if(!isset($this->FromName)) {
-			$this->FromName = Nn::settings('FROM_NAME');
+			$this->FromName = Nn::settings('MAIL')['FROM_NAME'];
 		}
 		if(!isset($this->Sender)) {
-			$this->Sender = Nn::settings('FROM_EMAIL');
+			$this->Sender = Nn::settings('MAIL')['FROM_EMAIL'];
 		}
 		$this->Priority = $this->priority;
 	}

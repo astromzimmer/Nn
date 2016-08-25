@@ -20,7 +20,7 @@ class Nn extends Nn\Core\Singleton {
 
 	/*  setup local ini  */
 	private static function setIni() {
-		$mem_limit = Nn::settings('MEMORY_LIMIT');
+		$mem_limit = self::settings('MEMORY_LIMIT');
 		if($mem_limit) ini_set('memory_limit',$mem_limit);
 		$post_max_size = self::settings('POST_MAX_SIZE');
 		if($post_max_size) ini_set('post_max_size',$post_max_size);
@@ -32,25 +32,25 @@ class Nn extends Nn\Core\Singleton {
 	private static function setEnvironmentSpecifics() {
 		error_reporting(E_ALL);
 		setlocale(LC_CTYPE,'en_GB');
-		if(DEVELOPMENT_ENV == true) {
+		if(self::settings('DEVELOPMENT_ENV')) {
 			ini_set('display_startup_errors','On');
 			ini_set('display_errors','On');
 			ini_set('html_errors','On');
 			# Disabling dev log for now.
 			ini_set('log_errors','Off');
 			// ini_set('error_log',ROOT.DS.'logs'.DS.'development.log');
-			set_error_handler(NULL);
+			set_error_handler(['Nn','handleDevelopmentErrors']);
 			set_time_limit(240);
 		} else {
 			ini_set('display_startup_errors','Off');
 			ini_set('display_errors','On');
 			ini_set('html_errors','On');
 			ini_set('log_errors','On');
-			if(!is_dir(self::settings('LOG_DIR'))) {
-				mkdir(self::settings('LOG_DIR'),0755,true);
+			if(!is_dir(self::settings('DIRS')['LOGS'])) {
+				mkdir(self::settings('DIRS')['LOGS'],0755,true);
 			}
-			ini_set('error_log',self::settings('LOG_DIR').DS.'production.log');
-			set_error_handler(['Nn','handleServerErrors']);
+			ini_set('error_log',self::settings('DIRS')['LOGS'].DS.'production.log');
+			set_error_handler(['Nn','handleProductionErrors']);
 			set_time_limit(240);
 		}
 	}
@@ -73,7 +73,12 @@ class Nn extends Nn\Core\Singleton {
 		}
 	}
 
-	public static function handleServerErrors($number,$msg,$file,$line,$vars) {
+	public static function handleDevelopmentErrors($number,$msg,$file,$line,$vars) {
+		Utils::debug("{$number}: {$msg}");
+		Utils::debug("{$file}: {$line}");
+	}
+
+	public static function handleProductionErrors($number,$msg,$file,$line,$vars) {
 		$path = $_SERVER['REQUEST_URI'];
 		switch ($number) {
 			case 8 || 1024:
@@ -89,7 +94,7 @@ class Nn extends Nn\Core\Singleton {
 				$level = 'GENERAL';
 				break;
 		}
-		$error_email = self::settings('ERROR_EMAIL');
+		$error_email = self::settings('MAIL')['ERROR_EMAIL'];
 		if($error_email) {
 			$subject = self::settings('PAGE_NAME').': Error';
 			$message = "<p><strong>Path:</strong> $path</p>";
@@ -98,9 +103,9 @@ class Nn extends Nn\Core\Singleton {
 			$message .= "<p><strong>File:</strong> $file</p>";
 			$message .= "<p><strong>Line number:</strong> $line</p>";
 			$message .= '<p><strong>Vars:</strong><pre>'.print_r($vars,1).'</pre></p>';
-			$headers = 'From: '.self::settings('FROM_EMAIL')."\r\n";
+			$headers = 'From: '.self::settings('MAIL')['FROM_EMAIL']."\r\n";
 			$headers .= 'Content-Type: text/html; charset=utf8'."\r\n";
-			mail(self::settings('ERROR_EMAIL'),$subject,$message,$headers);
+			mail(self::settings('MAIL')['ERROR_EMAIL'],$subject,$message,$headers);
 		}
 		$log = date('Y-m-d H:i:s').": $path\r\n";
 		$log .= '    LEVEL: '.$level."[".$number."]"."\r\n";
@@ -227,21 +232,13 @@ class Nn extends Nn\Core\Singleton {
 	}
 
 	public static function storage($name=null,$storage=null) {
-		if(isset($name) && !is_string($name)) {
-			$name = 'default';
-		} else {
-			$name = self::instance()->storage_name;
-		}
+		if(isset($name) && !is_string($name)) $name = 'default';
 		if(isset($storage)) {
 			return self::instance()->storages[$name] = $storage;
 		} else {
-			$storage = self::instance()->storages[$name];
-			return isset($storage) ? $storage : false;
+			return isset(self::instance()->storages[$name]) ?
+				self::instance()->storages[$name] : false;
 		}
-	}
-
-	public static function switchStorage($name=null) {
-		if(isset($name)) self::instance()->storage_name;
 	}
 
 	public static function setLanguage($lang) {
@@ -265,13 +262,17 @@ class Nn extends Nn\Core\Singleton {
 	}
 
 	public static function settings($key,$value=null) {
+		if(is_array($key)) return self::instance()->SETTINGS = $key;
 		if(isset($value)) return self::instance()->SETTINGS[$key] = $value;
 		if(!isset($key)) return false;
 		$key = strtoupper($key);
-		$soft_setting = isset(self::instance()->SETTINGS[$key]) ? self::instance()->SETTINGS[$key] : false;
-		if($soft_setting == 'false') $soft_setting = false;
-		$hard_setting = (defined($key)) ? constant($key) : false;
-		return ($soft_setting) ? $soft_setting : $hard_setting;
+		$setting = isset(self::instance()->SETTINGS[$key]) ? self::instance()->SETTINGS[$key] : false;
+		if($setting == 'false') $setting = false;
+		return $setting;
+	}
+
+	public static function s() {
+		return call_user_func_array(['self','settings'], func_get_args());
 	}
 
 	public static function mailer() {

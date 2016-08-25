@@ -31,8 +31,8 @@ Nn::get('/admin\/forms/','forms');
 Nn::post('/admin\/forms/','forms');
 Nn::get('/admin\/integers/','integers');
 Nn::post('/admin\/integers/','integers');
-Nn::get('/admin\/keyvals/','keyvals');
-Nn::post('/admin\/keyvals/','keyvals');
+Nn::get('/admin\/pairs/','pairs');
+Nn::post('/admin\/pairs/','pairs');
 Nn::get('/admin/','admin');
 Nn::get('/api/','api');
 

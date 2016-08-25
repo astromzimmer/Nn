@@ -1,7 +1,7 @@
 <div id="node">
 	<div class="manage">
 		<div id="node_form" class="view">
-			<form name="form1" method="post" action="<?php echo DOMAIN.'/admin/nodes/create' ?>" data-target="center" enctype="multipart/form-data">
+			<form name="form1" method="post" action="<?php echo Nn::settings('DOMAIN').'/admin/nodes/create' ?>" data-target="center" enctype="multipart/form-data">
 				<input type="hidden" name="parent_id" value="<?php echo $node->attr('parent_id') ?>">
 				<fieldset>
 					<legend><?php echo Nn::babel('Title') ?>:</legend>
@@ -20,7 +20,7 @@
 					<?php endif; ?>
 				</fieldset>
 				<div class="submit">
-					<a href="<?php echo DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node->attr('parent_id') ?>" class="cancel button half float" data-target="center" data-ajax><?php echo Nn::babel('Cancel') ?></a>
+					<a href="<?php echo Nn::settings('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node->attr('parent_id') ?>" class="cancel button half float" data-target="center" data-ajax><?php echo Nn::babel('Cancel') ?></a>
 					<button type="submit" <?php if(!$nodetypes) echo 'disabled="disabled"' ?> name="submit" id="submit" class="half float save"><?php echo Nn::babel('Save') ?></button>
 				</div>
 			</form>

@@ -49,7 +49,7 @@
 						"/backnn/css/editor.css"
 					]
 					icons: true
-				$('textarea:first, input:first').focus()
+				$('#center input:first, #center textarea:first').focus()
 				$('input[name=content]').select()
 
 			# App.navigate = (path)->
@@ -269,6 +269,6 @@
 			fireAMD()
 			App.fireScrollWatcher()
 
-			# App.router.start()
+			App.router.start()
 
 )(this.appSpace)

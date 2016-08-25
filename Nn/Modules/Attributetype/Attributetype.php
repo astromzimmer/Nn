@@ -6,34 +6,37 @@ use Utils;
 
 class Attributetype extends Nn\Core\DataModel {
 	
-	protected $id;
 	protected $name;
 	protected $datatype;
+	protected $icon;
 	protected $params;
 	protected $position;
 
 	public static $SCHEMA = array(
 			'name' => 'short_text',
 			'datatype' => 'short_text',
+			'icon' => 'short_text',
 			'params' => 'text',
 			'default_value' => 'text',
 			'position' => 'integer',
-			'created_at' => 'float',
-			'updated_at' => 'float',
+			'created_at' => 'double',
+			'updated_at' => 'double',
 		);
 
 	public function exportProperties($excludes=array()) {
 		return array(
 			'name'			=>	$this->name,
 			'datatype'		=>	$this->datatype,
+			'icon'			=>	$this->icon,
 			'params'		=>	$this->params
 		);
 	}
 
-	public function __construct($name=null, $datatype=null, $params=null, $default_value=null){
+	public function __construct($name=null, $datatype=null, $icon=null, $params=null, $default_value=null){
 		if(isset($name) && isset($datatype)){
 			$this->name = $name;
 			$this->datatype = $datatype;
+			$this->icon = $icon;
 			$this->position = 2147483647;
 			if(isset($params)) $this->params = json_encode($params);
 			if(isset($default_value)) $this->default_value = $default_value;
@@ -48,7 +51,9 @@ class Attributetype extends Nn\Core\DataModel {
 	}
 	
 	public function icon() {
-		if($name_icon = Utils::UIIcon($this->name)) {
+		if($this->icon) {
+			return $this->icon;
+		} elseif($name_icon = Utils::UIIcon($this->name)) {
 			return $name_icon;
 		} elseif ($type_icon = Utils::UIIcon($this->datatype)) {
 			return $type_icon;
@@ -65,10 +70,11 @@ class Attributetype extends Nn\Core\DataModel {
 		return $this->params()[$param];
 	}
 	
-	public function fill($name, $datatype, $params, $default_value){
+	public function fill($name, $datatype, $icon, $params, $default_value){
 		if(!empty($name) && !empty($datatype)){
 			$this->name = $name;
 			$this->datatype = $datatype;
+			$this->icon = $icon;
 			if(isset($params)) $this->params = json_encode($params);
 			if(isset($default_value)) $this->default_value = $default_value;
 			return $this;

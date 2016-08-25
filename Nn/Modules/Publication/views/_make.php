@@ -4,7 +4,7 @@
 <div id="right">
 	<div class="manage">
 		<div id="nodetype_form" class="edit_bg">
-			<form name="form1" method="post" action="<?php echo DOMAIN.DS.'admin'.DS.'nodetypes'.DS.'create' ?>">
+			<form name="form1" method="post" action="<?php echo Nn::settings('DOMAIN').DS.'admin'.DS.'nodetypes'.DS.'create' ?>">
 				<fieldset>
 					<legend><?php echo Nn::babel('Name') ?></legend>
 				    <input type="text" name="name" class="formfield" id="nameField" value="" />

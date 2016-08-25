@@ -5,43 +5,42 @@ use Nn;
 
 class Pair extends Nn\Modules\Datatype\Datatype {
 	
-	protected $id;
-	protected $left;
-	protected $right;
+	protected $rkey;
+	protected $lval;
 
 	public static $SCHEMA = array(
-			'left' => 'short_text',
-			'right' => 'text',
-			'created_at' => 'float',
-			'updated_at' => 'float'
+			'rkey' => 'short_text',
+			'lval' => 'text',
+			'created_at' => 'double',
+			'updated_at' => 'double'
 		);
 
 	public static $PARAMS = array(
-			'left_format' => array('string','integer','float'),
-			'right_format' => array('string','integer','float')
+			'rkey_format' => array('string','integer','float'),
+			'lval_format' => array('string','integer','float')
 		);
 
 	public function exportProperties() {
 		return array(
 			'id'			=>	$this->id,
-			'left'			=>	$this->left(),
-			'right'			=>	$this->right,
+			'rkey'			=>	$this->rkey,
+			'lval'			=>	$this->lval,
 		);
 	}
 
-	public function __construct($left=null,$right=null){
-		if(!empty($left) && !empty($right)){
-			$this->left = strtoupper(preg_replace("/[^a-zA-Z0-9s]/","_",$left));
-			$this->right = $right;
+	public function __construct($rkey=null,$lval=null){
+		if(!empty($rkey) && !empty($lval)){
+			$this->rkey = strtoupper(preg_replace("/[^a-zA-Z0-9s]/","_",$rkey));
+			$this->lval = $lval;
 			return $this;
 		} else {
 			return false;
 		}
 	}
 	
-	public function fill($left=null,$right=null){
-		$this->left = $left;
-		$this->right = $right;
+	public function fill($rkey=null,$lval=null){
+		$this->rkey = $rkey;
+		$this->lval = $lval;
 		return $this;
 	}
 

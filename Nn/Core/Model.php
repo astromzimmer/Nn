@@ -16,11 +16,13 @@ class Model extends Basic {
 	}
 
 	public function export($excludes=[]) {
+		$className = get_class($this);
 		$export_properties = $this->exportProperties();
 		$array = array_diff_key($export_properties, array_flip($excludes));
-		array_walk_recursive($array, function(&$val,$key){
+		array_walk_recursive($array, function(&$val,$key) use($excludes){
 			if(method_exists($val, 'exportProperties')) {
-				$val = $val->export();
+				$excl = (get_class($val) === get_class($this)) ? $excludes : [];
+				$val = $val->export($excl);
 			}
 		});
 		return $array;

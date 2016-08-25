@@ -4,10 +4,10 @@
 <div id="right">
 	<div class="manage">
 		<div class="columnHeader">
-			<a href="<?php echo DOMAIN.DS.'admin' ?>">admin &larr;</a> <a href="<?php echo DOMAIN.DS.'admin'.DS.'files' ?>">files &larr;</a>  <?php echo htmlspecialchars_decode($file->title); ?>
+			<a href="<?php echo Nn::s('DOMAIN').'/admin' ?>">admin &larr;</a> <a href="<?php echo Nn::s('DOMAIN').'/admin/files' ?>">files &larr;</a>  <?php echo htmlspecialchars_decode($file->title); ?>
 		</div>
 		<div id="file_form" class="view">
-			<form name="form1" method="post" action="<?php echo DOMAIN.DS.'admin'.DS.'files'.DS.'create' ?>" enctype="multipart/form-data">
+			<form name="form1" method="post" action="<?php echo Nn::s('DOMAIN').'/admin/files/create' ?>" enctype="multipart/form-data">
 			  <input type="hidden" name="parent_id" value="<?php echo $parent_id ?>" />
 			  <p>title:<br/>
 				<input name="title" type="text" class="formfield" id="titleField" value="" />

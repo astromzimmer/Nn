@@ -14,8 +14,6 @@ class Attribute extends \Nn\Core\DataModel {
 	protected $data_id;
 	protected $attributetype_id;
 	protected $visible;
-	protected $created_at;
-	protected $updated_at;
 
 	public static $SCHEMA = array(
 			'position' => 'integer',
@@ -23,8 +21,8 @@ class Attribute extends \Nn\Core\DataModel {
 			'node_id' => 'integer',
 			'attributetype_id' => 'integer',
 			'visible' => 'integer',
-			'created_at' => 'float',
-			'updated_at' => 'float'
+			'created_at' => 'double',
+			'updated_at' => 'double'
 		);
 
 	public function __construct($node_id=null, $attributetype_id=null, $data_id=null, $visible=1){

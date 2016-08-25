@@ -4,7 +4,7 @@
 <div id="center">
 	<div class="manage">
 		<div id="layout_form" class="edit_bg">
-			<form name="form1" method="post" action="<?php echo DOMAIN.'/admin/layouts/create' ?>">
+			<form name="form1" method="post" action="<?php echo Nn::s('DOMAIN').'/admin/layouts/create' ?>">
 				<fieldset>
 					<legend><?php echo Nn::babel('Name') ?></legend>
 				    <input type="text" name="name" class="formfield" id="nameField" value="" />

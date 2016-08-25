@@ -157,7 +157,11 @@ class Template extends Basic {
 			case 'json':
 				extract($this->vars);
 				if(isset($data)) {
-					$json_data = json_encode($data,JSON_PRETTY_PRINT);
+					if(Nn::s('DEVELOPMENT_ENV')) {
+						$json_data = json_encode($data,JSON_PRETTY_PRINT);
+					} else {
+						$json_data = json_encode($data);
+					}
 					echo $json_data;
 				}
 				break;
@@ -183,7 +187,6 @@ class Template extends Basic {
 				ROOT.DS.'Nn'.DS.'Modules'.DS.$module.DS.'views'.DS.$path.'.php'
 			]);
 		if($template) {
-			extract($vars);
 			self::output($template,$vars);
 		}
 	}

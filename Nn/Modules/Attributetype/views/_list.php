@@ -6,13 +6,16 @@
 				<div class="handle"></div>
 				<div class="grouper">
 					<div class="label">
-						<a href="<?php echo DOMAIN,DS,'admin',DS,'attributetypes',DS,'edit',DS,$at->attr('id') ?>"><?php echo $at->attr('name'); ?></a>
+						<a href="<?php echo Nn::s('DOMAIN'),'/admin/attributetypes/edit/',$at->attr('id') ?>"><?php echo $at->attr('name'); ?></a>
+					</div>
+					<div class="tools">
+						<div class="tool handle"></div>
 					</div>
 				</div>
 			</li>
 		<?php endforeach ?>
 			<li>
-				<div class="add"><a href="<?php echo DOMAIN,DS,'admin',DS,'attributetypes',DS,'make' ?>">+</a></div>
+				<div class="add"><a href="<?php echo Nn::s('DOMAIN'),'/admin/attributetypes/make' ?>">+</a></div>
 			</li>
 		</ul>
 	</div>

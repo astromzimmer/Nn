@@ -42,7 +42,7 @@ class FilesController extends Nn\Core\Controller {
 	function create() {
 		$file = new File($_POST['path'],$_POST['type'],$_POST['content']);
 		if($file->save()) {
-			redirect_to(DOMAIN.DS.'admin'.DS.'files');
+			redirect_to(Nn::s('DOMAIN').'/admin/files');
 		} else {
 			die("failed to create file");
 		}
@@ -54,7 +54,7 @@ class FilesController extends Nn\Core\Controller {
 		$file = $file->attr('type',$_POST['type']);
 		$file = $file->attr('content',$_POST['content']);
 		if($file->save()) {
-			redirect_to(DOMAIN.DS.'admin'.DS.'files');
+			redirect_to(Nn::s('DOMAIN').'/admin/files');
 		} else {
 			die("failed to update file");
 		}
@@ -63,7 +63,7 @@ class FilesController extends Nn\Core\Controller {
 	function delete($id=null) {
 		$file = File::get($id);
 		if($file->delete()) {
-			redirect_to(DOMAIN.DS.'admin'.DS.'files');
+			redirect_to(Nn::s('DOMAIN').'/admin/files');
 		}
 	}
 }

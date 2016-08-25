@@ -13,8 +13,8 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 			'href' => 'text',
 			'type' => 'short_text',
 			'size' => 'float',
-			'created_at' => 'float',
-			'updated_at' => 'float'
+			'created_at' => 'double',
+			'updated_at' => 'double'
 		);
 
 	public function exportProperties() {
@@ -22,14 +22,29 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 			'id'			=>	$this->id,
 			'title'			=>	$this->title,
 			'description'	=>	$this->description,
+			'path'			=>	$this->publicDir(),
 			'filename'		=>	$this->filename,
-			'sizes'			=>	[
-				'thumb'			=>	$this->src(172),
-				'thumb2x'		=>	$this->src(344),
-				'medium'		=>	$this->src(720),
-				'medium2x'		=>	$this->src(1440),
-				'original'		=>	$this->src(),
-			],
+			// 'sizes'			=>	[
+			// 	'colour'		=>	[
+			// 		'thumb'			=>	$this->src(172),
+			// 		'thumb2x'		=>	$this->src(344),
+			// 		'medium'		=>	$this->src(720),
+			// 		'medium2x'		=>	$this->src(1440),
+			// 		'large'			=>	$this->src(1280),
+			// 		'large2x'		=>	$this->src(2560),
+			// 		'original'		=>	$this->src()
+			// 	],
+			// 	'greyscale'		=>	[
+			// 		'thumb'			=>	$this->src(172,false,true),
+			// 		'thumb2x'		=>	$this->src(344,false,true),
+			// 		'medium'		=>	$this->src(720,false,true),
+			// 		'medium2x'		=>	$this->src(1440,false,true),
+			// 		'large'			=>	$this->src(1280,false,true),
+			// 		'large2x'		=>	$this->src(2560,false,true),
+			// 		'original'		=>	$this->src(null,false,true)
+			// 	],
+			// ],
+			'href'			=>	$this->href,
 			'type'			=>	$this->type,
 			'size'			=>	$this->size(),
 			'created_at'	=>	$this->created_at,
@@ -69,6 +84,7 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 			if(isset($bound)) $filename = $bound.'-'.$filename;
 		}
 		$path = ROOT.DS.'public'.DS.'assets'.DS.'Image'.DS.$this->id.DS.$filename;
+		// if(!file_exists($path)) {
 		if(!file_exists($path)) {
 			if(!$this->generate($bound,$is_height,$is_bw,$is_alpha)) return false;
 		}
@@ -178,7 +194,7 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 		$new_img = imagecreatetruecolor($bounds['scaled_width'], $bounds['scaled_height']);
 		imagealphablending($new_img, false);
 		imagesavealpha($new_img, true);
-		imagecopyresampled($new_img, $this->_img, 0, 0, 0, 0, $bounds['scaled_width'], $bounds['scaled_height'], $bounds['original_width'], $bounds['original_height']);
+		imagecopyresampled($new_img, $this->_img, -1, -1, 0, 0, $bounds['scaled_width']+2, $bounds['scaled_height']+2, $bounds['original_width'], $bounds['original_height']);
 		$filename = $this->filename;
 		if($is_bw) {
 			imagefilter($new_img,IMG_FILTER_GRAYSCALE);

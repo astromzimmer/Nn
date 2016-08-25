@@ -46,7 +46,7 @@ class TablesController extends Nn\Core\Controller {
 			if($table->save()) {
 				$attribute = new Attribute($node_id,$_POST['atype_id'],$table->attr('id'));
 				if($attribute->save()) {
-					Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
+					Utils::redirect(Nn::settings('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 				} else {
 					$table->delete();
 					Nn::flash(['error'=>Nn::babel('Failed to register attribute')]);
@@ -71,7 +71,7 @@ class TablesController extends Nn\Core\Controller {
 			$attributetype_id = $_POST['attributetype_id'];
 			$attribute->attr('attributetype_id',$attributetype_id);
 			$attribute->save();
-			Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
+			Utils::redirect(Nn::settings('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 		} else {
 			die(print_r($table->errors));
 		}

@@ -12,7 +12,6 @@ use Utils;
 class Node extends Nn\Core\DataModel {
 	
 	# Practice: always set init values, for class property casting
-	protected $id;
 	protected $slug;
 	protected $permalink;
 	protected $position;
@@ -20,8 +19,6 @@ class Node extends Nn\Core\DataModel {
 	protected $title;
 	protected $nodetype_id;
 	protected $author_id;
-	protected $created_at;
-	protected $updated_at;
 	protected $parent_id;
 
 	public static $SCHEMA = array(
@@ -32,8 +29,8 @@ class Node extends Nn\Core\DataModel {
 			'title' => 'short_text',
 			'nodetype_id' => 'integer',
 			'author_id' => 'integer',
-			'created_at' => 'float',
-			'updated_at' => 'float',
+			'created_at' => 'double',
+			'updated_at' => 'double',
 			'parent_id' => 'integer'
 		);
 
@@ -42,7 +39,7 @@ class Node extends Nn\Core\DataModel {
 			'id'			=>	$this->id,
 			'uid'			=>	'N_'.$this->id,
 			'position'		=>	$this->position,
-			'raw_title'		=>	$this->title(true),
+			'raw_title'		=>	$this->title,
 			'source'		=>	'node',
 			'title'			=>	$this->title(),
 			'path'			=>	$this->path(),
@@ -154,7 +151,7 @@ class Node extends Nn\Core\DataModel {
 	public function permalink($abs=false) {
 		if(!isset($this->permalink) || empty($this->permalink)) {
 			$navigation_tree = $this->navigation_tree(true);
-			$permalink = $abs ? DOMAIN : '';
+			$permalink = $abs ? Nn::s('DOMAIN') : '';
 			foreach($navigation_tree as $parent) {
 				$permalink .= '/'.$parent->slug();
 			}

@@ -12,7 +12,9 @@ class Table extends Nn\Modules\Attachment\Attachment {
 			'title' => 'short_text',
 			'description' => 'text',
 			'filename' => 'short_text',
-			'content' => 'long_text'
+			'content' => 'long_text',
+			'created_at' => 'double',
+			'updated_at' => 'double'
 		);
 
 	public function make($title, $description, $file){

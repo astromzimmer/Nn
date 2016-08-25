@@ -26,6 +26,11 @@ exports.config =
 			joinTo: 'js/dontUseMe'
 
 	paths:
+		watched: [
+			'app',
+			'../../Nn',
+			'../../App'
+		]
 		public: '../../public/backnn'
 
 	sourceMaps: false
@@ -45,7 +50,7 @@ exports.config =
 			plugins: ['autoprefixer-stylus']
 
 	server:
-		port: 1234
+		port: 5678
 
 	overrides:
 		production:

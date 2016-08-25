@@ -3,6 +3,7 @@
 namespace Nn\Core;
 use Nn\Modules\User\User as User;
 use Nn;
+use Utils;
 
 class Session {
 
@@ -10,6 +11,7 @@ class Session {
 	private $user_id;
 	public $flash;
 	private $referer;
+	private $expire_after = 30*60; // 30 min
 	
 	function __construct(){
 		if(!session_start()) {
@@ -47,6 +49,7 @@ class Session {
 		if($user){
 			$this->user_id = $_SESSION['user_id'] = $user->attr('id');
 			$this->logged_in = true;
+			$this->touch();
 		}
 	}
 	
@@ -73,15 +76,20 @@ class Session {
 	public function referer() {
 		return $this->referer;
 	}
+
+	private function touch() {
+		$_SESSION['last_touched'] = time();
+	}
 	
 	private function check_login(){
-		if(isset($_SESSION['user_id']) && User::find($_SESSION['user_id'])){
+		if(!isset($_SESSION['last_touched']) || $_SESSION['last_touched'] < time()-$this->expire_after) {
+			$this->logout();
+		} else if(isset($_SESSION['user_id']) && User::find($_SESSION['user_id'])){
+			$this->touch();
 			$this->user_id = $_SESSION['user_id'];
 			$this->logged_in = true;
 		} else {
-			unset($_SESSION['user_id']);
-			unset($this->user_id);
-			$this->logged_in = false;
+			$this->logout();
 		}
 	}
 

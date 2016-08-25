@@ -1,4 +1,5 @@
 <div id="node">
+<?php if(isset($node)): ?>
 	<div class="node" data-id="<?php echo $node->attr('id') ?>">
 		<div class="header maximised">
 			<ul>
@@ -6,17 +7,17 @@
 					<label><?php echo Nn::babel('Type') ?>:</label> <?php echo $node->type(); ?>	
 				</li>
 				<li class="meta">
-					<label><?php echo Nn::babel('Created') ?>:</label> <?php echo strftime(DATE_FORMAT,$node->attr('created_at')); ?>	
+					<label><?php echo Nn::babel('Created') ?>:</label> <?php echo strftime(Nn::s('DATE_FORMAT'),$node->attr('created_at')); ?>	
 				</li>
 				<li class="meta">
-					<label><?php echo Nn::babel('Last edited') ?>:</label> <?php echo strftime(DATE_FORMAT,$node->attr('updated_at')); ?>	
+					<label><?php echo Nn::babel('Last edited') ?>:</label> <?php echo strftime(Nn::s('DATE_FORMAT'),$node->attr('updated_at')); ?>	
 				</li>
 				<!-- <li class="meta">
 					<label><?php echo Nn::babel('Slug') ?>:</label> <?php echo Utils::ellipsis($node->permalink(),32); ?>
 				</li> -->
 				<li class="tools">
-					<a class="edit" href="<?php echo DOMAIN.DS.'admin'.DS.'nodes'.DS.'edit'.DS.$node->attr('id') ?>" data-tooltip="<?php echo Nn::babel('edit') ?>" data-target="center" data-ajax><?php echo Utils::UIIcon('edit'); ?>
-					</a><a class="trash" href="<?php echo DOMAIN.DS.'admin'.DS.'nodes'.DS.'delete'.DS.$node->attr('id') ?>" data-tooltip="<?php echo Nn::babel('trash') ?>" data-target="center" data-ajax><?php echo Utils::UIIcon('trash'); ?>
+					<a class="edit" href="<?php echo Nn::s('DOMAIN').'/admin/nodes/edit/'.$node->attr('id') ?>" data-tooltip="<?php echo Nn::babel('edit') ?>" data-target="center" data-ajax><?php echo Utils::UIIcon('edit'); ?>
+					</a><a class="trash" href="<?php echo Nn::s('DOMAIN').'/admin/nodes/delete/'.$node->attr('id') ?>" data-tooltip="<?php echo Nn::babel('trash') ?>" data-target="center" data-ajax><?php echo Utils::UIIcon('trash'); ?>
 					</a><a class="visibility_toggle<?php echo ($node->attr('visible')) ? ' visible' : '' ?>" href="#" data-target_collection="nodes" data-target_id="<?php echo $node->attr('id') ?>" data-tooltip="<?php echo Nn::babel('Toggle visibility') ?>">
 						<span class="visible"><?php echo Utils::UIIcon("visible"); ?></span>
 						<span class="invisible"><?php echo Utils::UIIcon("invisible"); ?></span>
@@ -33,7 +34,7 @@
 					data-tooltip="<?php echo Nn::babel('Add') ?> <?php echo $attributetype->attr('name') ?>"
 					data-target="center"
 					data-ajax
-				><?php echo $attributetype->icon(); ?></a><?php endforeach; ?>
+				><div class="icn"><?php echo $attributetype->icon(); ?></div></a><?php endforeach; ?>
 				<?php endif; ?>
 			</div>
 			<div class="tools right">
@@ -46,4 +47,5 @@
 			<?php Nn::partial('Attribute','_list',array('node'=>$node,'dtype'=>$dtype,'atype'=>$atype,'attr_id'=>$attr_id)); ?>
 		</div>
 	</div>
+<?php endif ?>
 </div>

@@ -7,11 +7,11 @@
 			<h3><?php echo htmlspecialchars_decode($file->path()); ?></h3>
 			<div class="meta">
 				<label>type:</label> <?php echo $file->attr('extension'); ?><br/>
-				<label>last edited:</label> <?php echo strftime(DATE_FORMAT,$file->updated_at()); ?><br/>
+				<label>last edited:</label> <?php echo strftime(Nn::s('DATE_FORMAT'),$file->updated_at()); ?><br/>
 			</div>
 			<div class="tools">
-				<a class="edit" href="<?php echo DOMAIN.DS.'admin'.DS.'files'.DS.'edit'.DS.$file->attr('id') ?>"><?php Utils::UIIcon('edit'); ?>
-				</a><a class="trash" href="<?php echo DOMAIN.DS.'admin'.DS.'files'.DS.'delete'.DS.$file->attr('id') ?>"><?php Utils::UIIcon('trash'); ?></a>
+				<a class="edit" href="<?php echo Nn::s('DOMAIN').'/admin/files/edit/'.$file->attr('id') ?>"><?php Utils::UIIcon('edit'); ?>
+				</a><a class="trash" href="<?php echo Nn::s('DOMAIN').'/admin/files/delete/'.$file->attr('id') ?>"><?php Utils::UIIcon('trash'); ?></a>
 			</div>
 		</div>
 		<div id="code-editor" class="read-only"><?php echo $file->escaped_content() ?></div>

@@ -10,8 +10,8 @@ class Role extends Nn\Core\DataModel {
 
 	public static $SCHEMA = array(
 			'name' => 'short_text',
-			'created_at' => 'float',
-			'updated_at' => 'float'
+			'created_at' => 'double',
+			'updated_at' => 'double'
 		);
 	
 	public function __construct($name=null){

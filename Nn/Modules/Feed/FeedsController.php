@@ -14,7 +14,7 @@ class FeedsController extends Nn\Core\Controller {
 
 	function authorise($service=null,$feed_id=null) {
 		$feed = isset($feed_id) ? Feed::find(['id'=>$feed_id],1,null,false) : false;
-		$redirect_uri = DOMAIN."/feeds/authorise/{$service}";
+		$redirect_uri = Nn::s('DOMAIN')."/feeds/authorise/{$service}";
 		switch ($service) {
 			case 'instagram':
 				$client_id = '88527677285c4d148741b17e346109df';
@@ -41,7 +41,7 @@ class FeedsController extends Nn\Core\Controller {
 						];
 						$feed->attr('auth',json_encode($auth));
 						if($feed->save()) {
-							Utils::redirect(DOMAIN."/feeds/authorise/done");
+							Utils::redirect(Nn::s('DOMAIN')."/feeds/authorise/done");
 						} else {
 							Nn::flash(['error'=>Nn::babel('Oups. Could not save.')]);
 						}
@@ -59,7 +59,7 @@ class FeedsController extends Nn\Core\Controller {
 					Nn::flash(['error'=>Nn::babel('Something wrong with your URL. Please contact whoever gave it to you, and ask them to double-check it.')]);
 					break;
 				}
-				$redirect_uri = DOMAIN."/feeds/authorise/{$service}/{$feed_id}";
+				$redirect_uri = Nn::s('DOMAIN')."/feeds/authorise/{$service}/{$feed_id}";
 				$client_id = '188474151324215';
 				$client_secret = '8f4e8fb0f91b41252ba71390d484a4d9';
 				if(Utils::is('POST')) {
@@ -102,7 +102,7 @@ class FeedsController extends Nn\Core\Controller {
 								];
 								$feed->attr('auth',json_encode($auth));
 								if($feed->save()) {
-									Utils::redirect(DOMAIN."/feeds/authorise/done");
+									Utils::redirect(Nn::s('DOMAIN')."/feeds/authorise/done");
 								} else {
 									Nn::flash(['error'=>Nn::babel('Oups. Could not save.')]);
 								}
@@ -144,7 +144,7 @@ class FeedsController extends Nn\Core\Controller {
 		} else {
 			Nn::flash(['error'=>Nn::babel("Didn't work. Perhaps you'll have to ask the user to authorise ".Nn::settings('PAGE_NAME'))]);
 		}
-		Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$feed->node()->attr('id'));
+		Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$feed->node()->attr('id'));
 	}
 
 	function create() {
@@ -167,7 +167,7 @@ class FeedsController extends Nn\Core\Controller {
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 		}
-		Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
+		Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 	}
 	
 	function update($id=null) {
@@ -192,7 +192,7 @@ class FeedsController extends Nn\Core\Controller {
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
 		}
-		Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
+		Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 	}
 
 	function toggle() {

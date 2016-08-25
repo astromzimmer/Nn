@@ -25,7 +25,7 @@ class IntegersController extends Nn\Core\Controller {
 		if($integer->save()) {
 			$attribute = new Attribute($node_id,$_POST['atype_id'],$integer->attr('id'));
 			if($attribute->save()) {
-				Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
+				Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node_id);
 			} else {
 				$integer->delete();
 				Nn::flash(['error'=>Nn::babel("Failed to register attribute")]);
@@ -52,7 +52,7 @@ class IntegersController extends Nn\Core\Controller {
 			$attributetype_id = $_POST['attributetype_id'];
 			$attribute->attr('attributetype_id',$attributetype_id);
 			$attribute->save();
-			Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$integer->node()->attr('id'));
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$integer->node()->attr('id'));
 		} else {
 			die("failed to update number");
 		}

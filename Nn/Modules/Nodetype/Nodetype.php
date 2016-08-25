@@ -27,8 +27,8 @@ class Nodetype extends Nn\Core\DataModel {
 			'layout_id' => 'integer',
 			'can_be_root' => 'integer',
 			'position' => 'integer',
-			'created_at' => 'float',
-			'updated_at' => 'float'
+			'created_at' => 'double',
+			'updated_at' => 'double'
 		);
 	
 	public function __construct($name=null, $icon=null, $colour=null, $can_be_root=null, $attributetypes=null, $nodetypes=null, $layout_id=null){

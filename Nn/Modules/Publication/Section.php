@@ -14,8 +14,8 @@ class Section extends Nn\Core\DataModel {
 			'layout_id' => 'integer',
 			'node_id' => 'integer',
 			'markup' => 'long_text',
-			'created_at' => 'float',
-			'updated_at' => 'float'
+			'created_at' => 'double',
+			'updated_at' => 'double'
 		];
 
 	public function markup() {

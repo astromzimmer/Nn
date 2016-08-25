@@ -77,11 +77,12 @@ class AttributetypesController extends Nn\Core\Controller {
 	}
 	
 	function create() {
+		$icon = isset($_POST['icon']) ? $_POST['icon'] : null;
 		$params = (isset($_POST['params'])) ? $_POST['params'] : null;
 		$default_value = (isset($_POST['default_value'])) ? $_POST['default_value'] : null;
-		$attributetype = new Attributetype($_POST['name'],$_POST['datatype'],$params,$default_value);
+		$attributetype = new Attributetype($_POST['name'],$_POST['datatype'],$icon,$params,$default_value);
 		if($attributetype->save()) {
-			Utils::redirect(DOMAIN.'/admin/attributetypes');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/attributetypes');
 		} else {
 			die("failed to create attributetype");
 		}
@@ -113,12 +114,13 @@ class AttributetypesController extends Nn\Core\Controller {
 	}
 	
 	function update($id=null) {
+		$icon = isset($_POST['icon']) ? $_POST['icon'] : null;
 		$params = (isset($_POST['params'])) ? $_POST['params'] : null;
 		$default_value = (isset($_POST['default_value'])) ? $_POST['default_value'] : null;
 		$attributetype = Attributetype::find($id);
-		$attributetype->fill($_POST['name'],$_POST['datatype'],$params,$default_value);
+		$attributetype->fill($_POST['name'],$_POST['datatype'],$icon,$params,$default_value);
 		if($attributetype->save()) {
-			Utils::redirect(DOMAIN.'/admin/attributetypes');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/attributetypes');
 		} else {
 			die("failed to update attribute type");
 		}
@@ -128,14 +130,14 @@ class AttributetypesController extends Nn\Core\Controller {
 		$attributes = Attribute::find(['attributetype_id'=>$id]);
 		if($attributes) {
 			Nn::flash(['error'=>Nn::babel('There are '.count($attributes).' attribute(s) of this type. Please remove before continuing.')]);
-			Utils::redirect(DOMAIN.'/admin/attributetypes/edit/'.$id);
+			Utils::redirect(Nn::s('DOMAIN').'/admin/attributetypes/edit/'.$id);
 		} else {
 			$attributetype = Attributetype::find($id);
 			if(!$attributetype->delete()) {
 				Nn::flash(['error'=>Nn::babel('Something went wrong. Please contact site admin.')]);
-				Utils::redirect(DOMAIN.'/admin/attributetypes/edit/'.$id);
+				Utils::redirect(Nn::s('DOMAIN').'/admin/attributetypes/edit/'.$id);
 			}
-			Utils::redirect(DOMAIN.'/admin/attributetypes');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/attributetypes');
 		}
 	}
 }

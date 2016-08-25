@@ -4,7 +4,7 @@
 <div id="center">
 	<div class="manage">
 		<div id="nodetype_form" class="edit_bg">
-			<form name="form1" method="post" action="<?php echo DOMAIN.DS.'admin'.DS.'nodetypes'.DS.'create' ?>">
+			<form name="form1" method="post" action="<?php echo Nn::settings('DOMAIN').'/admin/nodetypes/create' ?>">
 				<fieldset>
 					<legend><?php echo Nn::babel('Name') ?></legend>
 				    <input type="text" name="name" class="formfield" id="nameField" value="" />
@@ -47,12 +47,7 @@
 				</fieldset>
 				<fieldset>
 					<legend><?php echo Nn::babel('Icon') ?>:</legend>
-					<input type="radio" name="icon" value="null" checked="checked"><?php echo Nn::babel('None') ?>&nbsp;
-					<span class="fontawesome">
-						<?php foreach($icons as $key=>$val): ?>
-						<input type="radio" name="icon" value="<?php echo $key ?>" ><?php echo $val ?>&nbsp;
-						<?php endforeach; ?>
-					</span>
+					<input type="text" name="icon" class="formfield" id="iconField" value="" />
 				</fieldset>
 				<br/>
 				<div class="submit">

@@ -15,7 +15,7 @@
 		}
 
 		private static function unlinkWithPrefix($prefix) {
-			$mask = Nn::settings('CACHE_DIR').DS.$prefix.'*';
+			$mask = Nn::settings('DIRS')['CACHE'].DS.$prefix.'*';
 			clearstatcache();
 			foreach(glob($mask) as $path) {
 				if(is_file($path)) {
@@ -29,10 +29,10 @@
 		}
 
 		public function filePath($id) {
-			if(!is_dir(Nn::settings('CACHE_DIR'))) {
-				mkdir(Nn::settings('CACHE_DIR'),0755,true);
+			if(!is_dir(Nn::settings('DIRS')['CACHE'])) {
+				mkdir(Nn::settings('DIRS')['CACHE'],0755,true);
 			}
-			return Nn::settings('CACHE_DIR').DS.$id.'.cache';
+			return Nn::settings('DIRS')['CACHE'].DS.$id.'.cache';
 		}
 		
 		public function set($id,$data) {

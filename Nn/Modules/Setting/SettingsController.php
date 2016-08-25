@@ -35,7 +35,7 @@ class SettingsController extends Nn\Core\Controller {
 	function create() {
 		$setting = new Setting($_POST['name'],$_POST['value'],$_POST['description']);
 		if($setting->save()) {
-			Utils::redirect(DOMAIN.DS.'admin'.DS.'settings');
+			Utils::redirect(Nn::settings('DOMAIN').'/admin/settings');
 		} else {
 			die("failed to create setting");
 		}
@@ -54,7 +54,7 @@ class SettingsController extends Nn\Core\Controller {
 		$setting = Setting::find($id);
 		$setting = $setting->fill($_POST['name'],$_POST['value'],$_POST['description']);
 		if($setting->save()) {
-			Utils::redirect(DOMAIN.DS.'admin'.DS.'settings');
+			Utils::redirect(Nn::settings('DOMAIN').'/admin/settings');
 		} else {
 			die("failed to update setting");
 		}
@@ -63,7 +63,7 @@ class SettingsController extends Nn\Core\Controller {
 	function delete($id=null) {
 		$setting = Setting::find($id);
 		if($setting->delete()) {
-			Utils::redirect(DOMAIN.DS.'admin'.DS.'settings');
+			Utils::redirect(Nn::settings('DOMAIN').'/admin/settings');
 		}
 	}
 }

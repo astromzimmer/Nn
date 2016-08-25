@@ -6,7 +6,7 @@
 			<li class="form<?php if(isset($form) && $frm == $form) echo ' focus' ?>" id="form_<?php echo $frm->attr('id') ?>">
 				<div class="grouper">
 					<div class="label">
-						<a href="<?php echo DOMAIN.DS.'admin'.DS.'forms'.DS.'view'.DS.$frm->attr('id') ?>">
+						<a href="<?php echo Nn::s('DOMAIN').'/admin/forms/view/'.$frm->attr('id') ?>">
 							<span class="fa <?php echo $frm->attr('icon') ?>"></span>
 							<?php echo $frm->attr('name'); ?>
 						</a>

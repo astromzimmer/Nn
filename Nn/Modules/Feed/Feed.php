@@ -22,8 +22,8 @@ class Feed extends Nn\Modules\Datatype\Datatype {
 			'hashtag' => 'short_text',
 			'since' => 'integer',
 			'until' => 'integer',
-			'created_at' => 'float',
-			'updated_at' => 'float'
+			'created_at' => 'double',
+			'updated_at' => 'double'
 		);
 
 	public static $PARAMS = array(

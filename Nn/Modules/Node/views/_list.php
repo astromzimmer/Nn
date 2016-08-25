@@ -1,4 +1,4 @@
-<?php $is_active = ($node && (in_array($n,$node->navigation_tree()))) ?>
+<?php $is_active = ($node && (in_array($n->attr('id'),$node->navigation_tree()))) ?>
 <?php $is_in_focus = ($node && ($n == $node)) ?>
 <li
 	style="background-color:<?php echo $n->nodetype()->attr('colour') ?>;"
@@ -12,7 +12,7 @@
 		<?php endif; ?>
 		<div class="label">
 			<a
-				href="<?php echo DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$n->attr('id') ?>"
+				href="<?php echo Nn::settings('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$n->attr('id') ?>"
 				data-target="center"
 				data-ajax
 				><?php if($icon = $n->nodetype()->attr('icon')): ?><span
@@ -34,7 +34,7 @@
 		<?php endif; ?>
 		<li>
 			<div class="add"><a
-				href="<?php echo DOMAIN.'/admin/nodes/make/in/'.$n->attr('id') ?>"
+				href="<?php echo Nn::settings('DOMAIN').'/admin/nodes/make/in/'.$n->attr('id') ?>"
 				data-tooltip="<?php echo Nn::babel('New node in'); ?> <?php echo $n->attr('title'); ?>"
 				data-target="center"
 				data-ajax

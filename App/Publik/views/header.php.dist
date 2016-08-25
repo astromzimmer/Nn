@@ -11,9 +11,10 @@
 
     <base target="_blank" />
 
-    <title> <?php echo PAGE_NAME ?> </title>
+    <title> <?php echo Nn::s('PAGE_NAME') ?> </title>
 
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,700,900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
     <?php
       $platform = (Utils::is_mobile()) ? 'mobile' : 'desktop';
       $files = [

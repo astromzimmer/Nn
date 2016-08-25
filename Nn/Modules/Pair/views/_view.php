@@ -1,3 +1,3 @@
-<div id="keyval<?php echo htmlentities($keyval->attr('id')); ?>-content" class="keyval">
-	<?php echo $keyval->attr('key') ?>: <?php echo $keyval->attr('value') ?>
+<div id="pair<?php echo htmlentities($pair->attr('id')); ?>-content" class="pair">
+	<?php echo $pair->attr('rkey') ?>: <?php echo $pair->attr('lval') ?>
 </div>

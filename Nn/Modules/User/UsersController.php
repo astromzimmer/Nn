@@ -51,10 +51,10 @@ class UsersController extends Nn\Core\Controller {
 		$role->attr('name',$_POST['name']);
 		if($role->save()) {
 			Nn::flash(['success'=>Nn::babel('User role created successfully')]);
-			Utils::redirect(DOMAIN.DS.'admin'.DS.'users');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/users');
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
-			Utils::redirect(DOMAIN.DS.'admin'.DS.'users'.DS.'manage_role');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/users/manage_role');
 		}
 	}
 	
@@ -63,17 +63,17 @@ class UsersController extends Nn\Core\Controller {
 		$role->attr('name',$_POST['name']);
 		if($role->save()) {
 			Nn::flash(['success'=>Nn::babel('User role updated successfully')]);
-			Utils::redirect(DOMAIN.DS.'admin'.DS.'users');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/users');
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
-			Utils::redirect(DOMAIN.DS.'admin'.DS.'users'.DS.'manage_role'.DS.$role->attr('id'));
+			Utils::redirect(Nn::s('DOMAIN').'/admin/users/manage_role/'.$role->attr('id'));
 		}
 	}
 	
 	function delete_role($id=null) {
 		$role = Role::find($id);
 		if($role->delete()) {
-			Utils::redirect(DOMAIN.DS.'admin'.DS.'users');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/users');
 		}
 	}
 	
@@ -110,10 +110,10 @@ class UsersController extends Nn\Core\Controller {
 		$user = new User($_POST['first_name'], $_POST['last_name'], $_POST['uid'], $_POST['pwd'], $_POST['role_id']);
 		if($user->save()) {
 			Nn::flash(['success'=>Nn::babel('User created successfully')]);
-			Utils::redirect(DOMAIN.DS.'admin'.DS.'users');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/users');
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
-			Utils::redirect(DOMAIN.DS.'admin'.DS.'users'.DS.'manage'.DS.$user->attr('id'));
+			Utils::redirect(Nn::s('DOMAIN').'/admin/users/manage/'.$user->attr('id'));
 		}
 	}
 	
@@ -122,17 +122,17 @@ class UsersController extends Nn\Core\Controller {
 		$user->fill($_POST['first_name'], $_POST['last_name'], $_POST['uid'], $_POST['pwd']);
 		if($user->save()) {
 			Nn::flash(['success'=>Nn::babel('User updated successfully')]);
-			Utils::redirect(DOMAIN.DS.'admin'.DS.'users');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/users');
 		} else {
 			Nn::flash(['error'=>Nn::babel('Error! Please contact site admin')]);
-			Utils::redirect(DOMAIN.DS.'admin'.DS.'users'.DS.'manage'.DS.$user->attr('id'));
+			Utils::redirect(Nn::s('DOMAIN').'/admin/users/manage/'.$user->attr('id'));
 		}
 	}
 	
 	function delete($id=null) {
 		$user = User::find($id);
 		if($user->delete()) {
-			Utils::redirect(DOMAIN.DS.'admin'.DS.'users');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/users');
 		}
 	}
 	

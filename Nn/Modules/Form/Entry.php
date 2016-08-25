@@ -15,8 +15,8 @@ class Entry extends Nn\Core\DataModel {
 			'form_id' => 'integer',
 			'data' => 'long_text',
 			'files' => 'text',
-			'created_at' => 'float',
-			'updated_at' => 'float'
+			'created_at' => 'double',
+			'updated_at' => 'double'
 		);
 	
 	public function __construct($form_id=null){

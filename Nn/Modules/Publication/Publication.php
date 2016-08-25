@@ -12,8 +12,8 @@ class Publication extends Nn\Core\DataModel {
 	public static $SCHEMA = array(
 			'title' => 'short_text',
 			'nodes' => 'text',
-			'created_at' => 'float',
-			'updated_at' => 'float'
+			'created_at' => 'double',
+			'updated_at' => 'double'
 		);
 
 	public function exportProperties($excludes=array()) {

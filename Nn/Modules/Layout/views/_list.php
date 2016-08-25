@@ -7,7 +7,7 @@
 				<div class="handle"></div>
 				<div class="grouper">
 					<div class="label">
-						<a href="<?php echo DOMAIN.DS.'admin'.DS.'layouts'.DS.'edit'.DS.$lot->attr('id') ?>"><?php echo $lot->attr('name'); ?></a>
+						<a href="<?php echo Nn::s('DOMAIN').'/admin/layouts/edit/'.$lot->attr('id') ?>"><?php echo $lot->attr('name'); ?></a>
 					</div>
 				</div>
 			</li>
@@ -15,7 +15,7 @@
 		<?php endif ?>
 			<li>
 				<div class="add">
-					<a href="<?php echo DOMAIN.DS.'admin'.DS.'layouts'.DS.'make' ?>">+</a>
+					<a href="<?php echo Nn::s('DOMAIN').'/admin/layouts/make' ?>">+</a>
 				</div>
 			</li>
 		</ul>

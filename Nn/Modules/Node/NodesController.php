@@ -18,9 +18,7 @@ class NodesController extends Nn\Core\Controller {
 	function index() {
 		$nodes = Node::find(array('parent_id'=>0),null,'position');
 		$this->setTemplateVars([
-				'node'=> false
-			]);
-		$this->setTemplateVars([
+				'node'=> false,
 				'nodes'=> $nodes
 			]);
 	}
@@ -28,7 +26,7 @@ class NodesController extends Nn\Core\Controller {
 	function tree($node=null) {
 		$nodes = Node::find(array('parent_id'=>0),null,'position');
 		if(!is_object($node)) {
-			$node = (isset($node) && $node != 0) ? Node::find($node) : new Node();
+			$node = (isset($node) && intval($node) != 0) ? Node::find($node) : new Node();
 		}
 		$this->setTemplateVars([
 				'node' => $node,
@@ -40,6 +38,7 @@ class NodesController extends Nn\Core\Controller {
 		$nodes = Node::find(array('parent_id'=>0),null,'position');
 		$dtype = null;
 		$atype = null;
+		$attr_id = null;
 		if(isset($atype_id) && is_int($atype_id)) {
 			$atype = Attributetype::find($atype_id);
 			$dtype = $atype->attr('datatype');
@@ -114,7 +113,7 @@ class NodesController extends Nn\Core\Controller {
 	function reset($id) {
 		$section = Section::find(['node_id'=>$id],1);
 		if($section->delete()) {
-			Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$id);
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$id);
 		}
 	}
 
@@ -182,9 +181,9 @@ class NodesController extends Nn\Core\Controller {
 		$node = new Node($_POST['title'],Nn::session()->user_id(),$_POST['parent_id'],$_POST['nodetype_id']);
 		if($node->save()) {
 			Nn::cache()->flush('api_getPosts_');
-			Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node->attr('id'));
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node->attr('id'));
 		} else {
-			Utils::redirect(DOMAIN.'/admin/nodes/make');
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/make');
 		}
 	}
 	
@@ -194,9 +193,9 @@ class NodesController extends Nn\Core\Controller {
 		$node->fill($_POST['title'],$_POST['permalink'],$parent_id,$_POST['nodetype_id']);
 		if($node->save()) {
 			Nn::cache()->flush('api_getPosts_');
-			Utils::redirect(DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$id);
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$id);
 		} else {
-			Utils::redirect(DOMAIN.'/admin/nodes/edit/'.$id);
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/edit/'.$id);
 		}
 	}
 	
@@ -206,7 +205,7 @@ class NodesController extends Nn\Core\Controller {
 		$redirect_path = ($parent_id != 0) ? '/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$parent_id : '/admin/nodes';
 		if($node->recursive_delete()) {
 			Nn::cache()->flush('api_getPosts_');
-			Utils::redirect(DOMAIN.$redirect_path);
+			Utils::redirect(Nn::s('DOMAIN').$redirect_path);
 		} else {
 			die(print_r($node->errors));
 		}

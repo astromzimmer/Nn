@@ -6,13 +6,13 @@
 		<div id="role_form" class="view">
 		<?php if(isset($role)) : ?>
 		<div id="role_form" class="view">
-			<form name="form1" method="post" action="<?php echo DOMAIN.'/admin/users/update_role/'.$role->attr('id'); ?>" enctype="multipart/form-data">
+			<form name="form1" method="post" action="<?php echo Nn::s('').'/admin/users/update_role/'.$role->attr('id'); ?>" enctype="multipart/form-data">
 			  <fieldset>
 				<legend><?php echo Nn::babel('Name') ?></legend>
 			    <input name="name" type="text" class="formfield" id="NField" value="<?php echo $role->attr('name') ?>" />
 			  </fieldset>
 		<?php else : ?>
-			<form name="form1" method="post" action="<?php echo DOMAIN.'/admin/users/create_role'; ?>" enctype="multipart/form-data">
+			<form name="form1" method="post" action="<?php echo Nn::s('').'/admin/users/create_role'; ?>" enctype="multipart/form-data">
 			  <fieldset>
 				<legend><?php echo Nn::babel('Name') ?></legend>
 			    <input name="name" type="text" class="formfield" id="NField" value="" />
@@ -23,7 +23,7 @@
 			  </div>
 			</form>
 			<div class="tools">
-				<a class="trash" href="<?php echo DOMAIN.'/admin/users/delete_role/'.$role->attr('id') ?>" data-tooltip="<?php echo Nn::babel('Trash') ?>"><?php Utils::UIIcon('trash'); ?></a>
+				<a class="trash" href="<?php echo Nn::s('').'/admin/users/delete_role/'.$role->attr('id') ?>" data-tooltip="<?php echo Nn::babel('Trash') ?>"><?php Utils::UIIcon('trash'); ?></a>
 			</div>
 		</div>
 	</div>

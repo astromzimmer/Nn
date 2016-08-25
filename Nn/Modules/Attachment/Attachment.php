@@ -32,8 +32,8 @@ class Attachment extends Nn\Modules\Datatype\Datatype {
 			'filename' => 'short_text',
 			'type' => 'short_text',
 			'size' => 'float',
-			'created_at' => 'float',
-			'updated_at' => 'float'
+			'created_at' => 'double',
+			'updated_at' => 'double'
 		);
 
 	public function exportProperties() {

@@ -60,6 +60,18 @@ class DefController extends Nn\Core\Controller {
 			]);
 	}
 
+	function halftone($id) {
+		$image = Image::find($id);
+		$img = imagecreatefromjpeg($image->path());
+		imagefilter($img,IMG_FILTER_COLORIZE,255,0,0,0);
+		imagetruecolortopalette($img, TRUE, 2);
+		imagefilter($img,IMG_FILTER_PIXELATE,3);
+		$this->renderMode('image','image/jpg');
+		$this->setTemplateVars([
+				'data'=>$img
+			]);
+	}
+
 	function privacy() {
 		
 	}

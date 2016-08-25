@@ -4,7 +4,7 @@
 <div id="center">
 	<div class="manage">
 		<div id="layout_form" class="edit_bg">
-			<form name="form1" method="post" action="<?php echo DOMAIN.'/admin/layouts/update/'.$layout->attr('id') ?>">
+			<form name="form1" method="post" action="<?php echo Nn::s('DOMAIN').'/admin/layouts/update/'.$layout->attr('id') ?>">
 				<fieldset>
 					<legend><?php echo Nn::babel('Name') ?></legend>
 				    <input type="text" name="name" class="formfield" id="nameField" value="<?php echo $layout->attr('name'); ?>">

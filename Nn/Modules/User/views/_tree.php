@@ -7,7 +7,7 @@
 				<div class="grouper">
 					<div class="expander"></div>
 					<div class="label">
-						<a href="<?php echo DOMAIN.'/admin/users/manage_role/'.$r->attr('id') ?>"><?php echo $r->attr('name') ?></a>
+						<a href="<?php echo Nn::settings('DOMAIN').'/admin/users/manage_role/'.$r->attr('id') ?>"><?php echo $r->attr('name') ?></a>
 					</div>
 				</div>
 				<ul id="0_users" class="submenu">
@@ -16,14 +16,14 @@
 					<li class="user<?php if(isset($focus) && $u == $focus) echo ' focus' ?>" id="user_<?php echo $u->attr('id') ?>">
 						<div class="grouper">
 							<div class="label">
-								<a href="<?php echo DOMAIN,DS,'admin',DS,'users',DS,'manage',DS,$u->attr('id') ?>"><?php echo $u->full_name(); ?></a>
+								<a href="<?php echo Nn::settings('DOMAIN'),'/admin/users/manage/',$u->attr('id') ?>"><?php echo $u->full_name(); ?></a>
 							</div>
 						</div>
 					</li>
 					<?php endforeach ?>
 					<?php endif; ?>
 					<li>
-						<div class="add"><a href="<?php echo DOMAIN.'/admin/users/manage/in/'.$r->attr('id') ?>">+</a></div>
+						<div class="add"><a href="<?php echo Nn::settings('DOMAIN').'/admin/users/manage/in/'.$r->attr('id') ?>">+</a></div>
 					</li>
 				</ul>
 			</li>
@@ -32,7 +32,7 @@
 		<?php if(Nn::authenticated('super')): ?>
 			<li>
 				<div class="add">
-					<a href="<?php echo DOMAIN.'/admin/users/manage_role' ?>">+</a>
+					<a href="<?php echo Nn::settings('DOMAIN').'/admin/users/manage_role' ?>">+</a>
 				</div>
 			</li>
 		<?php endif; ?>

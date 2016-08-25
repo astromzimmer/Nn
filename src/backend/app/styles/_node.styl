@@ -59,6 +59,16 @@ body
 										padding-right 16px
 							&.new
 								position relative
+								font-family 'FontAwesome'
+								font-size 0
+								a
+									vertical-align top
+									.icn
+										display inline-block
+										width 16px
+										height 16px
+										font-size 1.2rem
+										line-height 16px
 							&.right
 								top auto
 								bottom 0
@@ -85,10 +95,14 @@ body
 										border-width 1px
 										border-color $spacerBG
 										border-radius 50%
-										img
+										.icn
 											opacity 1
 										&:hover
 											border-color $spacerBG
+								&.new
+									a
+										.icn
+											font-size 1.4rem
 								&.right
 									bottom 24px
 

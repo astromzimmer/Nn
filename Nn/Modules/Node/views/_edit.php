@@ -1,7 +1,7 @@
 <div id="node">
 	<div class="manage">
 		<div id="node_form" class="view">
-			<form name="form1" method="post" action="<?php echo DOMAIN.'/admin/nodes/update/'.$node->attr('id') ?>" data-target="center" enctype="multipart/form-data">
+			<form name="form1" method="post" action="<?php echo Nn::settings('DOMAIN').'/admin/nodes/update/'.$node->attr('id') ?>" data-target="center" enctype="multipart/form-data">
 				<fieldset>
 					<legend><?php echo Nn::babel('Title') ?>:</legend>
 					<input name="title" type="text" class="formfield" id="titleField" value="<?php echo $node->attr('title') ?>" autofocus />
@@ -28,7 +28,7 @@
 					</select>
 				</fieldset>
 				<div class="submit">
-					<a href="<?php echo DOMAIN.'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node->attr('id') ?>" class="cancel button half float" data-target="center" data-ajax><?php echo Nn::babel('Cancel') ?></a>
+					<a href="<?php echo Nn::settings('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node->attr('id') ?>" class="cancel button half float" data-target="center" data-ajax><?php echo Nn::babel('Cancel') ?></a>
 					<button type="submit" name="submit" id="submit" class="float half save"><?php echo Nn::babel('Save') ?></button>
 				</div>
 			</form>

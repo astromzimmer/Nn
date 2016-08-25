@@ -54,7 +54,6 @@ class Router {
 		$route_param = isset($params['route']) ? $params['route'] : null;
 		unset($params['route']);
 		$params = http_build_query($params);
-		Utils::debug($params);
 		header("Redirect: {$route_param}?{$params}");
 		$method = $_SERVER['REQUEST_METHOD'];
 		if($route = $this->reRoute($route_param,$method)) {
@@ -70,7 +69,8 @@ class Router {
 				// echo $route->pattern.'<br>';
 				// echo $route->callback.'<br>';
 				// echo $route_param.'<br>';
-				$route->callback = preg_replace($route->pattern, $route->callback, $route_param);
+				$route->callback = preg_replace($route->pattern, $route->callback, $route_param, 1);
+				Utils::debug($route->callback);
 				// die($route->callback);
 				return $route;
 			}

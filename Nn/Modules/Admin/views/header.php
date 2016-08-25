@@ -13,24 +13,24 @@
     <meta http-equiv="imagetoolbar" content="no">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <title> <?php echo PAGE_NAME ?> - admin </title>
+    <title> <?php echo Nn::s('PAGE_NAME') ?> - admin </title>
     
     <link href='//fonts.googleapis.com/css?family=Roboto:400,100,300,700,900|Average|Hind:300,400,500,600,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
     <?php
       $style_files = [
         'backnn/css/main.css'
       ];
       echo Nn::minify()->cssTags($style_files,'backnn/css/concat_backnn.css');
     ?>
-  	<base href="<?php echo DOMAIN; ?>"></base>
+  	<base href="<?php echo Nn::s('DOMAIN'); ?>"></base>
 	
   </head>
 
-  <body id="body" class="<?php if(Nn::settings('PRINT')) echo 'print ' ?>">
+  <body id="body" class="<?php if(Nn::s('PRINT')) echo 'print ' ?>">
     <?php Nn::partial('Def','_flash') ?>
   	<div class="BG">
-  		<!-- <img src="<?php echo DOMAIN,DS,'imgs',DS,'static',DS,'admin_bg.jpg' ?>" /> -->
+  		<!-- <img src="<?php echo Nn::s('DOMAIN'),'/imgs/static/admin_bg.jpg' ?>" /> -->
   	</div>
     
   	<div id="admin" class="muli<?php if(isset($index)) echo ' root expanded' ?>">

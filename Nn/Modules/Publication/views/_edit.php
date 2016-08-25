@@ -4,7 +4,7 @@
 <div id="right">
 	<div class="manage">
 		<div id="template_form" class="edit_bg">
-			<form name="form1" method="post" action="<?php echo DOMAIN.DS.'admin'.DS.'templates'.DS.'update'.DS.$template->attr('id') ?>">
+			<form name="form1" method="post" action="<?php echo Nn::settings('DOMAIN').DS.'admin'.DS.'templates'.DS.'update'.DS.$template->attr('id') ?>">
 			<fieldset>
 				<legend><?php echo Nn::babel('Name') ?></legend>
 				<input type="text" name="name" class="formfield" id="nameField" value="<?php echo $template->attr('name'); ?>" />
@@ -50,7 +50,7 @@
 			</div>
 			</form>
 			<div class="tools">
-				<a class="trash" href="<?php echo DOMAIN.DS.'admin'.DS.'templates'.DS.'delete'.DS.$template->attr('id') ?>" data-tooltip="<?php echo Nn::babel('Trash') ?>"><?php Utils::UIIcon('trash'); ?></a>
+				<a class="trash" href="<?php echo Nn::settings('DOMAIN').DS.'admin'.DS.'templates'.DS.'delete'.DS.$template->attr('id') ?>" data-tooltip="<?php echo Nn::babel('Trash') ?>"><?php Utils::UIIcon('trash'); ?></a>
 			</div>
 		</div>
 	</div>

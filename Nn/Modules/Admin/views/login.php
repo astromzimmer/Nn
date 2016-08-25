@@ -5,7 +5,7 @@
 			<?php echo partial($logo->public_view(),array(strtolower($logo->datatype())=>$logo->data())) ?>
 		</div>
 	<?php endif; ?>
-		<form name="form1" method="post" action="<?php echo DOMAIN,DS,'admin',DS,'try_to_login' ?>" enctype="multipart/form-data">
+		<form name="form1" method="post" action="<?php echo Nn::settings('DOMAIN'),DS,'admin',DS,'try_to_login' ?>" enctype="multipart/form-data">
 		  <fieldset>
 			<legend><?php echo Nn::babel('Email') ?></legend>
 		    <input name="uid" type="text" class="formfield" id="emailField" value="" autofocus />

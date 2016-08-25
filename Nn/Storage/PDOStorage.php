@@ -17,7 +17,7 @@ class PDOStorage implements StorageInterface {
 	}
 
 	private function schematics() {
-		$dbtype = strtolower(Nn::settings('DB_TYPE'));
+		$dbtype = strtolower(Nn::settings('DB')['TYPE']);
 		switch ($dbtype) {
 			case 'pgsql':
 				return array(
@@ -25,6 +25,7 @@ class PDOStorage implements StorageInterface {
 					'text' => 'TEXT',
 					'long_text' => 'TEXT',
 					'float' => 'FLOAT',
+					'double' => 'DOUBLE',
 					'integer' => 'INTEGER',
 					'date' => 'DATE',
 					'datetime' => 'DATETIME',
@@ -39,6 +40,7 @@ class PDOStorage implements StorageInterface {
 					'text' => 'TEXT',
 					'long_text' => 'LONGTEXT',
 					'float' => 'FLOAT',
+					'double' => 'DOUBLE',
 					'integer' => 'INTEGER',
 					'date' => 'DATE',
 					'datetime' => 'DATETIME',
@@ -228,7 +230,7 @@ class PDOStorage implements StorageInterface {
 			$first = false;
 		}
 		if(isset($order_by)) {
-			$sql .= ' ORDER BY '.$order_by;
+			$sql .= ' ORDER BY '.$order_by.', created_at';
 		}
 		# TODO
 		if(isset($limit)) $sql .= ' LIMIT '.$limit;
@@ -246,7 +248,7 @@ class PDOStorage implements StorageInterface {
 			return $cache->get($id);
 		} else {
 			try {
-				$statement = $this->dbc->prepare($sql);
+				$statement = $this->dbc()->prepare($sql);
 				if(!$statement) {
 					trigger_error($statement->errorInfo());
 				}
@@ -294,26 +296,29 @@ class PDOStorage implements StorageInterface {
 	private function create($table_name,$obj,$stamp){
 		if($stamp) {
 			$now = gettimeofday(true);
+			Utils::debug($now);
 			$created_at = $obj->attr('created_at');
 			$updated_at = $obj->attr('updated_at');
 			if(!$created_at) $obj->attr('created_at',$now);
 			if(!$updated_at) $obj->attr('updated_at',$obj->attr('created_at'));
 		}
+		Utils::debug($obj->attr('created_at'));
 		$attributes = $obj->getAttributes();
 		unset($attributes['id']);
 		$keys = array_keys($attributes);
 		$vals = array_values($attributes);
 		$sql = "INSERT INTO " . $table_name . " (";
-		if(Nn::settings('DB_TYPE') == 'pgsql') $sql .= "id, ";
+		if(Nn::settings('DB')['TYPE'] == 'pgsql') $sql .= "id, ";
 		$sql .= join(", ", $keys);
 		$sql .= ") VALUES (";
-		if(Nn::settings('DB_TYPE') == 'pgsql') $sql .= "DEFAULT,";
+		if(Nn::settings('DB')['TYPE'] == 'pgsql') $sql .= "DEFAULT,";
 		$i = count($attributes);
 		for(;$i--;) {
 		$sql .= '?';
 			if($i > 0) $sql .= ',';
 		}
 		$sql .= ")";
+		Utils::debug($attributes);
 		try {
 			$statement = $this->dbc->prepare($sql);
 			$statement->execute($vals);
@@ -321,6 +326,7 @@ class PDOStorage implements StorageInterface {
 			Nn::cache()->flush($table_name);
 			return true;
 		} catch(\PDOException $e) {
+			Utils::debug($e);
 			if($e->getCode() == '42S02' || $e->getCode() == '42P01' || $e->getMessage() == 'SQLSTATE[HY000]: General error: 1 no such table: '.$table_name) {
 				if($this->createTable($table_name,($obj::$SCHEMA))) {
 					return $this->create($table_name,$obj,true);
@@ -398,7 +404,7 @@ class PDOStorage implements StorageInterface {
 		foreach($schema as $attribute => $mapping) {
 			$mapped_schema[] = $attribute.' '.$schematics[$mapping];
 		}
-		$dbtype = strtolower(Nn::settings('DB_TYPE'));
+		$dbtype = strtolower(Nn::settings('DB')['TYPE']);
 		$sql = "CREATE TABLE ".$table_name;
 		$sql .= " (id";
 		$sql .= ($dbtype == 'mysql' || $dbtype == 'sqlite') ? ' INTEGER' : '';
@@ -442,7 +448,7 @@ class PDOStorage implements StorageInterface {
 
 	public function backup($filename=null) {
 		$filename = (isset($filename)) ? $filename : time();
-		switch (strtolower(DB_TYPE)) {
+		switch (strtolower(Nn::s('DB')['TYPE'])) {
 			case 'mysql':
 				return $this->backup_mysql($filename);
 				break;

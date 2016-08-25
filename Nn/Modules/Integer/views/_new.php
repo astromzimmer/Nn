@@ -5,9 +5,9 @@
 	%Y-%m-%d<br>
 	<br>
 	This will yield<br>
-	DATE: <?php echo DATE_FORMAT ?><br>
-	TIME: <?php echo TIME_FORMAT ?><br>
-	DATE & TIME: <?php echo DATETIME_FORMAT ?>
+	DATE: <?php echo Nn::s('DATE_FORMAT') ?><br>
+	TIME: <?php echo Nn::s('TIME_FORMAT') ?><br>
+	DATE & TIME: <?php echo Nn::s('DATETIME_FORMAT') ?><br><br>
 </div>
 <input type="date" name="number" class="formField" id="numberField" value="" autofocus />
 <?php else: ?>
