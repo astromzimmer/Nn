@@ -79,7 +79,7 @@ class Utils {
 	}
 
 	public static function sendResponseCode($code,$exit=true) {
-		# Consider adding support for > 5.4
+		# Consider adding support for < 5.4
 		http_response_code($code);
 		if($exit) exit;
 	}

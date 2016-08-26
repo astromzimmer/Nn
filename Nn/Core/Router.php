@@ -111,6 +111,8 @@ class Router {
 		$nn_path = ROOT.DS.'Nn'.DS.'Modules'.DS.$this->module.DS.$this->controller.'.php';
 		$appControllerClass = (file_exists($app_path)) ? 'App\\'.$this->module.'\\'.$this->controller : false;
 		$nnControllerClass = (file_exists($nn_path)) ? 'Nn\\Modules\\'.$this->module.'\\'.$this->controller : false;
+		Utils::debug($appControllerClass);
+		Utils::debug($this->action);
 		if($appControllerClass && method_exists($appControllerClass, $this->action)) {
 			$controller = new $appControllerClass($this->action,$query);
 		} else if($nnControllerClass && method_exists($nnControllerClass, $this->action)) {

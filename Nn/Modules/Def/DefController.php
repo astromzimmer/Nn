@@ -14,10 +14,11 @@ class DefController extends Nn\Core\Controller {
 	
 	function notFound() {
 		// echo 'Not Found';
+		Utils::sendResponseCode(404,false);
 	}
 
 	function error() {
-		
+		Utils::sendResponseCode(500,false);
 	}
 
 	function thumbnail($id,$filename) {
