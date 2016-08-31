@@ -19,13 +19,13 @@
         "facebook/php-sdk-v4": "~5.0",
         "phpmailer/phpmailer": "~5.2",
         "ruudk/twitter-oauth": "~1.0",
-        "pagon/jade": "*",
         "ircmaxell/password-compat": "~1.0",
         "stripe/stripe-php": "2.*",
         "nategood/httpful": "^0.2.19",
         "abraham/twitteroauth": "^0.5.3",
         "ezyang/htmlpurifier": "^4.7",
-        "vimeo/vimeo-api": "^1.2"
+        "vimeo/vimeo-api": "^1.2",
+        "pug-php/pug": "^2.4"
     },
 
     "autoload": {
