@@ -493,11 +493,12 @@ class Utils {
 	}
 
 	public static function renderJade($tpl) {
-		$dumper = new Everzet\Jade\Dumper\PHPDumper();
-		$dumper->registerFilter('php',new Everzet\Jade\Filter\PHPFilter());
-		$parser = new Everzet\Jade\Parser(new Everzet\Jade\Lexer\Lexer());
-		$jade = new Everzet\Jade\Jade($parser,$dumper);
-		return $jade->render($tpl);
+		$pug = new Pug\Pug([
+			'prettyprint' => true,
+			'extension' => '.jade',
+			'cache' => false
+		]);
+		return $pug->compile($tpl);
 	}
 
 	public static function generate_image($str=null, $font=null) {
