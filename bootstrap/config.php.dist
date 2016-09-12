@@ -22,7 +22,7 @@ $s = [
 	'CACHE_EXPIRE' => false,
 	// turn this off to set the attribute visibility to TRUE by default
 	'SAFE_PUBLISHING' => false,
-	'DB' => [
+	'NN' => [
 		// SQLite
 		// 'TYPE' => 'SQLite',
 		// or MySQL

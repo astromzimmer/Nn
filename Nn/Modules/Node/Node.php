@@ -151,7 +151,6 @@ class Node extends Nn\Core\DataModel {
 	public function permalink($abs=false) {
 		if(!isset($this->permalink) || empty($this->permalink)) {
 			$navigation_tree = $this->navigation_tree(true);
-			$permalink = $abs ? Nn::s('DOMAIN') : '';
 			foreach($navigation_tree as $parent) {
 				$permalink .= '/'.$parent->slug();
 			}
@@ -159,7 +158,7 @@ class Node extends Nn\Core\DataModel {
 			$this->permalink = $permalink;
 			$this->save();
 		}
-		return $this->permalink;
+		return $abs ? Nn::s('DOMAIN').$this->permalink : $this->permalink;
 	}
 	
 	public function type() {

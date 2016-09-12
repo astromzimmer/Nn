@@ -49,6 +49,9 @@ class Template extends Basic {
 				case 'json':
 					$this->content_type = 'application/json';
 					break;
+				case 'xml':
+					$this->content_type = 'application/xml';
+					break;
 				case 'raw':
 				default:
 					$this->content_type = 'text/plain';
@@ -120,6 +123,7 @@ class Template extends Basic {
 		header('Content-Type: '.$this->content_type);
 		switch($this->render_as) {
 			case 'partial':
+			case 'xml':
 				$this->renderTemplate();
 				break;
 			case 'pdf':

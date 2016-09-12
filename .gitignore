@@ -111,4 +111,5 @@ bower_components
 /App/*/*.jade
 /App/*/*/*.jade
 /bootstrap/config.php
+/bootstrap/init.php
 /bootstrap/routes.php

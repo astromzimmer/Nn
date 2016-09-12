@@ -1,0 +1,27 @@
+<?php
+
+/* define site path constant here to get absolute path */
+$index_path = realpath(dirname((dirname(__FILE__))));
+defined('ROOT') ? null : define('ROOT', $index_path);
+
+require ROOT.DS.'vendor'.DS.'autoload.php';
+require ROOT.DS.'Nn'.DS.'Nn.php';
+require ROOT.DS.'Nn'.DS.'Utils.php';
+
+Nn::settings(require ROOT.DS.'bootstrap'.DS.'config.php');
+
+$session = new Nn\Core\Session();
+$minify = new Nn\Core\Minify();
+$cache = new Nn\Core\Cache();
+$mailer = new Nn\Core\Mailer();
+$router = new Nn\Core\Router();
+$dbs = Nn::settings('NN');
+$storage = new Nn\Storage\PDOStorage($dbs['TYPE'],$dbs['HOST'],$dbs['PORT'],$dbs['NAME'],$dbs['USER'],$dbs['PASSWORD']);
+$language = new Nn\Babel\Dictionary();
+$tracker = new Nn\Trackers\Navajo();
+
+Nn::init($session, $minify, $cache, $mailer, $router, $storage, $language, $tracker);
+
+require ROOT.DS.'bootstrap'.DS.'routes.php';
+
+Nn::run();
