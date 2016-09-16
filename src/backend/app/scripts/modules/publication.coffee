@@ -11,6 +11,9 @@
 		init = ->
 			#
 
+		exists = ->
+			$publication.length > 0
+
 		getId = ->
 			$IDpub = $('#publication[data-id]')
 			if $IDpub then return parseInt($IDpub.data 'id')
@@ -35,23 +38,24 @@
 				,200
 
 		fetch = (publication_id,section_id)->
-			$publication.addClass 'loading'
-			path = '/admin/publications/view/'+publication_id
-			if section_id then path += '/'+section_id
-			$.ajax
-				url: path+'?render_as=partial'
-				dataType: 'html'
-				success: (result,status,jqXHR)->
-					_id = publication_id
-					$publication[0].dataset.id = _id
-					$publication[0].innerHTML = result
-					_print = null
-					render()
-					setTimeout ->
-						_print.frameResize()
-						scrollToSection section_id
-						$publication.removeClass 'loading'
-					,200
+			if(publication_id)
+				$publication.addClass 'loading'
+				path = '/admin/publications/view/'+publication_id
+				if section_id then path += '/'+section_id
+				$.ajax
+					url: path+'?render_as=partial'
+					dataType: 'html'
+					success: (result,status,jqXHR)->
+						_id = publication_id
+						$publication[0].dataset.id = _id
+						$publication[0].innerHTML = result
+						_print = null
+						render()
+						setTimeout ->
+							_print.frameResize()
+							scrollToSection section_id
+							$publication.removeClass 'loading'
+						,200
 
 		fetchCart = (publication_id)->
 			$cart.addClass 'loading'
@@ -72,13 +76,14 @@
 					focusOn id
 
 		focusCart = (section_id)->
-			# HACK!
-			$publication.removeClass 'loading'
-			# /HACK
-			$sections = $('#right li.section')
-			if $sections.length is 0 then return fetchCart()
-			$('#right li.section').removeClass 'focus active'
-			$('#right li.section[data-id="'+section_id+'"]').addClass 'focus active'
+			if(section_id)
+				# HACK!
+				$publication.removeClass 'loading'
+				# /HACK
+				$sections = $('#right li.section')
+				if $sections.length is 0 then return fetchCart()
+				$('#right li.section').removeClass 'focus active'
+				$('#right li.section[data-id="'+section_id+'"]').addClass 'focus active'
 
 		scrollToSection = (section_id)->
 			_print.scrollTo 'section[data-id="'+section_id+'"]'
@@ -117,6 +122,7 @@
 			if _print then _print.print()
 
 		return {
+			exists: exists
 			render: render
 			fetch: fetch
 			fetchCart: fetchCart

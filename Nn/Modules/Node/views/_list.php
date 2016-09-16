@@ -22,7 +22,9 @@
 		<div class="tools">
 			<div class="tool handle" data-tooltip="<?php echo Nn::babel('Sort') ?>"></div>
 			<a class="tool link" href="<?php echo $n->permalink() ?>" target="_blank" data-tooltip="<?php echo Nn::babel('Public link') ?>"></a>
+			<?php if(Nn::s('PRINT')): ?>
 			<div class="tool pub" data-tooltip="<?php echo Nn::babel('Add to publication') ?>"></div>
+			<?php endif; ?>
 		</div>
 	</div>
 	<?php if($n->nodetype()->nodetypes()): ?>
