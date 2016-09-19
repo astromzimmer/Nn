@@ -2,6 +2,8 @@
 
 	$(document).ready ->
 
+		console.log('Document ready')
+
 		if history and history.pushState
 
 			App.$doc = $(document)
@@ -166,11 +168,12 @@
 						App.router.navigate '/'+success_path
 
 			App.$doc.on 'click', '[data-ajax]', (e)->
+				e.preventDefault()
 				$this = $(this)
 				e.preventDefault()
 				path = $this.attr('href').replace(origin,'')
 				App.router.navigate path
-				# return false
+				return false
 
 			App.$doc.on 'click', 'a[href]', (e)->
 				$this = $(this)

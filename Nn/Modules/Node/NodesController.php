@@ -181,7 +181,7 @@ class NodesController extends Nn\Core\Controller {
 		$node = new Node($_POST['title'],Nn::session()->user_id(),$_POST['parent_id'],$_POST['nodetype_id']);
 		if($node->save()) {
 			Nn::cache()->flush('api_getPosts_');
-			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node->attr('id'));
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node->attr('id'),true);
 		} else {
 			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/make');
 		}
@@ -193,9 +193,9 @@ class NodesController extends Nn\Core\Controller {
 		$node->fill($_POST['title'],$_POST['permalink'],$parent_id,$_POST['nodetype_id']);
 		if($node->save()) {
 			Nn::cache()->flush('api_getPosts_');
-			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$id);
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$id,true);
 		} else {
-			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/edit/'.$id);
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/edit/'.$id,true);
 		}
 	}
 	
@@ -205,7 +205,7 @@ class NodesController extends Nn\Core\Controller {
 		$redirect_path = ($parent_id != 0) ? '/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$parent_id : '/admin/nodes';
 		if($node->recursive_delete()) {
 			Nn::cache()->flush('api_getPosts_');
-			Utils::redirect(Nn::s('DOMAIN').$redirect_path);
+			Utils::redirect(Nn::s('DOMAIN').$redirect_path,true);
 		} else {
 			die(print_r($node->errors));
 		}
