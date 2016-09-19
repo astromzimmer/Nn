@@ -181,7 +181,7 @@ class NodesController extends Nn\Core\Controller {
 		$node = new Node($_POST['title'],Nn::session()->user_id(),$_POST['parent_id'],$_POST['nodetype_id']);
 		if($node->save()) {
 			Nn::cache()->flush('api_getPosts_');
-			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node->attr('id'),true);
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$node->attr('id'));
 		} else {
 			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/make');
 		}
@@ -193,7 +193,7 @@ class NodesController extends Nn\Core\Controller {
 		$node->fill($_POST['title'],$_POST['permalink'],$parent_id,$_POST['nodetype_id']);
 		if($node->save()) {
 			Nn::cache()->flush('api_getPosts_');
-			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$id,true);
+			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/'.Nn::settings('NODE_VIEW').'/'.$id);
 		} else {
 			Utils::redirect(Nn::s('DOMAIN').'/admin/nodes/edit/'.$id,true);
 		}
