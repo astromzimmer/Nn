@@ -17,7 +17,7 @@ class PDOStorage implements StorageInterface {
 	}
 
 	private function schematics() {
-		$dbtype = strtolower(Nn::settings('DB')['TYPE']);
+		$dbtype = strtolower(Nn::settings('NN')['TYPE']);
 		switch ($dbtype) {
 			case 'pgsql':
 				return array(
@@ -308,10 +308,10 @@ class PDOStorage implements StorageInterface {
 		$keys = array_keys($attributes);
 		$vals = array_values($attributes);
 		$sql = "INSERT INTO " . $table_name . " (";
-		if(Nn::settings('DB')['TYPE'] == 'pgsql') $sql .= "id, ";
+		if(Nn::settings('NN')['TYPE'] == 'pgsql') $sql .= "id, ";
 		$sql .= join(", ", $keys);
 		$sql .= ") VALUES (";
-		if(Nn::settings('DB')['TYPE'] == 'pgsql') $sql .= "DEFAULT,";
+		if(Nn::settings('NN')['TYPE'] == 'pgsql') $sql .= "DEFAULT,";
 		$i = count($attributes);
 		for(;$i--;) {
 		$sql .= '?';
@@ -404,7 +404,7 @@ class PDOStorage implements StorageInterface {
 		foreach($schema as $attribute => $mapping) {
 			$mapped_schema[] = $attribute.' '.$schematics[$mapping];
 		}
-		$dbtype = strtolower(Nn::settings('DB')['TYPE']);
+		$dbtype = strtolower(Nn::settings('NN')['TYPE']);
 		$sql = "CREATE TABLE ".$table_name;
 		$sql .= " (id";
 		$sql .= ($dbtype == 'mysql' || $dbtype == 'sqlite') ? ' INTEGER' : '';
@@ -448,7 +448,7 @@ class PDOStorage implements StorageInterface {
 
 	public function backup($filename=null) {
 		$filename = (isset($filename)) ? $filename : time();
-		switch (strtolower(Nn::s('DB')['TYPE'])) {
+		switch (strtolower(Nn::s('NN')['TYPE'])) {
 			case 'mysql':
 				return $this->backup_mysql($filename);
 				break;
