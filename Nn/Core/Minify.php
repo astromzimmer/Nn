@@ -5,8 +5,8 @@ use Nn;
 
 class Minify {
 	
-	public function jsTags($files=array(),$output='concat.js') {
-		if(!Nn::settings('DEVELOPMENT_ENV')) {
+	public function jsTags($files=array(),$output=false) {
+		if(!Nn::settings('DEVELOPMENT_ENV') && $output) {
 			$last_modified = $this->getLastModified($files);
 			$output_path = ROOT.DS.'public'.DS.$output;
 			$concat_modified = (file_exists($output_path)) ? filemtime($output_path) : 0;

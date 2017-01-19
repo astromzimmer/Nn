@@ -157,7 +157,6 @@ class Template extends Basic {
 					imagedestroy($data);
 				}
 				break;
-			case 'raw':
 			case 'json':
 				extract($this->vars);
 				if(isset($data)) {
@@ -167,6 +166,12 @@ class Template extends Basic {
 						$json_data = json_encode($data);
 					}
 					echo $json_data;
+				}
+				break;
+			case 'raw':
+				extract($this->vars);
+				if(isset($data)) {
+					echo $data;
 				}
 				break;
 			default:

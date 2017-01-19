@@ -3,6 +3,9 @@
 		<li class="main btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Nodes') echo ' active"' ?>">
 			<a href="<?php echo '/admin/nodes' ?>"><?php echo Nn::babel('Nodes') ?></a>
 		</li>
+		<li class="super btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Styles') echo ' active"' ?>">
+			<a href="<?php echo '/admin/styles' ?>"><?php echo Nn::babel('Styles') ?></a>
+		</li>
 		<?php if(Nn::authenticated('admins')): ?>
 		<li class="super btn<?php if(str_replace('Controller','',Nn::getCurrentController()) == 'Nodetypes') echo ' active"' ?>">
 			<a href="<?php echo Nn::settings('DOMAIN').'/admin/nodetypes' ?>"><?php echo Nn::babel('Nodetypes') ?></a>

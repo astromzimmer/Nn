@@ -20,12 +20,7 @@
 				</fieldset>
 				<fieldset>
 					<legend><?php echo Nn::babel('Icon') ?>:</legend>
-					<input type="radio" name="icon" value="null" checked="checked"><?php echo Nn::babel('None') ?>&nbsp;
-					<span class="fontawesome">
-						<?php foreach($icons as $key=>$val): ?>
-						<input type="radio" name="icon" value="<?php echo $key ?>" ><?php echo $val ?>&nbsp;
-						<?php endforeach; ?>
-					</span>
+					<input type="text" name="icon" class="formfield" id="iconField" value="" />
 				</fieldset>
 				<div id="defaultContainer"></div>
 				<div class="submit">

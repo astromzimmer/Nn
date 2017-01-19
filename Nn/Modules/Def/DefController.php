@@ -8,12 +8,10 @@ use Utils;
 class DefController extends Nn\Core\Controller {
 	
 	function before() {
-		// TODO: Make this possible
-		// $this->cache_multiple(array('index','mobile'));
+		// $this->cache([]);
 	}
 	
 	function notFound() {
-		// echo 'Not Found';
 		Utils::sendResponseCode(404,false);
 	}
 
