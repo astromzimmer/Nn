@@ -3,9 +3,9 @@
 $s = [
 	'DEVELOPMENT_ENV' => true,
 	// here goes your domain URL
-	'DOMAIN' => 'http://kw',
+	'DOMAIN' => 'http://yourdomain',
 	// name of your site, which will be displayed in the browser title field
-	'PAGE_NAME' => 'Internationale Kurzfilmtage Winterthur',
+	'PAGE_NAME' => 'Your Site',
 	// time and date format definitions
 	'DATE_FORMAT' => '%Y.%m.%d',
 	'TIME_FORMAT' => '%H:%M',
@@ -29,7 +29,7 @@ $s = [
 		'TYPE' => 'MySQL',
 		'HOST' => '127.0.0.1',
 		'PORT' => '3306',
-		'NAME' => 'kw_dev',
+		'NAME' => 'db_name',
 		'USER' => 'root',
 		'PASSWORD' => 'root'
 	],
