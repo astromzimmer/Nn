@@ -46,7 +46,7 @@ $s = [
 		'FROM_EMAIL' => 'info@yourdomain',
 		// tech support contact, will get errors
 		'ERROR_EMAIL' => 'tech@yourdomain'
-	]
+	],
 	// DON'T TOUCH IF YOU DON'T KNOW WHAT YOU'RE DOING!
 	'MEMORY_LIMIT' => '128M'
 ];
