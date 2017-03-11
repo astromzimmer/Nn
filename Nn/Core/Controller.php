@@ -25,7 +25,8 @@ class Controller extends Basic {
 		$this->render = 1;
 		# Here there should be some validation – take AJAX responses, for example
 		$this->_template = new Template($this->_module,$this->_action);
-		$this->_cache_id = 'RENDER-'.$this->_module.'_'.$this->_action.'-'.implode('-',$query);
+		$params_string = preg_replace('/[^a-zA-Z0-9\-]/','',implode('-',Nn::params()));
+		$this->_cache_id = 'RENDER-'.$this->_module.'_'.$this->_action.'-'.implode('-',$query).$params_string;
 	}
 
 	function setView() {

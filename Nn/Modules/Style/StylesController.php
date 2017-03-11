@@ -8,7 +8,7 @@ use Utils;
 class StylesController extends Nn\Core\Controller {
 	
 	function before() {
-		$this->cache(['serve']);
+		// $this->cache(['serve']);
 	}
 
 	function serve($name) {

@@ -192,6 +192,7 @@ class Image extends \Nn\Modules\Attachment\Attachment {
 		$compression = isset($comp) ? $comp : 72;
 
 		$new_img = imagecreatetruecolor($bounds['scaled_width'], $bounds['scaled_height']);
+		if(!$new_img) return false;
 		imagealphablending($new_img, false);
 		imagesavealpha($new_img, true);
 		imagecopyresampled($new_img, $this->_img, -1, -1, 0, 0, $bounds['scaled_width']+2, $bounds['scaled_height']+2, $bounds['original_width'], $bounds['original_height']);

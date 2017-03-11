@@ -18,11 +18,13 @@ class Route {
 
 class Router {
 
+	private $path;
 	private $default_controller;
 	private $default_action;
 	private $module;
 	private $controller;
 	private $action;
+	private $params;
 	private $routes;
 
 	public function __construct() {
@@ -45,21 +47,29 @@ class Router {
 		return $this->action;
 	}
 
+	public function path() {
+		return $this->path;
+	}
+
+	public function params() {
+		return $this->params;
+	}
+
 	public function set($pattern,$method,$callback) {
 		$this->routes[] = new Route($pattern,$method,$callback);
 	}
 
 	public function route() {
-		$params = $_GET;
-		$route_param = isset($params['route']) ? $params['route'] : null;
-		unset($params['route']);
-		$params = http_build_query($params);
-		header("Redirect: {$route_param}?{$params}");
+		$this->params = $_GET;
+		$this->path = isset($this->params['route']) ? $this->params['route'] : null;
+		unset($this->params['route']);
+		$redirect = (count($this->params) > 0) ? $this->path.'?'.http_build_query($this->params) : $this->path;
+		header("Redirect: {$redirect}");
 		$method = $_SERVER['REQUEST_METHOD'];
-		if($route = $this->reRoute($route_param,$method)) {
+		if($route = $this->reRoute($this->path,$method)) {
 			$this->execute($route->callback);
 		} else {
-			$this->execute($route_param);
+			$this->execute($this->path);
 		}
 	}
 

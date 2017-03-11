@@ -227,6 +227,14 @@ class Nn extends Nn\Core\Singleton {
 		self::instance()->router->set($pattern,'delete',$callback);
 	}
 
+	public static function path() {
+		return self::instance()->router->path();
+	}
+
+	public static function params() {
+		return self::instance()->router->params();
+	}
+
 	public static function session() {
 		return self::instance()->session;
 	}
